@@ -10,7 +10,7 @@ pages_build_output_dir = "."
 [[d1_databases]]
 binding = "LOGS_DB"
 database_name = "ai-ojiichan-logs"
-database_id = "REPLACE_WITH_ACTUAL_D1_ID_AFTER_CREATE"
+database_id = "f44a0341-7fa9-4d8e-af0b-11da32e5eb4a"
 
 # 環境変数（Cloudflare Pages dashboard で設定するのが推奨）
 # wrangler でデプロイする場合の参考値
