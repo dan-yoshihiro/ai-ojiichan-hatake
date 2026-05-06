@@ -67,8 +67,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       // 日別集計
       sql = `SELECT DATE(timestamp) AS day,
                     COUNT(*) AS total,
-                    SUM(is_ai_bot) AS ai_bots,
-                    COUNT(*) - SUM(is_ai_bot) AS humans
+                    COALESCE(SUM(is_ai_bot), 0) AS ai_bots,
+                    COUNT(*) - COALESCE(SUM(is_ai_bot), 0) AS humans
              FROM access_logs
              GROUP BY DATE(timestamp)
              ORDER BY day DESC
