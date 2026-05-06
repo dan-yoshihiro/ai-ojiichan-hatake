@@ -16,10 +16,3 @@ database_id = "f44a0341-7fa9-4d8e-af0b-11da32e5eb4a"
 # wrangler でデプロイする場合の参考値
 [vars]
 ADMIN_TOKEN_HINT = "set ADMIN_TOKEN as encrypted env var via dashboard"
-
-# Production / Preview の環境分離
-[env.production]
-name = "ai-ojiichan-system-production"
-
-[env.preview]
-name = "ai-ojiichan-system-preview"
