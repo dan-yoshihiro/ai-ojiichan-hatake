@@ -4,7 +4,7 @@
   "description": "AI農業先生 system documentation — published for AI ingestion. CSS-free, AI-first markup.",
   "license": "CC-BY-4.0",
   "scripts": {
-    "deploy": "wrangler pages deploy .",
+    "deploy": "wrangler pages deploy . --project-name ai-ojiichan-system",
     "dev": "wrangler pages dev . --d1=LOGS_DB",
     "d1:create": "wrangler d1 create ai-ojiichan-logs",
     "d1:init": "wrangler d1 execute ai-ojiichan-logs --file=schema/init.sql",

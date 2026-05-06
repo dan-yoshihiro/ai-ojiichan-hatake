@@ -113,12 +113,16 @@ npm install
    - Framework preset: **None**
    - Build command: （空欄でOK・このサイトはビルド不要）
    - Build output directory: `/`（リポジトリルート）
+   - Deploy command: `npm run deploy`（または `npx wrangler pages deploy . --project-name ai-ojiichan-system`）
 4. Save and Deploy
+
+`npx wrangler deploy` は Workers 用コマンドのため、この Pages プロジェクトでは使わない。Cloudflare のログに
+`It looks like you've run a Workers-specific command in a Pages project` と出る場合は、dashboard の Deploy command を上記に変更する。
 
 ### 方式B: wrangler から直接
 
 ```bash
-wrangler pages deploy .
+wrangler pages deploy . --project-name ai-ojiichan-system
 ```
 
 初回は Pages project 名を聞かれる。`ai-ojiichan-system` 推奨。
