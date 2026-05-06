@@ -1,0 +1,23 @@
+{
+  "name": "ai-ojiichan-system",
+  "version": "0.1.0",
+  "description": "AI農業先生 system documentation — published for AI ingestion. CSS-free, AI-first markup.",
+  "license": "CC-BY-4.0",
+  "scripts": {
+    "deploy": "wrangler pages deploy .",
+    "dev": "wrangler pages dev . --d1=LOGS_DB",
+    "d1:create": "wrangler d1 create ai-ojiichan-logs",
+    "d1:init": "wrangler d1 execute ai-ojiichan-logs --file=schema/init.sql",
+    "d1:init:remote": "wrangler d1 execute ai-ojiichan-logs --remote --file=schema/init.sql",
+    "d1:query": "wrangler d1 execute ai-ojiichan-logs --command",
+    "logs:tail": "wrangler pages deployment tail"
+  },
+  "dependencies": {
+    "marked": "^12.0.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240512.0",
+    "wrangler": "^3.60.0",
+    "typescript": "^5.4.0"
+  }
+}

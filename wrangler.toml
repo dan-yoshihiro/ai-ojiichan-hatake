@@ -1,0 +1,25 @@
+# Cloudflare Pages + Workers configuration
+# 詳細: https://developers.cloudflare.com/pages/platform/functions/
+
+name = "ai-ojiichan-system"
+compatibility_date = "2026-05-06"
+pages_build_output_dir = "."
+
+# D1 database binding（ログ保存先）
+# wrangler d1 create ai-ojiichan-logs で作成し、出力された database_id を貼る
+[[d1_databases]]
+binding = "LOGS_DB"
+database_name = "ai-ojiichan-logs"
+database_id = "REPLACE_WITH_ACTUAL_D1_ID_AFTER_CREATE"
+
+# 環境変数（Cloudflare Pages dashboard で設定するのが推奨）
+# wrangler でデプロイする場合の参考値
+[vars]
+ADMIN_TOKEN_HINT = "set ADMIN_TOKEN as encrypted env var via dashboard"
+
+# Production / Preview の環境分離
+[env.production]
+name = "ai-ojiichan-system-production"
+
+[env.preview]
+name = "ai-ojiichan-system-preview"

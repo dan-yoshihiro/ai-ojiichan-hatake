@@ -1,0 +1,59 @@
+# Cloudflare / wrangler 関連
+.wrangler/
+.dev.vars
+.dev.vars.*
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 環境変数（決して公開してはいけない）
+.env
+.env.*
+!.env.example
+
+# ビルド成果物（バンドラー全般・将来 Vite/Webpack 等を入れた場合の保険）
+dist/
+build/
+out/
+.cache/
+.parcel-cache/
+.turbo/
+.next/
+.nuxt/
+.svelte-kit/
+
+# テスト・カバレッジ
+coverage/
+.nyc_output/
+
+# OS / エディタ
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+*.sublime-*
+
+# ログ
+*.log
+logs/
+
+# 一時ファイル
+*.tmp
+*.bak
+*~
+
+# 機密情報の事故防止（明示的に追加・絶対に commit させない）
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+secrets/
+credentials/

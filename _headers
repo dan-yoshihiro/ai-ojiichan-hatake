@@ -1,0 +1,16 @@
+# Cloudflare Pages headers
+# Markdown を text/markdown として配信（AI bot が markdown と認識しやすい）
+
+/*.md
+  Content-Type: text/markdown; charset=utf-8
+  Cache-Control: public, max-age=300
+
+/*.txt
+  Content-Type: text/plain; charset=utf-8
+
+# CORS: AI bot が CORS ヘッダー必要なケースに備えて全許可
+/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, HEAD, OPTIONS
+  X-AI-Friendly: true
+  X-Content-License: CC-BY-4.0
