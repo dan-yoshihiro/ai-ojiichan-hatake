@@ -77,6 +77,10 @@ function extractTitle(md: string): string {
   return m ? m[1].trim() : 'AI農業先生';
 }
 
+function isScannerNoisePath(pathname: string): boolean {
+  return /\.(env|aws|git)/i.test(pathname) || pathname.includes('/credentials');
+}
+
 // 内部 .md リンクに ?view を付与（view モード継続のため）
 function preserveViewInLinks(html: string): string {
   return html.replace(/href="([^"]+)"/g, (match, href) => {
@@ -173,6 +177,11 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   // 管理画面（/admin/*）には middleware を通さない（admin route 自体で auth する）
   if (url.pathname.startsWith('/admin/')) {
     return next();
+  }
+
+  // Scanner noise: skip logging probes for common secret/config paths.
+  if (isScannerNoisePath(url.pathname)) {
+    return new Response('Not Found', { status: 404 });
   }
 
   const userAgent = request.headers.get('User-Agent') || '';
