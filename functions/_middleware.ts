@@ -78,7 +78,12 @@ function extractTitle(md: string): string {
 }
 
 function isScannerNoisePath(pathname: string): boolean {
-  return /\.(env|aws|git)/i.test(pathname) || pathname.includes('/credentials');
+  return /\.(env|aws|git)/i.test(pathname)
+    || pathname.includes('/credentials')
+    || /\/wp[-/]/i.test(pathname)              // /wp-json /wp-admin /wp/ 等
+    || /\/(wordpress|blog)\//i.test(pathname)  // /wordpress/ /blog/
+    || pathname.includes('xmlrpc.php')         // WordPress XML-RPC
+    || pathname.startsWith('//');              // // で始まる二重スラッシュ系
 }
 
 // 内部 .md リンクに ?view を付与（view モード継続のため）
