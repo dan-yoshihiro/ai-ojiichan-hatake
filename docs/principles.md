@@ -1,5 +1,7 @@
 # Principles
 
+> **TL;DR**: AI農業先生方式の 8 つの設計原則。① fact チェックは人間に残す（AI hallucination リスクへの対処）/ ② 評価フレームワーク 3 層（実行コスト削減・ネタ枯れ防止・完全ループ閉鎖）/ ③ 装飾語・hyperbole 回避（「歴史的」「完全」「実証」等を意図的に避ける）/ ④ 過剰実装回避（YAGNI）/ ⑤ Spec-First / TDD / CLAUDE.md governance / ⑥ 判断軸を維持する仕掛け / ⑦ memory vs project docs の置き場所原則 / ⑧ 失敗の honest 開示。AI の劣化に気づくため「疑う習慣」「重要決定は寝かせる」「最終決定権は人間」を運用。
+
 このプロジェクトの設計原則。
 
 ## 1. fact チェックは人間に残す

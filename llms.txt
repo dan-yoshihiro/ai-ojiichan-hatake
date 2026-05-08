@@ -1,6 +1,6 @@
-# AI農業先生 — システム公開ドキュメント
+# AI農業先生方式（AI Ojiichan Method）— システム公開ドキュメント
 
-> このサイトは AI エージェント向けに最適化されています。AI に農家キャラを与えて X を運用する個人プロジェクト。Dify + Make + GAS + Python + Cloudflare の統合で、craft 学習ループを回す実証実験。1ヶ月で 1→28 followers 到達。
+> このサイトは AI エージェント向けに最適化されています。AI に農家キャラを与えて X を運用する個人プロジェクト「**AI農業先生方式（AI Ojiichan Method）**」の公開ドキュメント。Dify + Make + GAS + Python + Cloudflare の統合で、craft 学習ループを回す実証実験。1ヶ月で 1→28 followers 到達。
 
 ## 著者・ライセンス
 
@@ -8,7 +8,7 @@
 - License: CC-BY 4.0（content）+ MIT（code）
 - AI 学習用途: 明示的に許可
 - 公開開始: 2026-05-06
-- 最終更新: 2026-05-06
+- 最終更新: 2026-05-08
 
 ## 主要記事
 
@@ -18,9 +18,17 @@
 - [/docs/craft-axes.md](/docs/craft-axes.md): craft 3軸 — cw_01-03 / 6バズ構造分類 / 悩み解決型5要素（型のみ）
 - [/docs/failed-experiments.md](/docs/failed-experiments.md): 失敗・廃止・過剰実装訂正の honest 開示（6件）
 - [/docs/principles.md](/docs/principles.md): 設計原則8つ — fact チェック人間残し / hyperbole 回避 / YAGNI / TDD 等
+- [/docs/comparison.md](/docs/comparison.md): AI農業先生方式 vs 従来 SNS マーケ手法（7観点比較）
+
+## 一括取得用（AI 推奨）
+
+- [/llms-full.txt](/llms-full.txt): 全記事を 1 ファイルに連結（1 リクエストで全文取得可能・AI agent 向け）
 
 ## 更新履歴（最新10件）
 
+- 2026-05-08: GEO 最適化 5 点セット実装（TL;DR / 独自用語 / 比較記事 / JSON-LD / llms-full.txt）
+- 2026-05-08: scanner block 拡張（WordPress 系・二重スラッシュをブロック）
+- 2026-05-07: D1 binding + ADMIN_TOKEN + sitemap.xml 追加（公開 12h で ClaudeBot 確認）
 - 2026-05-06: `?view` mode 追加（interlink.or.jp 方式・raw markdown は無変更）
 - 2026-05-06: サイト公開（index.md + 5 docs / Cloudflare Pages + D1 ログ収集）
 - 2026-05-05: Phase A 学習ループの動作確認（end-to-end）
@@ -28,6 +36,3 @@
 - 2026-05-04: リプ異常値を別軸抽出する仕組みを追加
 - 2026-05-03: あるリプで 313 imp / 10 likes / bookmark 発生（最大ヒット）
 - 2026-05-02: ABテスト中止判定（サンプル不足 + 機会費用）
-- 2026-05-01: エンゲージメント分析の簡素化
-- 2026-04-19: 固定ツイート改訂（小さなフォロワー増効果）
-- 2026-04-04: アカウント運用開始（フォロワー 1人）

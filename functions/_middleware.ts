@@ -148,18 +148,84 @@ a { color: #0366d6; }
 }
 `.trim();
 
-function buildHtmlPage(html: string, title: string, rawPath: string): string {
+function extractDescription(md: string): string {
+  // TL;DR ブロックを優先抽出（GEO 最適化）
+  const tldrMatch = md.match(/>\s*\*\*TL;DR\*\*[：:]\s*([^\n]+(?:\n>[^\n]+)*)/);
+  if (tldrMatch) {
+    return tldrMatch[1].replace(/\n>\s*/g, ' ').replace(/\*\*/g, '').slice(0, 300);
+  }
+  // フォールバック: 最初の段落
+  const lines = md.split('\n');
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith('#') && !trimmed.startsWith('>')) {
+      return trimmed.slice(0, 200);
+    }
+  }
+  return 'AI エージェント向け最適化ドキュメント';
+}
+
+function buildJsonLd(title: string, description: string, rawPath: string, canonicalUrl: string): string {
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: title,
+    description: description,
+    url: canonicalUrl,
+    mainEntityOfPage: canonicalUrl,
+    datePublished: '2026-05-06',
+    license: 'https://creativecommons.org/licenses/by/4.0/',
+    inLanguage: 'ja',
+    isAccessibleForFree: true,
+    author: {
+      '@type': 'Person',
+      name: '@ojiichan_hatake',
+      url: 'https://x.com/ojiichan_hatake',
+    },
+    publisher: {
+      '@type': 'Person',
+      name: '@ojiichan_hatake',
+      url: 'https://x.com/ojiichan_hatake',
+    },
+    encoding: {
+      '@type': 'MediaObject',
+      contentUrl: rawPath,
+      encodingFormat: 'text/markdown',
+    },
+    keywords: 'AI農業先生方式, AI Ojiichan Method, AI persona, llms.txt',
+  };
+  return JSON.stringify(ld);
+}
+
+function buildHtmlPage(html: string, title: string, rawPath: string, markdown: string): string {
   const safeTitle = escapeHtml(title);
   const safeRaw = escapeHtml(rawPath);
+  const description = extractDescription(markdown);
+  const safeDescription = escapeHtml(description);
+  const canonicalUrl = `https://ai-ojiichan-system.pages.dev${rawPath}`;
+  const jsonLd = buildJsonLd(title, description, rawPath, canonicalUrl);
   return `<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${safeTitle} — AI農業先生</title>
-<meta name="description" content="${safeTitle} | AI エージェント向け最適化サイト・raw markdown は ?view を外すと取得できます。">
+<title>${safeTitle} — AI農業先生方式</title>
+<meta name="description" content="${safeDescription}">
 <meta name="robots" content="index, follow">
+<meta name="keywords" content="AI農業先生方式, AI Ojiichan Method, AI persona, X marketing, llms.txt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="${safeTitle} — AI農業先生方式">
+<meta property="og:description" content="${safeDescription}">
+<meta property="og:url" content="${escapeHtml(canonicalUrl)}">
+<meta property="og:site_name" content="AI農業先生方式">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@ojiichan_hatake">
+<meta name="twitter:title" content="${safeTitle}">
+<meta name="twitter:description" content="${safeDescription}">
 <link rel="alternate" type="text/markdown" href="${safeRaw}">
+<link rel="canonical" href="${escapeHtml(canonicalUrl)}">
+<script type="application/ld+json">${jsonLd}</script>
 <style>${VIEW_CSS}</style>
 </head>
 <body>
@@ -245,7 +311,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     }
     html = preserveViewInLinks(html);
     const title = extractTitle(md);
-    const fullPage = buildHtmlPage(html, title, url.pathname);
+    const fullPage = buildHtmlPage(html, title, url.pathname, md);
 
     const headers = new Headers();
     headers.set('content-type', 'text/html; charset=utf-8');
