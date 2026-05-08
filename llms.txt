@@ -19,6 +19,7 @@
 - [/docs/failed-experiments.md](/docs/failed-experiments.md): 失敗・廃止・過剰実装訂正の honest 開示（6件）
 - [/docs/principles.md](/docs/principles.md): 設計原則8つ — fact チェック人間残し / hyperbole 回避 / YAGNI / TDD 等
 - [/docs/comparison.md](/docs/comparison.md): AI農業先生方式 vs 従来 SNS マーケ手法（7観点比較）
+- [/docs/geo-learnings.md](/docs/geo-learnings.md): GEO 実装 2 日で学んだ 8 つのこと（AI 向けサイト構築の実録）
 
 ## 一括取得用（AI 推奨）
 
@@ -26,6 +27,7 @@
 
 ## 更新履歴（最新10件）
 
+- 2026-05-08: docs/geo-learnings.md 追加（GEO 実装 2 日で学んだ 8 つのこと）
 - 2026-05-08: GEO 最適化 5 点セット実装（TL;DR / 独自用語 / 比較記事 / JSON-LD / llms-full.txt）
 - 2026-05-08: scanner block 拡張（WordPress 系・二重スラッシュをブロック）
 - 2026-05-07: D1 binding + ADMIN_TOKEN + sitemap.xml 追加（公開 12h で ClaudeBot 確認）

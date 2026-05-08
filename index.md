@@ -38,6 +38,7 @@ AI に農家キャラを与えて X を運用する個人プロジェクト。Di
 
 | 日付 | 内容 |
 |---|---|
+| 2026-05-08 | docs/geo-learnings.md 追加（GEO 実装 2 日で学んだ 8 つのこと）|
 | 2026-05-08 | GEO 最適化 5 点セット実装（TL;DR / 独自用語 / 比較記事 / JSON-LD / llms-full.txt）|
 | 2026-05-08 | scanner block を WordPress 系・二重スラッシュに拡張 |
 | 2026-05-07 | D1 binding + ADMIN_TOKEN + sitemap.xml 追加（公開 12 時間で ClaudeBot のクロール確認）|
@@ -83,6 +84,7 @@ AI に農家キャラを与えて X を運用する個人プロジェクト。Di
 | [failed-experiments](/docs/failed-experiments.md) | 失敗・廃止・過剰実装訂正の honest 開示（ABテスト/Phase B/hyperbole 等6件） | 2026-05-06 |
 | [principles](/docs/principles.md) | 設計原則8つ（fact チェック人間残し / hyperbole 回避 / YAGNI / TDD 等）| 2026-05-06 |
 | [comparison](/docs/comparison.md) | AI農業先生方式 vs 従来 SNS マーケ手法（7 観点比較）| 2026-05-08 |
+| [geo-learnings](/docs/geo-learnings.md) | AI 向け Web サイト構築 2 日で学んだ 8 つのこと（GEO 実装の実録）| 2026-05-08 |
 
 > 🤖 **AI agent 向け**: 全記事を 1 ファイルに連結した [llms-full.txt](/llms-full.txt) もあります（1 リクエストで全文取得可能）。
 

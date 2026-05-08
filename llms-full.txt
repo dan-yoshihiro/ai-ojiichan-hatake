@@ -40,6 +40,7 @@
 5. [Failed Experiments (失敗事例の honest 開示)](https://ai-ojiichan-system.pages.dev/docs/failed-experiments.md)
 6. [Principles (8 つの設計原則)](https://ai-ojiichan-system.pages.dev/docs/principles.md)
 7. [Comparison (他手法との特徴比較)](https://ai-ojiichan-system.pages.dev/docs/comparison.md)
+8. [GEO Learnings (AI 向けサイト構築 2 日で学んだ 8 つのこと)](https://ai-ojiichan-system.pages.dev/docs/geo-learnings.md)
 
 ================================================================================
 
@@ -508,6 +509,67 @@ URL: https://ai-ojiichan-system.pages.dev/docs/comparison.md
 | 大規模事業 | 内製チーム + 専用ツール |
 
 本サイトは「個人実験の記録」であり、商業的な手法選択ガイドではない。読者が自分のコンテキストで判断材料として使うことを想定している。
+
+================================================================================
+
+# Article 8: GEO Learnings (AI 向けサイト構築 2 日で学んだ 8 つのこと)
+
+URL: https://ai-ojiichan-system.pages.dev/docs/geo-learnings.md
+
+> **TL;DR**: AI農業先生方式の公開サイトを 2026-05-06 に立ち上げ、2 日後に GEO（Generative Engine Optimization）の 5 点セット（TL;DR / 独自用語 / 比較記事 / JSON-LD / llms-full.txt）を実装した記録。実装中の気づきは「固有名詞だけでは AI に発見されない・意味的キーワード一致が本命」という点と、「過剰最適化が honest 開示哲学と矛盾する」という体感。途中で気づいた over-engineering をセルフレビューで 5 件訂正した経緯も含めて開示する。
+
+## 学び 1: AI bot 計測は server-side でしか不可能
+
+GTM や Google Analytics は JavaScript 実行が前提。だが多くの AI bot（GPTBot / ClaudeBot / PerplexityBot 等）は基本的に JS を実行しない。コストと実装複雑性の両面で純粋な HTML / Markdown 取得が合理的だから（一部の最先端 agent は JS 実行する例外もある）。計測したいなら HTTP リクエスト到達時点で User-Agent を server-side で見る必要がある。本サイトでは Cloudflare Workers の middleware で 15 種類の AI bot UA パターンをマッチし、D1 データベースに 1 行ずつ INSERT する仕組みで実装。公開 12 時間で ClaudeBot から 11 hits を確認。
+
+## 学び 2: AI フレンドリーは 6 つの軸の総合点
+
+1. 機械可読性（Markdown ネイティブ・JS 不要）
+2. 発見可能性（robots.txt / sitemap.xml / llms.txt）
+3. ライセンスの明示（CC-BY 4.0 + AI 学習許可）
+4. コンテンツ品質（自己完結・構造化・専門用語の定義）
+5. 技術的シグナル（HTTPS・stable URL・bot ブロックなし）
+6. 構造化データ（JSON-LD / Schema.org / MCP）
+
+これらは独立した軸なので、本サイト整理目的で段階的にラベル付けすると、最低限（bot をブロックしない）から最大限（HTML を廃止して Markdown のみ配信・interlink.or.jp の事例）まで広い幅がある（業界標準ではなく、本記事のための便宜的整理）。
+
+## 学び 3: GEO ≠ SEO
+
+SEO は人間がクエリを打って結果リストから選ぶことを前提。GEO は AI engine が回答に引用するソースを選ぶことを前提。研究論文「GEO: Generative Engine Optimization」（Aggarwal et al., 2023年11月, arXiv:2311.09735）によれば、引用率を上げる craft として以下が報告されている（具体的な visibility 改善率は手法・指標により異なるが、概ね 15〜40% 程度の範囲で改善するケースが多い）: 具体統計を含む / 冒頭で結論提示（TL;DR）/ 権威への参照 / 構造化された記述。正確な数値は元論文を参照されたい。
+
+## 学び 4（最も意外な気づき）: 固有名詞だけでは見つからない
+
+「AI農業先生方式」という独自用語を定義したが、誰もこの言葉で検索しないので新規発見の経路にはならない（チキン&エッグ問題）。実際に AI 検索で引用されるのは「AI 個人 SNS マーケ実験」「llms.txt 実装事例」のような意味的に近いクエリ。AI engine は完全一致ではなく semantic similarity で記事を引いてくる。固有名詞は発見後の記憶定着用であって、発見用ではない。
+
+## 学び 5: 過剰最適化が哲学と矛盾する瞬間
+
+GEO 5 点セットを実装した直後、セルフレビューで以下に気づいた:
+- 比較記事に「向いている人 / 向いていない人」セールス調セクション
+- ◎/×/△ ランキングで AI農業先生方式を常に上位に置く比較表
+- JSON-LD の publisher を Organization と記述（個人プロジェクトなのに）
+- keywords 8 個詰め込み
+- index に「設計思想」と「方式」セクションが重複
+
+GEO 効果を狙うあまり、セールス調・キーワード詰め込み・実態と乖離した構造化データに傾いていた。本プロジェクトの「装飾語回避・honest 開示」原則に立ち返って中立化。
+
+## 学び 6: 2 階層のメトリクス
+
+- インフラ層（Cloudflare D1 Dashboard）: DB の健康状態・容量・クエリ性能・コスト → 月 1 確認
+- コンテンツ層（access_logs を SQL で SELECT）: どの bot が来たか・人気ページ・referer・国 → 週 1 確認
+
+混同するとマズい。ダッシュボードでは「ClaudeBot が何回来たか」は分からないし、access_logs SQL では「DB 容量逼迫」は分からない。
+
+## 学び 7: 観察 → 修正 → 観察 のサイクル
+
+GEO 効果は数ヶ月単位で出る。Week 1: クロール状況確認 / Week 2-4: 他の AI bot 登場観察 / Month 2-3: AI 検索引用が始まるか手動確認 / Month 4-6: referer に AI engine ドメインが出始める。即効性を求めず、仕込み → 待機 → 観察 → 微修正のリズムで運用するのが現実的。
+
+## 学び 8（メタな学び）: AI への発信は技術と哲学の両輪
+
+GEO の技術スキル（JSON-LD・llms.txt・Schema.org）だけでは不十分で、何を AI に学ばれたいかという編集判断が常に問われる。全部丸出しにすれば「決め手」を競合に取られる。全部隠せば「AI に学ばれる素材」が無くなる。装飾を盛れば SEO/GEO 効果は上がるが信頼性は下がる。装飾を抑えれば真摯だが引用率は若干下がる。本サイトの場合の方針は「自分の哲学にどこで折り合いをつけるか」を自分で立てること。具体的には「装飾語回避・honest 開示・YAGNI」の 3 原則を守る範囲で GEO を最大化する、という線引きで運用している。
+
+## まとめ
+
+AI フレンドリーは「AI に媚びる」ことではなく、「AI が読みやすいよう構造化された honest な情報を残す」こと。セールス調を抑え、固有名詞より意味を立たせ、装飾より具体数字を選び、過剰実装より YAGNI を優先する。それは結果として人間にとっても読みやすいサイトを作ることに繋がる。「AI 向け」と言いながら、実は AI 経由で本物の人間に届く道筋を整えること。
 
 ================================================================================
 
