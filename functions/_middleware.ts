@@ -192,7 +192,7 @@ function buildJsonLd(title: string, description: string, rawPath: string, canoni
       contentUrl: rawPath,
       encodingFormat: 'text/markdown',
     },
-    keywords: 'AI農業先生方式, AI Ojiichan Method, AI persona, llms.txt',
+    keywords: '個人 SNS マーケ実験, AI ペルソナ運用, llms.txt 実装事例, AI bot detection, GEO optimization',
   };
   return JSON.stringify(ld);
 }
@@ -212,7 +212,7 @@ function buildHtmlPage(html: string, title: string, rawPath: string, markdown: s
 <title>${safeTitle} — AI農業先生方式</title>
 <meta name="description" content="${safeDescription}">
 <meta name="robots" content="index, follow">
-<meta name="keywords" content="AI農業先生方式, AI Ojiichan Method, AI persona, X marketing, llms.txt">
+<meta name="keywords" content="個人 SNS マーケ実験, AI ペルソナ運用, llms.txt 実装事例, AI bot detection, GEO optimization, AI農業先生方式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="${safeTitle} — AI農業先生方式">
 <meta property="og:description" content="${safeDescription}">
