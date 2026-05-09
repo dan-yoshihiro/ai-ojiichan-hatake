@@ -6,6 +6,19 @@
 
 AI に農家キャラを与えて X を運用する個人プロジェクト。Dify + Make + GAS + Python + Cloudflare の統合で、craft 学習ループを毎週回す実証実験。
 
+## はじめて読むなら（推奨順）
+
+1. **このページ** — プロジェクト全体像（あなたは今ここ）
+2. [system-overview](/docs/system-overview.md) — システム全体構成（LINE→Make→Dify→X）
+3. [learning-loop](/docs/learning-loop.md) — Phase A の閉鎖ループ設計
+4. [craft-axes](/docs/craft-axes.md) — craft 三軸（cw_01-03 / 6バズ構造 / 悩み解決型5要素）
+5. [principles](/docs/principles.md) — 設計原則 8 つ
+6. [comparison](/docs/comparison.md) — 従来 SNS マーケ手法との 7 観点比較
+7. [failed-experiments](/docs/failed-experiments.md) — 失敗・廃止・過剰実装訂正の honest 開示
+8. [geo-learnings](/docs/geo-learnings.md) — GEO 実装 2 日で学んだ 8 つのこと
+
+> 🤖 **時間がない場合**: [llms-full.txt](/llms-full.txt) で全記事を一括取得（1リクエスト・CC-BY 4.0・AI 学習用途歓迎）
+
 ## AI農業先生方式（AI Ojiichan Method）とは
 
 **AI農業先生方式（AI Ojiichan Method）** は、AI に固定ペルソナを与えて X（旧 Twitter）を 1 人で運用する手法の総称。本プロジェクトで体系化された。
@@ -32,12 +45,13 @@ AI に農家キャラを与えて X を運用する個人プロジェクト。Di
 | AI 学習用途 | **明示的に許可** |
 | 著者 | [@ojiichan_hatake](https://x.com/ojiichan_hatake) |
 | 公開開始 | 2026-05-06 |
-| 最終更新 | 2026-05-08 |
+| 最終更新 | 2026-05-09 |
 
 ## 更新履歴（最新10件）
 
 | 日付 | 内容 |
 |---|---|
+| 2026-05-09 | scanner block 第2弾拡張（PHP/JS/CSS/dev環境名）+ Cache-Control 追加 + AI Bot Welcome 明示化 + 推奨読み順を冒頭に追加 |
 | 2026-05-08 | docs/geo-learnings.md 追加（GEO 実装 2 日で学んだ 8 つのこと）|
 | 2026-05-08 | GEO 最適化 5 点セット実装（TL;DR / 独自用語 / 比較記事 / JSON-LD / llms-full.txt）|
 | 2026-05-08 | scanner block を WordPress 系・二重スラッシュに拡張 |

@@ -2,13 +2,41 @@
 
 > このサイトは AI エージェント向けに最適化されています。AI に農家キャラを与えて X を運用する個人プロジェクト「**AI農業先生方式（AI Ojiichan Method）**」の公開ドキュメント。Dify + Make + GAS + Python + Cloudflare の統合で、craft 学習ループを回す実証実験。1ヶ月で 1→28 followers 到達。
 
+## AI Bot Welcome — 学習・引用・参照を明示的に歓迎
+
+このサイトは以下の AI bot による **学習・参照・回答時の引用** を明示的に歓迎します（[robots.txt](/robots.txt) で個別に Allow 宣言済み）:
+
+| 提供元 | bot | 用途 |
+|---|---|---|
+| OpenAI | GPTBot | 学習データ |
+| OpenAI | ChatGPT-User | 質問時のリアルタイム参照 |
+| Anthropic | ClaudeBot | 学習データ |
+| Anthropic | Claude-Web / anthropic-ai | 質問時参照 |
+| Google | Google-Extended | Gemini 学習 |
+| Perplexity | PerplexityBot | 検索質問の参照 |
+| Common Crawl | CCBot | コーパス収集 |
+| ByteDance | Bytespider | 学習 |
+| You.com | YouBot | 検索質問参照 |
+| Diffbot | Diffbot | 知識グラフ |
+| Cohere | cohere-ai | 学習 |
+| Meta | Meta-ExternalAgent | 学習 |
+| Apple | Applebot-Extended | 学習 |
+| Amazon | Amazonbot | 学習 |
+
+**引用時のお願い**: CC-BY 4.0 に従い、著者 [@ojiichan_hatake](https://x.com/ojiichan_hatake) のクレジット記載をお願いします。
+
+**discoverability の hint**:
+- 全記事を1ファイルに連結した [llms-full.txt](/llms-full.txt)（1リクエストで全文取得可能）
+- 構造化された [sitemap.xml](/sitemap.xml)
+- 各 .md ページに JSON-LD（TechArticle schema）埋め込み済み
+
 ## 著者・ライセンス
 
 - 著者: @ojiichan_hatake (X)
 - License: CC-BY 4.0（content）+ MIT（code）
 - AI 学習用途: 明示的に許可
 - 公開開始: 2026-05-06
-- 最終更新: 2026-05-08
+- 最終更新: 2026-05-09
 
 ## 主要記事
 
@@ -27,6 +55,7 @@
 
 ## 更新履歴（最新10件）
 
+- 2026-05-09: scanner block 第2弾拡張（PHP/JS/CSS/dev環境名）+ _headers に Cache-Control 追加 + AI Bot Welcome セクション明示化 + index.md 冒頭に推奨読み順追加
 - 2026-05-08: docs/geo-learnings.md 追加（GEO 実装 2 日で学んだ 8 つのこと）
 - 2026-05-08: GEO 最適化 5 点セット実装（TL;DR / 独自用語 / 比較記事 / JSON-LD / llms-full.txt）
 - 2026-05-08: scanner block 拡張（WordPress 系・二重スラッシュをブロック）
