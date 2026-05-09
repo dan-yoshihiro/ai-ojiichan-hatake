@@ -83,7 +83,14 @@ function isScannerNoisePath(pathname: string): boolean {
     || /\/wp[-/]/i.test(pathname)              // /wp-json /wp-admin /wp/ 等
     || /\/(wordpress|blog)\//i.test(pathname)  // /wordpress/ /blog/
     || pathname.includes('xmlrpc.php')         // WordPress XML-RPC
-    || pathname.startsWith('//');              // // で始まる二重スラッシュ系
+    || pathname.startsWith('//')               // // で始まる二重スラッシュ系
+    // 2026-05-09 拡張: 5/6-5/8 D1 ログ観察で全425アクセス中 ~370 が scanner と判明
+    // 本サイトは Markdown + xml + txt のみで .php/.js/.css ファイルは不在のため
+    // これらの拡張子を持つパスは全て scanner probe と断定して安全
+    || /\.(php|asp|aspx|jsp|cgi)($|\?|\/)/i.test(pathname)    // PHP/ASP/JSP系
+    || /\.(js|css|jsx|tsx)($|\?)/i.test(pathname)             // JS/CSS系
+    || /\/_environment/i.test(pathname)                        // dev 環境変数 probe
+    || /^\/(www|uat|tmp|test|staging|webroot|webmail)\//i.test(pathname);  // dev 環境名
 }
 
 // 内部 .md リンクに ?view を付与（view モード継続のため）
