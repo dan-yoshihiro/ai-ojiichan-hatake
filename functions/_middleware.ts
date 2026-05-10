@@ -89,6 +89,7 @@ function isScannerNoisePath(pathname: string): boolean {
     // これらの拡張子を持つパスは全て scanner probe と断定して安全
     || /\.(php|asp|aspx|jsp|cgi)($|\?|\/)/i.test(pathname)    // PHP/ASP/JSP系
     || /\.(js|css|jsx|tsx)($|\?)/i.test(pathname)             // JS/CSS系
+    || /\.(config|conf|ini|yml|yaml)($|\?)/i.test(pathname)   // 設定ファイル probe（/web.config 等）
     || /\/_environment/i.test(pathname)                        // dev 環境変数 probe
     || /^\/(www|uat|tmp|test|staging|webroot|webmail)\//i.test(pathname);  // dev 環境名
 }
