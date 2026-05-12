@@ -91,7 +91,14 @@ function isScannerNoisePath(pathname: string): boolean {
     || /\.(js|css|jsx|tsx)($|\?)/i.test(pathname)             // JS/CSS系
     || /\.(config|conf|ini|yml|yaml)($|\?)/i.test(pathname)   // 設定ファイル probe（/web.config 等）
     || /\/_environment/i.test(pathname)                        // dev 環境変数 probe
-    || /^\/(www|uat|tmp|test|staging|webroot|webmail)\//i.test(pathname);  // dev 環境名
+    || /^\/(www|uat|tmp|test|staging|webroot|webmail)\//i.test(pathname)  // dev 環境名
+    // 2026-05-12 第4弾拡張: 5/11 D1 ログで scanner が backup ファイル探索パターンに適応
+    // 新パターン8種類（/phpinfo.php~, /phpinfo.php.bak, /phpinfo, /info, /_profiler/phpinfo 等）
+    || /\/phpinfo/i.test(pathname)                            // /phpinfo 単体 + 全 backup suffix（~/.bak/.old/.save等）一網打尽
+    || /\/info(\.|$|\/|\?)/i.test(pathname)                  // /info, /info.* （/information.md 等は誤爆なし）
+    || /\/_profiler\//i.test(pathname)                        // Symfony framework profiler 探索
+    || /\.(php|asp|aspx|jsp|cgi)\.(bak|old|save|orig)($|\?)/i.test(pathname)  // .php.bak 系 backup
+    || /\.(php|asp|aspx|jsp|cgi)~($|\?)/i.test(pathname);     // .php~ 系（vi/エディタ backup）
 }
 
 // 内部 .md リンクに ?view を付与（view モード継続のため）
