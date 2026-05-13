@@ -1,7 +1,14 @@
-# 全ての AI bot にアクセスを明示的に許可
-# このサイトは AI に取り込まれること・参考されることを目的に公開されている
+# 全ての bot にアクセスを明示的に許可
+# このサイトは AI に取り込まれること・検索エンジンに index されることを目的に公開されている
 
 User-agent: *
+Allow: /
+
+# 検索エンジン（明示的に opt-in）
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
 Allow: /
 
 # 主要 AI bot 個別許可（明示的に opt-in）
@@ -41,5 +48,5 @@ Allow: /
 User-agent: cohere-ai
 Allow: /
 
-# Sitemap
-Sitemap: /sitemap.xml
+# Sitemap（絶対 URL 推奨）
+Sitemap: https://ai-ojiichan-system.pages.dev/sitemap.xml
