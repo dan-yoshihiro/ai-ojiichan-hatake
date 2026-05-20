@@ -9,9 +9,11 @@
 | 提供元 | bot | 用途 |
 |---|---|---|
 | OpenAI | GPTBot | 学習データ |
-| OpenAI | ChatGPT-User | 質問時のリアルタイム参照 |
+| OpenAI | OAI-SearchBot | 検索インデックス |
+| OpenAI | ChatGPT-User | ユーザー指示型 URL 取得 |
 | Anthropic | ClaudeBot | 学習データ |
-| Anthropic | Claude-Web / anthropic-ai | 質問時参照 |
+| Anthropic | Claude-SearchBot | 検索インデックス |
+| Anthropic | Claude-User | ユーザー指示型 URL 取得 |
 | Google | Google-Extended | Gemini 学習 |
 | Perplexity | PerplexityBot | 検索質問の参照 |
 | Common Crawl | CCBot | コーパス収集 |
@@ -36,7 +38,7 @@
 - License: CC-BY 4.0（content）+ MIT（code）
 - AI 学習用途: 明示的に許可
 - 公開開始: 2026-05-06
-- 最終更新: 2026-05-09
+- 最終更新: 2026-05-19
 
 ## 主要記事
 

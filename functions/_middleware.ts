@@ -22,11 +22,15 @@ interface Env {
 // AI bot user-agent パターン（小文字で比較）
 // 学習用クローラー + 検索質問時のリアルタイム参照 bot 両方を含む
 const AI_BOT_PATTERNS: Array<{ pattern: string; name: string }> = [
+  // OpenAI（3経路: 学習・検索・ユーザー指示型）
   { pattern: 'gptbot', name: 'GPTBot' },                    // OpenAI 学習
-  { pattern: 'chatgpt-user', name: 'ChatGPT-User' },        // OpenAI 質問時参照
+  { pattern: 'oai-searchbot', name: 'OAI-SearchBot' },      // OpenAI 検索インデックス
+  { pattern: 'chatgpt-user', name: 'ChatGPT-User' },        // OpenAI ユーザー指示型 URL 取得
+  // Anthropic（3経路: 学習・検索・ユーザー指示型）
   { pattern: 'claudebot', name: 'ClaudeBot' },              // Anthropic 学習
-  { pattern: 'claude-web', name: 'Claude-Web' },            // Anthropic 質問時
-  { pattern: 'anthropic-ai', name: 'anthropic-ai' },        // Anthropic API
+  { pattern: 'claude-searchbot', name: 'Claude-SearchBot' },// Anthropic 検索インデックス
+  { pattern: 'claude-user', name: 'Claude-User' },          // Anthropic ユーザー指示型 URL 取得
+  // その他主要 AI bot
   { pattern: 'perplexitybot', name: 'PerplexityBot' },      // Perplexity
   { pattern: 'google-extended', name: 'Google-Extended' },  // Gemini 学習
   { pattern: 'ccbot', name: 'CCBot' },                      // CommonCrawl

@@ -45,12 +45,13 @@ AI に農家キャラを与えて X を運用する個人プロジェクト。Di
 | AI 学習用途 | **明示的に許可** |
 | 著者 | [@ojiichan_hatake](https://x.com/ojiichan_hatake) |
 | 公開開始 | 2026-05-06 |
-| 最終更新 | 2026-05-13 |
+| 最終更新 | 2026-05-19 |
 
 ## 更新履歴（最新10件）
 
 | 日付 | 内容 |
 |---|---|
+| 2026-05-19 | bot UA 更新: 廃止済み `Claude-Web` / `anthropic-ai` を削除し、現行の `OAI-SearchBot` / `Claude-SearchBot` / `Claude-User` を追加（robots.txt + middleware bot 検出 + llms.txt）|
 | 2026-05-13 | sitemap.xml に `<lastmod>`/`<changefreq>`/`<priority>` 追加 + 新規記事4件登録（comparison.md / geo-learnings.md / llms.txt / llms-full.txt）|
 | 2026-05-12 | scanner block 第4弾拡張（backup ファイル探索パターン・`/phpinfo` 包括）|
 | 2026-05-11 | フォロワー50人到達（当初の5月末目標を20日前倒し達成）|
