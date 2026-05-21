@@ -53,6 +53,40 @@
 
 ---
 
+## 適用方針 — 既存 docs vs 新規 docs（2026-05-21 追加）
+
+本 CLAUDE.md の指針を**既存資産にどこまで遡及適用するか**を明確化する。
+
+### 新規 docs（これから追加するもの）
+
+- **CLAUDE.md 全項目を遵守**して作成する
+- 見出しはプロンプト形・TL;DR 冒頭・固有名詞数値含有・著者更新日明示など全ルール適用
+- 例: B3 公開サイト craft 記事・今後追加する docs
+
+### 既存 docs（既に存在するファイル）
+
+- **触るタイミングで opportunistic に整合化**する
+- content 更新で該当ファイルを編集する時に、ついでにプロンプト形見出し化・更新日同期等を行う
+- **専用 refactor sprint は組まない**（[2026-05-19 「必須のみ対応」原則](#)と整合）
+
+### Why この方針か
+
+- 既存 docs の見出し書き換え等は LLMO 改善余地はあるが、D1 ログ観察で **AI bot 訪問が 1 日 1〜2 件レベル** = activity 低位 → refactor の絶対 ROI が低い
+- 一方で新規 docs を CLAUDE.md 完全遵守で作る方が、将来の AI 引用率向上に直結
+- 「全部一気に綺麗にする」より「次に書くものを最初から正しく」が個人プロジェクト規模の最適解
+
+### 現状の既存 docs 整合状況（2026-05-21 監査結果）
+
+| カテゴリ | 該当 |
+|---|---|
+| ✅ CLAUDE.md 完全遵守 | comparison.md / geo-learnings.md / index.md |
+| ⚠️ プロンプト形見出し未達成 | principles.md / system-overview.md / learning-loop.md / craft-axes.md / failed-experiments.md（H1 が英語のみ）|
+| ⚠️ 更新日 15 日経過 | system-overview.md / principles.md / learning-loop.md（2026-05-06 base）|
+
+→ 上記 ⚠️ は**触るタイミングで整合化**。即時 refactor 対象ではない。
+
+---
+
 ## ディレクトリ構造
 
 ```
@@ -277,3 +311,4 @@ npx wrangler d1 execute ai-ojiichan-logs --remote --command \
 ## 改訂履歴
 
 - 2026-05-19: 初版作成（LLMO/AIO 入門ガイドを元に project 指針として体系化）
+- 2026-05-21: 「適用方針 — 既存 docs vs 新規 docs」セクション追加（既存 docs 5 件の英語見出し等の軽微乖離は touch のタイミングで opportunistic 整合化、新規 docs は CLAUDE.md 完全遵守という運用ルールを明文化）
