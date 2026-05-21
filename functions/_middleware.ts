@@ -3,11 +3,11 @@
  *
  * 役割:
  * 1. 全リクエストを D1 に記録（user-agent から AI bot を検出）
- * 2. `/` を `/index.md` にリダイレクト（interlink.or.jp と同じ規則）
+ * 2. `/` を `/index.md` の content で HTML 配信（2026-05-21 変更: 302 redirect を廃止）
  * 3. `?view` クエリ付き .md リクエストを human-readable HTML にレンダリング
  *
- * デフォルト挙動: AI 向け raw markdown を text/markdown で返す
- * `?view` 付き: marked で HTML 化した human-readable ビューを返す
+ * デフォルト挙動: AI 向け raw markdown を text/markdown で返す（/index.md 等への直接アクセス）
+ * `/` および `?view` 付き: marked で HTML 化した human-readable ビュー + 構造化データを返す
  *
  * 詳細: https://developers.cloudflare.com/pages/platform/functions/middleware/
  */
@@ -17,6 +17,7 @@ import { marked } from 'marked';
 interface Env {
   LOGS_DB: D1Database;
   ADMIN_TOKEN?: string;
+  ASSETS: Fetcher;
 }
 
 // AI bot user-agent パターン（小文字で比較）
@@ -231,6 +232,7 @@ function buildHtmlPage(html: string, title: string, rawPath: string, markdown: s
 <title>${safeTitle} — AI農業先生方式</title>
 <meta name="description" content="${safeDescription}">
 <meta name="robots" content="index, follow">
+<meta name="google-site-verification" content="fuTMLD_lGpfrl7HahiI0rqBBzo2B6rnSm6qQ5njg3TE">
 <meta name="keywords" content="個人 SNS マーケ実験, AI ペルソナ運用, llms.txt 実装事例, AI bot detection, GEO optimization, AI農業先生方式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="${safeTitle} — AI農業先生方式">
@@ -309,10 +311,38 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
   context.waitUntil(writeLog());
 
-  // / → /index.md（クエリは保持）
+  // / → /index.md の content を HTML で直接配信
+  // 2026-05-21 変更: 302 redirect を廃止し 200 OK + HTML 配信に。理由:
+  //  - Googlebot が `/` を fetch した時に直接 HTML を index 可能（GSC verification 含む）
+  //  - 302 redirect → /index.md (raw markdown) では Google が「中身のないリダイレクト」と判定するリスク
+  // AI bot が raw markdown を取りたい場合は /index.md を直接 fetch する設計を維持
   if (url.pathname === '/' || url.pathname === '') {
-    const target = '/index.md' + url.search;
-    return Response.redirect(new URL(target, url.origin).toString(), 302);
+    const indexUrl = new URL('/index.md', url.origin);
+    const assetResponse = await env.ASSETS.fetch(indexUrl.toString());
+    if (!assetResponse.ok) {
+      return new Response('Index not found', { status: 404 });
+    }
+    const md = await assetResponse.text();
+    let html: string;
+    try {
+      html = await marked.parse(md, { gfm: true, breaks: false });
+    } catch (err) {
+      console.error('homepage render failed:', err);
+      return new Response('Render error', { status: 500 });
+    }
+    html = preserveViewInLinks(html);
+    const title = extractTitle(md);
+    const fullPage = buildHtmlPage(html, title, '/index.md', md);
+
+    const headers = new Headers();
+    headers.set('content-type', 'text/html; charset=utf-8');
+    headers.set('X-AI-Friendly', 'true');
+    headers.set('X-Content-License', 'CC-BY-4.0');
+    headers.set('X-Markdown-Source', '/index.md');
+    if (is_ai_bot && bot_name) {
+      headers.set('X-Detected-Bot', bot_name);
+    }
+    return new Response(fullPage, { status: 200, headers });
   }
 
   const isViewMode = url.searchParams.has('view');
