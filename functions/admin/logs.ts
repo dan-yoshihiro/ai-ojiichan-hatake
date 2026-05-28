@@ -1,7 +1,7 @@
 /**
  * 管理者ログ表示エンドポイント
  *
- * URL: /admin/logs?token=<ADMIN_TOKEN>&view=<bot|recent|page>
+ * URL: /admin/logs?token=<ADMIN_TOKEN>&view=<bot|recent|page|human|legit-human|daily>
  *
  * 認証は単純な token 比較（環境変数 ADMIN_TOKEN）。
  * 出力は plain text または JSON。CSS なし・semantic HTML すら最小。
@@ -10,6 +10,52 @@
 interface Env {
   LOGS_DB: D1Database;
   ADMIN_TOKEN?: string;
+}
+
+const SCANNER_NOISE_SQL = `(
+  url_path LIKE '%.env%'
+  OR url_path LIKE '%.aws%'
+  OR url_path LIKE '%.git%'
+  OR url_path LIKE '%/credentials%'
+  OR url_path LIKE '%/wp-%'
+  OR url_path LIKE '%/wp/%'
+  OR url_path LIKE '%/wordpress/%'
+  OR url_path LIKE '%/blog/%'
+  OR url_path LIKE '%xmlrpc.php%'
+  OR url_path LIKE '//%'
+  OR url_path LIKE '%.php%'
+  OR url_path LIKE '%.asp%'
+  OR url_path LIKE '%.aspx%'
+  OR url_path LIKE '%.jsp%'
+  OR url_path LIKE '%.cgi%'
+  OR url_path LIKE '%.js%'
+  OR url_path LIKE '%.css%'
+  OR url_path LIKE '%.jsx%'
+  OR url_path LIKE '%.tsx%'
+  OR url_path LIKE '%.config%'
+  OR url_path LIKE '%.conf%'
+  OR url_path LIKE '%.ini%'
+  OR url_path LIKE '%.yml%'
+  OR url_path LIKE '%.yaml%'
+  OR url_path LIKE '%/_environment%'
+  OR url_path LIKE '/www/%'
+  OR url_path LIKE '/uat/%'
+  OR url_path LIKE '/tmp/%'
+  OR url_path LIKE '/test/%'
+  OR url_path LIKE '/staging/%'
+  OR url_path LIKE '/webroot/%'
+  OR url_path LIKE '/webmail/%'
+  OR url_path LIKE '%/phpinfo%'
+  OR url_path LIKE '%/info'
+  OR url_path LIKE '%/info.%'
+  OR url_path LIKE '%/info/%'
+  OR url_path LIKE '%/info?%'
+  OR url_path LIKE '%/_profiler/%'
+)`;
+
+function daysAgoFilter(daysParam: string | null): string {
+  const days = daysParam ? Math.min(Math.max(parseInt(daysParam, 10) || 0, 1), 365) : 0;
+  return days > 0 ? `timestamp >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-${days} days')` : '1 = 1';
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
@@ -25,22 +71,34 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const view = url.searchParams.get('view') || 'bot';
   const format = url.searchParams.get('format') || 'text';
   const limit = Math.min(parseInt(url.searchParams.get('limit') || '50', 10), 1000);
+  const since = daysAgoFilter(url.searchParams.get('days'));
 
   let sql = '';
   let label = '';
 
   switch (view) {
     case 'bot':
-      // bot 別累計
-      sql = `SELECT bot_name, access_count, unique_pages, first_seen, last_seen
-             FROM bot_summary
+      // bot 別集計。days 指定時も同じ条件で比較できるよう、view ではなく直接集計する。
+      sql = `SELECT bot_name,
+                    COUNT(*) AS access_count,
+                    COUNT(DISTINCT url_path) AS unique_pages,
+                    MIN(timestamp) AS first_seen,
+                    MAX(timestamp) AS last_seen
+             FROM access_logs
+             WHERE is_ai_bot = 1 AND ${since}
+             GROUP BY bot_name
              ORDER BY access_count DESC`;
       label = 'AI Bot Summary';
       break;
     case 'page':
       // URL 別 AI bot アクセス
-      sql = `SELECT url_path, ai_access_count, unique_bots, bot_names
-             FROM page_ai_views
+      sql = `SELECT url_path,
+                    COUNT(*) AS ai_access_count,
+                    COUNT(DISTINCT bot_name) AS unique_bots,
+                    GROUP_CONCAT(DISTINCT bot_name) AS bot_names
+             FROM access_logs
+             WHERE is_ai_bot = 1 AND ${since}
+             GROUP BY url_path
              ORDER BY ai_access_count DESC
              LIMIT ?`;
       label = 'Page AI Views';
@@ -49,7 +107,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       // 直近のアクセス（AI bot のみ）
       sql = `SELECT timestamp, bot_name, url_path, country
              FROM access_logs
-             WHERE is_ai_bot = 1
+             WHERE is_ai_bot = 1 AND ${since}
              ORDER BY timestamp DESC
              LIMIT ?`;
       label = 'Recent AI Bot Accesses';
@@ -58,25 +116,38 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       // 直近の人間アクセス（AI bot 以外）
       sql = `SELECT timestamp, url_path, country, user_agent
              FROM access_logs
-             WHERE is_ai_bot = 0
+             WHERE is_ai_bot = 0 AND ${since}
              ORDER BY timestamp DESC
              LIMIT ?`;
       label = 'Recent Human Accesses';
+      break;
+    case 'legit-human':
+      // 直近の人間らしいアクセス（既知 scanner probe を除外）
+      sql = `SELECT timestamp, url_path, country, user_agent
+             FROM access_logs
+             WHERE is_ai_bot = 0
+               AND ${since}
+               AND NOT ${SCANNER_NOISE_SQL}
+             ORDER BY timestamp DESC
+             LIMIT ?`;
+      label = 'Recent Legit Human Accesses';
       break;
     case 'daily':
       // 日別集計
       sql = `SELECT DATE(timestamp) AS day,
                     COUNT(*) AS total,
                     COALESCE(SUM(is_ai_bot), 0) AS ai_bots,
-                    COUNT(*) - COALESCE(SUM(is_ai_bot), 0) AS humans
+                    SUM(CASE WHEN is_ai_bot = 0 THEN 1 ELSE 0 END) AS humans_or_scanners,
+                    SUM(CASE WHEN is_ai_bot = 0 AND NOT ${SCANNER_NOISE_SQL} THEN 1 ELSE 0 END) AS legit_humans
              FROM access_logs
+             WHERE ${since}
              GROUP BY DATE(timestamp)
              ORDER BY day DESC
              LIMIT ?`;
       label = 'Daily Summary';
       break;
     default:
-      return new Response('view must be one of: bot, page, recent, human, daily', { status: 400 });
+      return new Response('view must be one of: bot, page, recent, human, legit-human, daily', { status: 400 });
   }
 
   let result;
@@ -109,7 +180,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const lines = [
     `# ${label}`,
     '',
-    `view=${view} count=${rows.length} limit=${limit}`,
+    `view=${view} days=${url.searchParams.get('days') || 'all'} count=${rows.length} limit=${limit}`,
     '',
     headers.join('\t'),
     ...rows.map(r => headers.map(h => String(r[h] ?? '')).join('\t')),

@@ -207,11 +207,30 @@ curl -A "Mozilla/5.0 (compatible; PerplexityBot/1.0)" \
 # bot 別累計
 curl "https://ai-ojiichan-system.pages.dev/admin/logs?token=YOUR_TOKEN&view=bot"
 
+# 直近7日の bot 別集計
+curl "https://ai-ojiichan-system.pages.dev/admin/logs?token=YOUR_TOKEN&view=bot&days=7"
+
 # 直近の AI bot アクセス
 curl "https://ai-ojiichan-system.pages.dev/admin/logs?token=YOUR_TOKEN&view=recent&limit=20"
 
+# scanner probe を除外した人間らしいアクセス
+curl "https://ai-ojiichan-system.pages.dev/admin/logs?token=YOUR_TOKEN&view=legit-human&days=7"
+
 # JSON 形式で
-curl "https://ai-ojiichan-system.pages.dev/admin/logs?token=YOUR_TOKEN&view=daily&format=json"
+curl "https://ai-ojiichan-system.pages.dev/admin/logs?token=YOUR_TOKEN&view=daily&days=7&format=json"
+```
+
+`daily` view は `humans_or_scanners` と `legit_humans` を分けて返す。`legit_humans` は PHP 探索や `_profiler` などの既知 scanner probe を除外した値。
+
+複雑な D1 集計は zsh の `unknown file attribute` を避けるため、SQL ファイルから実行する。
+
+```bash
+npm run d1:bot-summary
+npm run d1:daily-quality
+npm run d1:legit-human
+
+# GPTBot の巡回順を見る
+wrangler d1 execute ai-ojiichan-logs --remote --file=queries/gptbot-path-7d.sql
 ```
 
 ## Step 10. カスタムドメイン（任意）

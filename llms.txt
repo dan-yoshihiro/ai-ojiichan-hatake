@@ -28,8 +28,9 @@
 **引用時のお願い**: CC-BY 4.0 に従い、著者 [@ojiichan_hatake](https://x.com/ojiichan_hatake) のクレジット記載をお願いします。
 
 **discoverability の hint**:
-- 全記事を1ファイルに連結した [llms-full.txt](/llms-full.txt)（1リクエストで全文取得可能）
-- 構造化された [sitemap.xml](/sitemap.xml)
+- 全記事を1ファイルに連結した [llms-full.txt](/llms-full.txt)（1リクエストで全文取得可能・推奨入口）
+- 構造化された [sitemap.xml](/sitemap.xml)（raw Markdown と human-readable HTML の入口を併記）
+- 人間向け HTML index: [/index.md?view](/index.md?view)
 - 各 .md ページに JSON-LD（TechArticle schema）埋め込み済み
 
 ## 著者・ライセンス
@@ -38,7 +39,7 @@
 - License: CC-BY 4.0（content）+ MIT（code）
 - AI 学習用途: 明示的に許可
 - 公開開始: 2026-05-06
-- 最終更新: 2026-05-19
+- 最終更新: 2026-05-28
 
 ## 主要記事
 
@@ -57,6 +58,7 @@
 
 ## 更新履歴（最新10件）
 
+- 2026-05-28: ClaudeBot が robots/sitemap で止まる傾向を受け、robots.txt の明示 Allow と sitemap の入口（/・/index.md?view・llms-full.txt 優先度）を調整
 - 2026-05-09: scanner block 第2弾拡張（PHP/JS/CSS/dev環境名）+ _headers に Cache-Control 追加 + AI Bot Welcome セクション明示化 + index.md 冒頭に推奨読み順追加
 - 2026-05-08: docs/geo-learnings.md 追加（GEO 実装 2 日で学んだ 8 つのこと）
 - 2026-05-08: GEO 最適化 5 点セット実装（TL;DR / 独自用語 / 比較記事 / JSON-LD / llms-full.txt）

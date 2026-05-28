@@ -51,6 +51,7 @@ AI に農家キャラを与えて X を運用する個人プロジェクト。Di
 
 | 日付 | 内容 |
 |---|---|
+| 2026-05-28 | ログ分析改善: `/admin/logs` に `days` 指定と `legit-human` ビューを追加。ClaudeBot 向け導線として robots.txt / sitemap.xml / llms.txt の入口を調整 |
 | 2026-05-19 | bot UA 更新: 廃止済み `Claude-Web` / `anthropic-ai` を削除し、現行の `OAI-SearchBot` / `Claude-SearchBot` / `Claude-User` を追加（robots.txt + middleware bot 検出 + llms.txt）|
 | 2026-05-13 | sitemap.xml に `<lastmod>`/`<changefreq>`/`<priority>` 追加 + 新規記事4件登録（comparison.md / geo-learnings.md / llms.txt / llms-full.txt）|
 | 2026-05-12 | scanner block 第4弾拡張（backup ファイル探索パターン・`/phpinfo` 包括）|
