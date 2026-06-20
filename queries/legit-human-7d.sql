@@ -43,5 +43,14 @@ WHERE is_ai_bot = 0
   AND url_path NOT LIKE '%/info/%'
   AND url_path NOT LIKE '%/info?%'
   AND url_path NOT LIKE '%/_profiler/%'
+  -- 2026-06 スキャナー攻撃の新シグネチャ（.dev.vars/secret・config・API・source map 探索）
+  AND url_path NOT LIKE '%.vars%'
+  AND url_path NOT LIKE '%.json%'
+  AND url_path NOT LIKE '%.map%'
+  AND url_path NOT LIKE '%graphql%'
+  AND url_path NOT LIKE '%/api/%'
+  AND url_path NOT LIKE '%swagger%'
+  AND url_path NOT LIKE '%/.well-known/%'
+  AND url_path NOT LIKE '%.ts%'
 GROUP BY url_path
 ORDER BY hits DESC;

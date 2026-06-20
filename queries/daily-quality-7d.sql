@@ -13,6 +13,15 @@ SELECT
         AND url_path NOT LIKE '%/info%'
         AND url_path NOT LIKE '%/_profiler/%'
         AND url_path NOT LIKE '%settings.py%'
+        -- 2026-06 スキャナー新シグネチャ
+        AND url_path NOT LIKE '%.env%'
+        AND url_path NOT LIKE '%.vars%'
+        AND url_path NOT LIKE '%.json%'
+        AND url_path NOT LIKE '%.map%'
+        AND url_path NOT LIKE '%graphql%'
+        AND url_path NOT LIKE '%/api/%'
+        AND url_path NOT LIKE '%swagger%'
+        AND url_path NOT LIKE '%/.well-known/%'
       THEN 1
       ELSE 0
     END
