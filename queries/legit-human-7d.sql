@@ -1,7 +1,4 @@
--- 実コンテンツ閲覧のみを数える allowlist 方式
--- 理由: スキャナーは数百種の probe path（/env.* /actuator/* /gql /netlify.toml 等）を打つため、
---       denylist では追いつかない（whack-a-mole）。対象を正規コンテンツに限定する方が robust。
--- 対象: ルート / *.md / *.md?view / llms*.txt のみ（is_ai_bot=0）
+/* 実コンテンツ閲覧のみ allowlist 方式（ルート / *.md / *.md?view / llms*.txt）。スキャナーは数百種の probe path を打つため denylist 不可・2026-06-20 */
 SELECT
   url_path,
   COUNT(*) AS hits,

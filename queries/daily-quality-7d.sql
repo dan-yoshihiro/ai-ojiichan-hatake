@@ -1,6 +1,4 @@
--- 日次トラフィックの質を見る。
--- content_views = 正規コンテンツ path のみを数える allowlist 方式（スキャナー probe は除外）。
--- denylist だとスキャナーの数百種 path を追いきれないため allowlist に切替（2026-06-20）。
+/* 日次トラフィックの質。content_views = 正規コンテンツ path のみ数える allowlist 方式（スキャナー probe 除外）。2026-06-20 denylist→allowlist に変更 */
 SELECT
   DATE(timestamp) AS day,
   COUNT(*) AS total,
