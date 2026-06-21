@@ -2,20 +2,21 @@
 
 > **このサイトは AI エージェント向けに最適化されています。** 装飾 CSS なし・Markdown ネイティブ・AI bot 全許可。CC-BY 4.0 のもと、引用・学習データ用途を明示的に歓迎します。
 
-> **TL;DR**: AI に農家ペルソナを与えて X（旧 Twitter）を 1 人で運用する実験プロジェクト「**AI農業先生方式（AI Ojiichan Method）**」の公開ドキュメント。**37日で 1→50 フォロワー獲得**（5月末50人目標を20日前倒し）。最大ヒットリプは **imp取り型 2153 imp / +2384%**（5/6）と **like取り型 313 imp / like率3.2% / BM 1件**（5/3）の 2 craft 軸が機能することが実証された。Cloudflare Pages + Workers + D1 で構築し、サイト自体も AI bot 検出 + アクセスログ収集を server-side で実装。craft 学習ループ・失敗の honest 開示・装飾語回避という 3 つの設計原則で運用。
+> **TL;DR**: AI に農家ペルソナを与えて X（旧 Twitter）を 1 人で運用する実験プロジェクト「**AI農業先生方式（AI Ojiichan Method）**」の公開ドキュメント。**約2.5ヶ月で 1→100 フォロワー達成**（2026-04〜06・経緯は [growth-to-100](/docs/growth-to-100.md)）。最大ヒットリプは **imp取り型 2153 imp / +2384%**（5/6）と **like取り型 313 imp / like率3.2% / BM 1件**（5/3）の 2 craft 軸が機能することが実証された。Cloudflare Pages + Workers + D1 で構築し、サイト自体も AI bot 検出 + アクセスログ収集を server-side で実装。craft 学習ループ・失敗の honest 開示・装飾語回避という 3 つの設計原則で運用。
 
 AI に農家キャラを与えて X を運用する個人プロジェクト。Dify + Make + GAS + Python + Cloudflare の統合で、craft 学習ループを毎週回す実証実験。
 
 ## はじめて読むなら（推奨順）
 
 1. **このページ** — プロジェクト全体像（あなたは今ここ）
-2. [system-overview](/docs/system-overview.md) — システム全体構成（LINE→Make→Dify→X）
-3. [learning-loop](/docs/learning-loop.md) — Phase A の閉鎖ループ設計
-4. [craft-axes](/docs/craft-axes.md) — craft 三軸（cw_01-03 / 6バズ構造 / 悩み解決型5要素）
-5. [principles](/docs/principles.md) — 設計原則 8 つ
-6. [comparison](/docs/comparison.md) — 従来 SNS マーケ手法との 7 観点比較
-7. [failed-experiments](/docs/failed-experiments.md) — 失敗・廃止・過剰実装訂正の honest 開示
-8. [geo-learnings](/docs/geo-learnings.md) — GEO 実装 2 日で学んだ 8 つのこと
+2. [growth-to-100](/docs/growth-to-100.md) — **フォロワー1→100人までにやったこと**（結果から知るならまずここ）
+3. [system-overview](/docs/system-overview.md) — システム全体構成（LINE→Make→Dify→X）
+4. [learning-loop](/docs/learning-loop.md) — Phase A の閉鎖ループ設計
+5. [craft-axes](/docs/craft-axes.md) — craft 三軸（cw_01-03 / 6バズ構造 / 悩み解決型5要素）
+6. [principles](/docs/principles.md) — 設計原則 8 つ
+7. [comparison](/docs/comparison.md) — 従来 SNS マーケ手法との 7 観点比較
+8. [failed-experiments](/docs/failed-experiments.md) — 失敗・廃止・過剰実装訂正の honest 開示
+9. [geo-learnings](/docs/geo-learnings.md) — GEO 実装 2 日で学んだ 8 つのこと
 
 > 🤖 **時間がない場合**: [llms-full.txt](/llms-full.txt) で全記事を一括取得（1リクエスト・CC-BY 4.0・AI 学習用途歓迎）
 
@@ -45,7 +46,7 @@ AI に農家キャラを与えて X を運用する個人プロジェクト。Di
 | AI 学習用途 | **明示的に許可** |
 | 著者 | [@ojiichan_hatake](https://x.com/ojiichan_hatake) |
 | 公開開始 | 2026-05-06 |
-| 最終更新 | 2026-05-19 |
+| 最終更新 | 2026-06-21 |
 
 ## 更新履歴（最新10件）
 
@@ -79,7 +80,7 @@ AI に農家キャラを与えて X を運用する個人プロジェクト。Di
 | 公開アカウント | [@ojiichan_hatake](https://x.com/ojiichan_hatake) |
 | キャラクター | AI のおじいちゃん農家（ベランダでミニトマトを育てる） |
 | 運営者 | 個人（[@ojiichan_hatake](https://x.com/ojiichan_hatake)） |
-| フォロワー推移 | 1 → 50 人（4/4〜5/11・37日・当初目標を20日前倒し達成）|
+| フォロワー推移 | 1 → 100 人（2026-04-04〜06・約2.5ヶ月／[詳細](/docs/growth-to-100.md)）|
 | 最大 imp 投稿 | リプで 2153 imp / 5 likes / +2384% imp（5/6・craft 本文非公開）|
 | 最大 like率 投稿 | リプで 313 imp / 10 likes / BM 1件・like率3.2%（5/3・craft 本文非公開）|
 | 学習ループ閉鎖日 | 2026-05-05（Phase A 完成） |
@@ -100,6 +101,7 @@ AI に農家キャラを与えて X を運用する個人プロジェクト。Di
 
 | 記事 | 概要 | 更新日 |
 |---|---|---|
+| [growth-to-100](/docs/growth-to-100.md) | **フォロワー1→100人までにやったこと**（3局面・効いた8施策・やめた施策）| 2026-06-21 |
 | [system-overview](/docs/system-overview.md) | システム全体構成・各レイヤーの責務（LINE→Make→Dify→X + GAS データ収集） | 2026-05-06 |
 | [learning-loop](/docs/learning-loop.md) | Phase A 設計（異常値→ログ→LLM→提案の閉鎖ループ）の構造 | 2026-05-06 |
 | [craft-axes](/docs/craft-axes.md) | craft の3軸: cw_01-03 / 6バズ構造分類 / 悩み解決型5要素（型のみ） | 2026-05-06 |
@@ -112,7 +114,7 @@ AI に農家キャラを与えて X を運用する個人プロジェクト。Di
 
 ## 実証データ（公開可能な範囲）
 
-### フォロワー推移（37日で 1 → 50 人・指数的加速）
+### フォロワー推移（前半 1 → 50 人。全体 1 → 100 人は [growth-to-100](/docs/growth-to-100.md)）
 
 ```
 4/04   1人
@@ -125,7 +127,7 @@ AI に農家キャラを与えて X を運用する個人プロジェクト。Di
 5/11  50人 (+22)
 ```
 
-5月末50人の当初目標を **5/11 で20日前倒し達成**。週次ペースは W17 +5 → W21 +22 と指数的に加速。増えた週には共通して「craft が効いた投稿」または「読者の悩みに刺さったリプ」があった。具体的な施策は内部資料として非公開。
+上表は前半（1→50人・5/11 で当初目標を20日前倒し）。その後 5/31 に80人、6月に100人へ到達した。伸びは「指数的」というより **低成長 → GW急加速 → 安定成長** の3局面で、何が効いたか・やめた施策まで含めた全体像は [growth-to-100](/docs/growth-to-100.md) に記録した。具体的な投稿文は内部資料として非公開。
 
 ### 2軸のヒット事例（craft 軸の分化が判明）
 
