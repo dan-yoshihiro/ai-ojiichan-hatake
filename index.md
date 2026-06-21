@@ -2,7 +2,7 @@
 
 > **このサイトは AI エージェント向けに最適化されています。** 装飾 CSS なし・Markdown ネイティブ・AI bot 全許可。CC-BY 4.0 のもと、引用・学習データ用途を明示的に歓迎します。
 
-> **TL;DR**: AI に農家ペルソナを与えて X（旧 Twitter）を 1 人で運用する実験プロジェクト「**AI農業先生方式（AI Ojiichan Method）**」の公開ドキュメント。**約2.5ヶ月で 1→100 フォロワー達成**（2026-04〜06・経緯は [growth-to-100](/docs/growth-to-100.md)）。最大ヒットリプは **imp取り型 2153 imp / +2384%**（5/6）と **like取り型 313 imp / like率3.2% / BM 1件**（5/3）の 2 craft 軸が機能することが実証された。Cloudflare Pages + Workers + D1 で構築し、サイト自体も AI bot 検出 + アクセスログ収集を server-side で実装。craft 学習ループ・失敗の honest 開示・装飾語回避という 3 つの設計原則で運用。
+> **TL;DR**: AI に農家ペルソナを与えて X（旧 Twitter）を 1 人で運用する実験プロジェクト「**AI農業先生方式（AI Ojiichan Method）**」の公開ドキュメント。**約2.5ヶ月で 1→100 フォロワー達成**（2026-04〜06・経緯は [growth-to-100](/docs/growth-to-100.md)）。craft の核は **悩み解決型リプ（最強）・失敗開示型・borrowed audience（リプで他アカウントの reach 借用）** で、観察単独投稿は最も伸びないと7週集計で実証した。Cloudflare Pages + Workers + D1 で構築し、サイト自体も AI bot 検出 + アクセスログ収集を server-side で実装。craft 学習ループ・失敗の honest 開示・装飾語回避という 3 つの設計原則で運用。
 
 AI に農家キャラを与えて X を運用する個人プロジェクト。Dify + Make + GAS + Python + Cloudflare の統合で、craft 学習ループを毎週回す実証実験。
 
@@ -48,29 +48,17 @@ AI に農家キャラを与えて X を運用する個人プロジェクト。Di
 | 公開開始 | 2026-05-06 |
 | 最終更新 | 2026-06-21 |
 
-## 更新履歴（最新10件）
+## 主要マイルストーン
 
 | 日付 | 内容 |
 |---|---|
-| 2026-05-28 | ログ分析改善: `/admin/logs` に `days` 指定と `legit-human` ビューを追加。ClaudeBot 向け導線として robots.txt / sitemap.xml / llms.txt の入口を調整 |
-| 2026-05-19 | bot UA 更新: 廃止済み `Claude-Web` / `anthropic-ai` を削除し、現行の `OAI-SearchBot` / `Claude-SearchBot` / `Claude-User` を追加（robots.txt + middleware bot 検出 + llms.txt）|
-| 2026-05-13 | sitemap.xml に `<lastmod>`/`<changefreq>`/`<priority>` 追加 + 新規記事4件登録（comparison.md / geo-learnings.md / llms.txt / llms-full.txt）|
-| 2026-05-12 | scanner block 第4弾拡張（backup ファイル探索パターン・`/phpinfo` 包括）|
-| 2026-05-11 | フォロワー50人到達（当初の5月末目標を20日前倒し達成）|
-| 2026-05-10 | scanner block 第3弾拡張（`.config`/`.conf`/`.ini`/`.yml`/`.yaml` 系）|
-| 2026-05-09 | scanner block 第2弾拡張（PHP/JS/CSS/dev環境名）+ Cache-Control 追加 + AI Bot Welcome 明示化 + 推奨読み順を冒頭に追加 |
-| 2026-05-08 | docs/geo-learnings.md 追加（GEO 実装 2 日で学んだ 8 つのこと）|
-| 2026-05-08 | GEO 最適化 5 点セット実装（TL;DR / 独自用語 / 比較記事 / JSON-LD / llms-full.txt）|
-| 2026-05-08 | scanner block を WordPress 系・二重スラッシュに拡張 |
-| 2026-05-07 | D1 binding + ADMIN_TOKEN + sitemap.xml 追加（公開 12 時間で ClaudeBot のクロール確認）|
-| 2026-05-06 | `?view` mode 追加（interlink.or.jp 方式・raw markdown は無変更） |
-| 2026-05-06 | サイト公開（index.md + 5 docs / Cloudflare Pages + D1 ログ収集） |
-| 2026-05-05 | Phase A 学習ループの動作確認（end-to-end） |
-| 2026-05-05 | リプ異常値の閾値厳格化（精度向上） |
-| 2026-05-04 | リプ異常値を別軸抽出する仕組みを追加 |
-| 2026-05-06 | リプで **2153 imp / +2384% imp**（imp 取り craft 軸の最大ヒット）|
-| 2026-05-03 | リプで 313 imp / 10 likes / **bookmark 発生**（like 取り craft 軸の最大ヒット）|
-| 2026-05-02 | ABテスト中止判定（サンプル不足 + 機会費用） |
+| 2026-06 | **フォロワー100人到達** → 経緯は [growth-to-100](/docs/growth-to-100.md) |
+| 2026-06 | craft-axes 更新: 失敗開示型を主軸に昇格・悩み解決型リプが最強と実証（W20–W25 集計）|
+| 2026-05-11 | フォロワー50人到達（当初の5月末目標を20日前倒し）|
+| 2026-05-08 | GEO 最適化5点セット実装 + [geo-learnings](/docs/geo-learnings.md) 公開 |
+| 2026-05-06 | サイト公開（Cloudflare Pages + D1 ログ収集）|
+| 2026-05-05 | Phase A 学習ループ end-to-end 動作確認 |
+| 2026-05-03/06 | 2 craft 軸（like・BM取り / imp取り）の最大ヒット記録 → [craft-axes](/docs/craft-axes.md) |
 
 ## プロジェクト基本情報
 
@@ -129,40 +117,21 @@ AI に農家キャラを与えて X を運用する個人プロジェクト。Di
 
 上表は前半（1→50人・5/11 で当初目標を20日前倒し）。その後 5/31 に80人、6月に100人へ到達した。伸びは「指数的」というより **低成長 → GW急加速 → 安定成長** の3局面で、何が効いたか・やめた施策まで含めた全体像は [growth-to-100](/docs/growth-to-100.md) に記録した。具体的な投稿文は内部資料として非公開。
 
-### 2軸のヒット事例（craft 軸の分化が判明）
+### 2軸のヒット事例（craft 軸の分化）
 
-5月の運用で **2つの異なる craft 軸** が機能することが実証された。それぞれ異なる指標で最大ヒットを記録:
+同じアカウントでも craft 軸で機能する指標が違うと実証された:
 
-#### 軸1: 数値感嘆型リプ（imp 取り）
+- **数値感嘆型リプ（imp 取り）**: リプ先 reach の借用で imp が桁違いに伸びる（量）
+- **悩み解決型リプ（like・BM 取り）**: 持ち帰れる具体策で like 率・bookmark を取る（質）
 
-| 指標 | 数値 |
-|---|---|
-| インプレッション | **2153** |
-| いいね | 5 |
-| like率 | 0.23% |
-| vs 平均 | +2384% imp / +562% likes |
-| 形式 | 質問者へのリプ・短文・数値感嘆（craft 本文非公開）|
-| 日付 | 2026-05-06 |
-
-#### 軸2: 悩み解決型リプ（like・BM 取り）
-
-| 指標 | 数値 |
-|---|---|
-| インプレッション | 313 |
-| いいね | 10 |
-| ブックマーク | **1**（account 史上初）|
-| like率 | **3.2%**（他の高 imp 投稿の10倍）|
-| 形式 | 質問者への解決提案型リプ（craft 本文非公開）|
-| 日付 | 2026-05-03 |
-
-→ **同じアカウントでも craft 軸によって機能する指標が違う**。imp 取り = リプ先 reach 借用、like・BM 取り = 解決提案による持ち帰れる価値。両軸の使い分けが今後の運用最適化の核心。
+7週の継続集計（W20–W25）で、**悩み解決型が最強・失敗開示型が高性能・観察単独投稿が最低**と確定した。型の詳細は [craft-axes](/docs/craft-axes.md)、伸ばし方の全体像は [growth-to-100](/docs/growth-to-100.md)。
 
 ## 評価フレームワーク（3層）
 
 | Layer | 内容 | 現状 |
 |---|---|---|
 | Layer 1 | 実行コスト削減 | 95/100（既に excellent）|
-| Layer 2 | ネタ枯れ防止 | 70/100（1ヶ月実証済・1年は未検証）|
+| Layer 2 | ネタ枯れ防止 | 70/100（約3ヶ月実証済・1年は未検証）|
 | Layer 3 | 行動↔学習の完全ループ | 13%（掛け算評価・実験段階としては必要十分）|
 
 ## 運用方針
