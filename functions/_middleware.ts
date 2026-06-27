@@ -31,9 +31,13 @@ const AI_BOT_PATTERNS: Array<{ pattern: string; name: string }> = [
   { pattern: 'claudebot', name: 'ClaudeBot' },              // Anthropic 学習
   { pattern: 'claude-searchbot', name: 'Claude-SearchBot' },// Anthropic 検索インデックス
   { pattern: 'claude-user', name: 'Claude-User' },          // Anthropic ユーザー指示型 URL 取得
+  // Google（4経路: AI 学習・検索 index Desktop/Smartphone・GSC 検査）
+  // 順序: google-extended と google-inspectiontool を googlebot より先に置いて誤判定を防ぐ
+  { pattern: 'google-extended', name: 'Google-Extended' },  // Gemini 学習
+  { pattern: 'google-inspectiontool', name: 'Google-InspectionTool' }, // GSC URL 検査ツール
+  { pattern: 'googlebot', name: 'Googlebot' },              // Google 検索 index（Desktop/Smartphone 両方マッチ・AI Overview の参照源）
   // その他主要 AI bot
   { pattern: 'perplexitybot', name: 'PerplexityBot' },      // Perplexity
-  { pattern: 'google-extended', name: 'Google-Extended' },  // Gemini 学習
   { pattern: 'ccbot', name: 'CCBot' },                      // CommonCrawl
   { pattern: 'bytespider', name: 'Bytespider' },            // ByteDance
   { pattern: 'youbot', name: 'YouBot' },                    // You.com
