@@ -51,6 +51,26 @@ const SCANNER_NOISE_SQL = `(
   OR url_path LIKE '%/info/%'
   OR url_path LIKE '%/info?%'
   OR url_path LIKE '%/_profiler/%'
+  -- 2026-07-06 追加: 6/22-7/4 sweep で観測した secret 探査（middleware 第5弾拡張と対応）
+  OR url_path LIKE '/graphql%'
+  OR url_path = '/api'
+  OR url_path LIKE '/api/%'
+  OR url_path LIKE '/api?%'
+  OR url_path LIKE '%.map'
+  OR url_path LIKE '%.map?%'
+  OR url_path LIKE '%.toml%'
+  OR url_path LIKE '/env.%'
+  OR url_path LIKE '%.dev.vars%'
+  OR url_path LIKE '/package%'
+  OR url_path LIKE '/wrangler%'
+  OR url_path LIKE '/tsconfig%'
+  OR url_path LIKE '/firebase.json%'
+  OR url_path LIKE '/vercel.json%'
+  OR url_path LIKE '/asset-manifest%'
+  OR url_path LIKE '/manifest.json%'
+  OR url_path LIKE '/composer.json%'
+  OR url_path LIKE '/queries/%'
+  OR url_path LIKE '/schema/%'
 )`;
 
 function daysAgoFilter(daysParam: string | null): string {

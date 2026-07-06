@@ -64,6 +64,17 @@ function detectAIBot(userAgent: string): BotDetection {
   return { is_ai_bot: false, bot_name: null };
 }
 
+// 2026-07-06 追加: AI bot 一覧に該当しない機械アクセス（一般クローラー・CLI・headless browser）の判定
+// 目的: human_view 集計の汚染防止。7/4 の「human 50 view」が全ページ均一 15-18 hit の
+// 一括クロール形で、人間閲覧と区別できなかった反省から。ここに該当しない UA のみ「人間」とみなす
+const OTHER_BOT_UA_REGEX =
+  /bot|crawler|spider|slurp|scrapy|curl|wget|python|go-http-client|httpx|aiohttp|okhttp|libwww|java\/|node-fetch|axios|headless|phantomjs|selenium|playwright|puppeteer|facebookexternalhit/i;
+
+function detectOtherBot(userAgent: string): boolean {
+  if (!userAgent) return true; // UA 空は正規ブラウザではあり得ない → 機械アクセス扱い
+  return OTHER_BOT_UA_REGEX.test(userAgent);
+}
+
 async function hashIP(ip: string): Promise<string> {
   if (!ip) return '';
   const data = new TextEncoder().encode(ip);
@@ -296,34 +307,56 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const ip = request.headers.get('CF-Connecting-IP') || '';
 
   const { is_ai_bot, bot_name } = detectAIBot(userAgent);
+  const is_other_bot = !is_ai_bot && detectOtherBot(userAgent);
 
-  const writeLog = async () => {
-    try {
-      const ip_hash = await hashIP(ip);
-      await env.LOGS_DB.prepare(
-        `INSERT INTO access_logs (
-          timestamp, url_path, method, user_agent, is_ai_bot, bot_name,
-          ip_hash, country, referer
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
-      )
-        .bind(
-          new Date().toISOString(),
-          url.pathname + url.search,
-          request.method,
-          userAgent.slice(0, 500),
-          is_ai_bot ? 1 : 0,
-          bot_name,
-          ip_hash,
-          country,
-          referer ? referer.slice(0, 500) : null
+  // 2026-07-06 変更: response 確定後に status_code 込みで記録する方式に
+  // （従来は request 受信時に記録 → 200/404 の区別がつかず、scanner 探査の成否も
+  //   GEO 分析（content が実際に配信されたか）も検証できなかった）
+  const logRequest = (status: number) => {
+    context.waitUntil((async () => {
+      try {
+        const ip_hash = await hashIP(ip);
+        await env.LOGS_DB.prepare(
+          `INSERT INTO access_logs (
+            timestamp, url_path, method, user_agent, is_ai_bot, bot_name,
+            ip_hash, country, referer, status_code, is_other_bot
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
-        .run();
-    } catch (err) {
-      console.error('access_log insert failed:', err);
-    }
+          .bind(
+            new Date().toISOString(),
+            url.pathname + url.search,
+            request.method,
+            userAgent.slice(0, 500),
+            is_ai_bot ? 1 : 0,
+            bot_name,
+            ip_hash,
+            country,
+            referer ? referer.slice(0, 500) : null,
+            status,
+            is_other_bot ? 1 : 0
+          )
+          .run();
+      } catch (err) {
+        console.error('access_log insert failed:', err);
+      }
+    })());
   };
 
-  context.waitUntil(writeLog());
+  // /.well-known/security.txt（RFC 9116）: 2026-07-06 設置
+  // scanner が23回探査していた。実物を返して 404 ノイズを止め、脆弱性報告の窓口も明示する
+  if (url.pathname === '/.well-known/security.txt') {
+    const body = [
+      'Contact: mailto:marketing@rockhearts.co.jp',
+      'Expires: 2027-07-06T00:00:00.000Z',
+      'Preferred-Languages: ja, en',
+      'Canonical: https://ai-ojiichan-system.pages.dev/.well-known/security.txt',
+    ].join('\n') + '\n';
+    logRequest(200);
+    return new Response(body, {
+      status: 200,
+      headers: { 'content-type': 'text/plain; charset=utf-8' },
+    });
+  }
 
   // / → /index.md の content を HTML で直接配信
   // 2026-05-21 変更: 302 redirect を廃止し 200 OK + HTML 配信に。理由:
@@ -334,6 +367,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     const indexUrl = new URL('/index.md', url.origin);
     const assetResponse = await env.ASSETS.fetch(indexUrl.toString());
     if (!assetResponse.ok) {
+      logRequest(404);
       return new Response('Index not found', { status: 404 });
     }
     const md = await assetResponse.text();
@@ -342,6 +376,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       html = await marked.parse(md, { gfm: true, breaks: false });
     } catch (err) {
       console.error('homepage render failed:', err);
+      logRequest(500);
       return new Response('Render error', { status: 500 });
     }
     html = preserveViewInLinks(html);
@@ -356,6 +391,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     if (is_ai_bot && bot_name) {
       headers.set('X-Detected-Bot', bot_name);
     }
+    logRequest(200);
     return new Response(fullPage, { status: 200, headers });
   }
 
@@ -370,6 +406,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       html = await marked.parse(md, { gfm: true, breaks: false });
     } catch (err) {
       console.error('markdown render failed:', err);
+      logRequest(500);
       return new Response('Render error', { status: 500 });
     }
     html = preserveViewInLinks(html);
@@ -384,6 +421,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     if (is_ai_bot && bot_name) {
       headers.set('X-Detected-Bot', bot_name);
     }
+    logRequest(200);
     return new Response(fullPage, { status: 200, headers });
   }
 
@@ -395,6 +433,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     newHeaders.set('X-Detected-Bot', bot_name);
   }
 
+  logRequest(response.status);
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,

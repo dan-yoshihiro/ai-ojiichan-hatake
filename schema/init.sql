@@ -11,7 +11,10 @@ CREATE TABLE IF NOT EXISTS access_logs (
   bot_name TEXT,                     -- GPTBot / ClaudeBot 等・人間なら NULL
   ip_hash TEXT,                      -- SHA-256 先頭16字（プライバシー保護）
   country TEXT,                      -- ISO国コード（Cloudflare 自動付与）
-  referer TEXT                       -- 最大500字
+  referer TEXT,                      -- 最大500字
+  -- 2026-07-06 追加（既存 DB には migrations/2026-07-06-status-otherbot.sql を適用）
+  status_code INTEGER,               -- HTTP status（200/404 等。旧レコードは NULL）
+  is_other_bot INTEGER NOT NULL DEFAULT 0  -- AI bot 以外の機械アクセス（一般クローラー・CLI 等）
 );
 
 CREATE INDEX IF NOT EXISTS idx_access_logs_timestamp
