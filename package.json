@@ -10,6 +10,7 @@
     "d1:init": "wrangler d1 execute ai-ojiichan-logs --file=schema/init.sql",
     "d1:init:remote": "wrangler d1 execute ai-ojiichan-logs --remote --file=schema/init.sql",
     "d1:query": "wrangler d1 execute ai-ojiichan-logs --command",
+    "d1:weekly": "sh queries/weekly-analysis.sh",
     "d1:bot-summary": "wrangler d1 execute ai-ojiichan-logs --remote --file=queries/ai-bot-summary-7d.sql",
     "d1:daily-quality": "wrangler d1 execute ai-ojiichan-logs --remote --file=queries/daily-quality-7d.sql",
     "d1:legit-human": "wrangler d1 execute ai-ojiichan-logs --remote --file=queries/legit-human-7d.sql",
