@@ -107,7 +107,17 @@ function isScannerNoisePath(pathname: string): boolean {
     || /\/info(\.|$|\/|\?)/i.test(pathname)                  // /info, /info.* （/information.md 等は誤爆なし）
     || /\/_profiler\//i.test(pathname)                        // Symfony framework profiler 探索
     || /\.(php|asp|aspx|jsp|cgi)\.(bak|old|save|orig)($|\?)/i.test(pathname)  // .php.bak 系 backup
-    || /\.(php|asp|aspx|jsp|cgi)~($|\?)/i.test(pathname);     // .php~ 系（vi/エディタ backup）
+    || /\.(php|asp|aspx|jsp|cgi)~($|\?)/i.test(pathname)      // .php~ 系（vi/エディタ backup）
+    // 2026-07-06 第5弾拡張: 6/22・6/28・7/4 の secret 探査 sweep（/graphql, source map, 設定ファイル）対応
+    // pages_build_output_dir="." のため package.json / wrangler.toml / queries/ / schema/ が
+    // 静的アセットとして実在・配信されていた（curl で 200 確認済み）。ここで 404 に落とす
+    || /^\/(graphql|api)(\/|$|\?)/i.test(pathname)            // GraphQL/API endpoint 探査（本サイトに API は無い）
+    || /\.map($|\?)/i.test(pathname)                          // source map 探査（/worker.js.map 等）
+    || /\.(ts|toml)($|\?)/i.test(pathname)                    // TS ソース・TOML 探査（/vite.config.ts 等。本サイトは .md/.txt/.xml のみ配信）
+    || /\/\.dev\.vars/i.test(pathname)                        // wrangler ローカル秘密ファイル探査
+    || /^\/env\./i.test(pathname)                             // /env.production 等（dot 無し env 系）
+    || /^\/(package(-lock)?\.json|wrangler\.toml|tsconfig\.json|firebase\.json|vercel\.json|asset-manifest\.json|manifest\.json|composer\.json)($|\?)/i.test(pathname)  // 設定ファイル（deploy root 実在分を含む）
+    || /^\/(queries|schema)\//i.test(pathname);               // 分析 SQL・DB schema（公開意図なし）
 }
 
 // 内部 .md リンクに ?view を付与（view モード継続のため）
