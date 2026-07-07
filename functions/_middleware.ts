@@ -72,7 +72,16 @@ const OTHER_BOT_UA_REGEX =
 
 function detectOtherBot(userAgent: string): boolean {
   if (!userAgent) return true; // UA 空は正規ブラウザではあり得ない → 機械アクセス扱い
-  return OTHER_BOT_UA_REGEX.test(userAgent);
+  if (OTHER_BOT_UA_REGEX.test(userAgent)) return true;
+  // 2026-07-07 追加: UA 完全性チェック。Mozilla を名乗るなら本物ブラウザには必ず
+  // Chrome/Firefox/Safari/Edg/OPR/Trident のバージョンタグが含まれる。
+  // 抜けているものは偽装 UA（scanner の常套手段）。
+  // 事例: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" が / を
+  // 定期 poll しつつ referer null で ZA から 11 回。本物 Chrome なら末尾に Chrome/x + Safari/x が付く
+  if (userAgent.startsWith('Mozilla/') && !/(Chrome|Firefox|Safari\/[\d.]+|Edg|OPR|Trident|Version\/[\d.]+)/i.test(userAgent)) {
+    return true;
+  }
+  return false;
 }
 
 async function hashIP(ip: string): Promise<string> {
