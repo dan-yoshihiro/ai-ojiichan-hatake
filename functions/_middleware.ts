@@ -128,7 +128,15 @@ function isScannerNoisePath(pathname: string): boolean {
     || /\/\.dev\.vars/i.test(pathname)                        // wrangler ローカル秘密ファイル探査
     || /^\/env\./i.test(pathname)                             // /env.production 等（dot 無し env 系）
     || /^\/(package(-lock)?\.json|wrangler\.toml|tsconfig\.json|firebase\.json|vercel\.json|asset-manifest\.json|manifest\.json|composer\.json)($|\?)/i.test(pathname)  // 設定ファイル（deploy root 実在分を含む）
-    || /^\/(queries|schema)\//i.test(pathname);               // 分析 SQL・DB schema（公開意図なし）
+    || /^\/(queries|schema)\//i.test(pathname)                // 分析 SQL・DB schema（公開意図なし）
+    // 2026-07-07 第6弾拡張: 7/6 23:26-23:42 の単一 scanner 一括 sweep（20種）を fingerprint
+    // 全て 404 だったが D1 記録量削減のため middleware で早期弾き
+    || /\.(mjs|cjs)($|\?)/i.test(pathname)                    // vite.config.mjs / next.config.cjs 等
+    || /^\/\.npmrc/i.test(pathname)                           // npm registry credential 探査
+    || /^\/actuator(\/|$|\?)/i.test(pathname)                 // Spring Boot Actuator（/actuator/env, /actuator/health 等）
+    || /^\/\.well-known\/(apple-app-site-association|assetlinks\.json|oauth-authorization-server|openid-configuration)/i.test(pathname)  // モバイルアプリ検証・OAuth/OIDC 探査
+    || /^\/(api-docs|asyncapi\.json|postman\.json|build-manifest\.json|_payload\.json|__manifest|_app\/version\.json)($|\?)/i.test(pathname)  // SPA/API doc 探査
+    || /^\/(query|__query)($|\?)/i.test(pathname);            // GraphQL 単体 endpoint 探査
 }
 
 // 内部 .md リンクに ?view を付与（view モード継続のため）

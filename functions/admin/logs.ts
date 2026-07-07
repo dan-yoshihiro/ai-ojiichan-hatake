@@ -71,6 +71,25 @@ const SCANNER_NOISE_SQL = `(
   OR url_path LIKE '/composer.json%'
   OR url_path LIKE '/queries/%'
   OR url_path LIKE '/schema/%'
+  -- 2026-07-07 第6弾: 単一 scanner 20種 sweep 対応
+  OR url_path LIKE '%.mjs%'
+  OR url_path LIKE '%.cjs%'
+  OR url_path LIKE '/.npmrc%'
+  OR url_path LIKE '/actuator%'
+  OR url_path LIKE '/.well-known/apple-app-site%'
+  OR url_path LIKE '/.well-known/assetlinks%'
+  OR url_path LIKE '/.well-known/oauth-%'
+  OR url_path LIKE '/.well-known/openid-%'
+  OR url_path LIKE '/api-docs%'
+  OR url_path LIKE '/asyncapi.json%'
+  OR url_path LIKE '/postman.json%'
+  OR url_path LIKE '/build-manifest.json%'
+  OR url_path LIKE '/_payload.json%'
+  OR url_path LIKE '/__manifest%'
+  OR url_path LIKE '/_app/version.json%'
+  OR url_path = '/query'
+  OR url_path LIKE '/query?%'
+  OR url_path LIKE '/__query%'
 )`;
 
 function daysAgoFilter(daysParam: string | null): string {
