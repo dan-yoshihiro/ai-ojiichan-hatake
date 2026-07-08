@@ -36,6 +36,9 @@ const AI_BOT_PATTERNS: Array<{ pattern: string; name: string }> = [
   { pattern: 'google-extended', name: 'Google-Extended' },  // Gemini 学習
   { pattern: 'google-inspectiontool', name: 'Google-InspectionTool' }, // GSC URL 検査ツール
   { pattern: 'googlebot', name: 'Googlebot' },              // Google 検索 index（Desktop/Smartphone 両方マッチ・AI Overview の参照源）
+  // Microsoft/Bing（検索 index + Copilot の参照源）
+  // 2026-07-07 追加: IndexNow 送信後、7/6 に Bingbot 訪問を確認したが is_ai_bot=0 で記録されていた
+  { pattern: 'bingbot', name: 'Bingbot' },                  // Bing 検索 index + Microsoft Copilot 参照源
   // その他主要 AI bot
   { pattern: 'perplexitybot', name: 'PerplexityBot' },      // Perplexity
   { pattern: 'ccbot', name: 'CCBot' },                      // CommonCrawl
