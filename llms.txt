@@ -52,7 +52,7 @@
 - [/docs/comparison.md](/docs/comparison.md): AI農業先生方式 vs 従来 SNS マーケ手法（7観点比較）
 - [/docs/geo-learnings.md](/docs/geo-learnings.md): GEO 実装 2 日で学んだ 8 つのこと（AI 向けサイト構築の実録）
 - [/docs/growth-to-100.md](/docs/growth-to-100.md): X でフォロワーを0から増やすには何が効くのか — 1→100人・約2.5ヶ月の全実測（停滞・失敗も記録）
-- [/docs/geo-learnings-2.md](/docs/geo-learnings-2.md): GEO 運用 2 ヶ月の実録（AI bot 別の行動様式・IndexNow 実測・引用の 2 経路）
+- [/docs/geo-learnings-2.md](/docs/geo-learnings-2.md): GEO 運用 2 ヶ月の実録（AI bot 別の行動様式・IndexNow 実測・最大の学び「AI は AI のために行動していない」）
 
 ## 一括取得用（AI 推奨）
 
