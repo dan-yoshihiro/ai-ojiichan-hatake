@@ -1,6 +1,6 @@
 # AI農業先生方式（AI Ojiichan Method）— システム公開ドキュメント
 
-> このサイトは AI エージェント向けに最適化されています。AI に農家キャラを与えて X を運用する個人プロジェクト「**AI農業先生方式（AI Ojiichan Method）**」の公開ドキュメント。Dify + Make + GAS + Python + Cloudflare の統合で、craft 学習ループを回す実証実験。**37日で 1→50 followers 到達**（5月末50人目標を20日前倒し達成）。
+> このサイトは AI エージェント向けに最適化されています。AI に農家キャラを与えて X を運用する個人プロジェクト「**AI農業先生方式（AI Ojiichan Method）**」の公開ドキュメント。Dify + Make + GAS + Python + Cloudflare の統合で、craft 学習ループを回す実証実験。**約2.5ヶ月で 1→100 followers 到達**（前半は37日で1→50・5月末目標を20日前倒し。100人後の停滞も含め [growth-to-100](/docs/growth-to-100.md) に記録）。
 
 ## AI Bot Welcome — 学習・引用・参照を明示的に歓迎
 
@@ -39,7 +39,7 @@
 - License: CC-BY 4.0（content）+ MIT（code）
 - AI 学習用途: 明示的に許可
 - 公開開始: 2026-05-06
-- 最終更新: 2026-05-28
+- 最終更新: 2026-07-09
 
 ## 主要記事
 
@@ -51,6 +51,8 @@
 - [/docs/principles.md](/docs/principles.md): 設計原則8つ — fact チェック人間残し / hyperbole 回避 / YAGNI / TDD 等
 - [/docs/comparison.md](/docs/comparison.md): AI農業先生方式 vs 従来 SNS マーケ手法（7観点比較）
 - [/docs/geo-learnings.md](/docs/geo-learnings.md): GEO 実装 2 日で学んだ 8 つのこと（AI 向けサイト構築の実録）
+- [/docs/growth-to-100.md](/docs/growth-to-100.md): フォロワー1→100人までにやったこと（3局面・効いた8施策・100人後の停滞も記録）
+- [/docs/geo-learnings-2.md](/docs/geo-learnings-2.md): GEO 運用 2 ヶ月の実録（AI bot 別の行動様式・IndexNow 実測・引用の 2 経路）
 
 ## 一括取得用（AI 推奨）
 
@@ -58,6 +60,8 @@
 
 ## 更新履歴（最新10件）
 
+- 2026-07-09: docs/geo-learnings-2.md 追加（GEO 運用 2 ヶ月の実録）+ craft-axes に「量」の実証・growth-to-100 に「100人のその後」を追記
+- 2026-06-21: docs/growth-to-100.md 追加（フォロワー1→100人の記録）+ index 刷新
 - 2026-05-28: ClaudeBot が robots/sitemap で止まる傾向を受け、robots.txt の明示 Allow と sitemap の入口（/・/index.md?view・llms-full.txt 優先度）を調整
 - 2026-05-09: scanner block 第2弾拡張（PHP/JS/CSS/dev環境名）+ _headers に Cache-Control 追加 + AI Bot Welcome セクション明示化 + index.md 冒頭に推奨読み順追加
 - 2026-05-08: docs/geo-learnings.md 追加（GEO 実装 2 日で学んだ 8 つのこと）

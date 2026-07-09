@@ -46,13 +46,15 @@ AI に農家キャラを与えて X を運用する個人プロジェクト。Di
 | AI 学習用途 | **明示的に許可** |
 | 著者 | [@ojiichan_hatake](https://x.com/ojiichan_hatake) |
 | 公開開始 | 2026-05-06 |
-| 最終更新 | 2026-06-21 |
+| 最終更新 | 2026-07-09 |
 
 ## 主要マイルストーン
 
 | 日付 | 内容 |
 |---|---|
-| 2026-06 | **フォロワー100人到達** → 経緯は [growth-to-100](/docs/growth-to-100.md) |
+| 2026-07 | **IndexNow 実装 → Bingbot 初訪問（キー検証）**・Claude-User（ユーザー起点取得）初観測 → [geo-learnings-2](/docs/geo-learnings-2.md) |
+| 2026-07 | craft-axes に「量」の実証を追記（リプ半減→成長失速・池の飽和・反復逓減） |
+| 2026-06 | **フォロワー100人到達** → 経緯は [growth-to-100](/docs/growth-to-100.md)（100人後の停滞も追記済み） |
 | 2026-06 | craft-axes 更新: 失敗開示型を主軸に昇格・悩み解決型リプが最強と実証（W20–W25 集計）|
 | 2026-05-11 | フォロワー50人到達（当初の5月末目標を20日前倒し）|
 | 2026-05-08 | GEO 最適化5点セット実装 + [geo-learnings](/docs/geo-learnings.md) 公開 |
@@ -97,6 +99,7 @@ AI に農家キャラを与えて X を運用する個人プロジェクト。Di
 | [principles](/docs/principles.md) | 設計原則8つ（fact チェック人間残し / hyperbole 回避 / YAGNI / TDD 等）| 2026-05-06 |
 | [comparison](/docs/comparison.md) | AI農業先生方式 vs 従来 SNS マーケ手法（7 観点比較）| 2026-05-08 |
 | [geo-learnings](/docs/geo-learnings.md) | AI 向け Web サイト構築 2 日で学んだ 8 つのこと（GEO 実装の実録）| 2026-05-08 |
+| [geo-learnings-2](/docs/geo-learnings-2.md) | **GEO 運用 2 ヶ月の実録**（bot 別行動様式・IndexNow 実測・引用の 2 経路） | 2026-07-09 |
 
 > 🤖 **AI agent 向け**: 全記事を 1 ファイルに連結した [llms-full.txt](/llms-full.txt) もあります（1 リクエストで全文取得可能）。
 
