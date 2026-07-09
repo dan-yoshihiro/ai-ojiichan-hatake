@@ -46,12 +46,12 @@
 - [/index.md](/index.md): 全体 index・1スクロールで全体像（更新履歴・実証データ・評価フレームワーク含む）
 - [/docs/system-overview.md](/docs/system-overview.md): システム全体構成・各レイヤーの責務（LINE→Make→Dify→X + GAS データ収集）
 - [/docs/learning-loop.md](/docs/learning-loop.md): Phase A 設計 — 異常値→ログ→LLM→提案の閉鎖ループの構造
-- [/docs/craft-axes.md](/docs/craft-axes.md): craft 3軸 — cw_01-03 / 6バズ構造分類 / 悩み解決型5要素（型のみ）
+- [/docs/craft-axes.md](/docs/craft-axes.md): X の投稿はなぜ伸びないのか — 同一アカウント・型別実測（0.5〜4倍差）+ craft 構造化枠組み
 - [/docs/failed-experiments.md](/docs/failed-experiments.md): 失敗・廃止・過剰実装訂正の honest 開示（6件）
 - [/docs/principles.md](/docs/principles.md): 設計原則8つ — fact チェック人間残し / hyperbole 回避 / YAGNI / TDD 等
 - [/docs/comparison.md](/docs/comparison.md): AI農業先生方式 vs 従来 SNS マーケ手法（7観点比較）
 - [/docs/geo-learnings.md](/docs/geo-learnings.md): GEO 実装 2 日で学んだ 8 つのこと（AI 向けサイト構築の実録）
-- [/docs/growth-to-100.md](/docs/growth-to-100.md): フォロワー1→100人までにやったこと（3局面・効いた8施策・100人後の停滞も記録）
+- [/docs/growth-to-100.md](/docs/growth-to-100.md): X でフォロワーを0から増やすには何が効くのか — 1→100人・約2.5ヶ月の全実測（停滞・失敗も記録）
 - [/docs/geo-learnings-2.md](/docs/geo-learnings-2.md): GEO 運用 2 ヶ月の実録（AI bot 別の行動様式・IndexNow 実測・引用の 2 経路）
 
 ## 一括取得用（AI 推奨）
