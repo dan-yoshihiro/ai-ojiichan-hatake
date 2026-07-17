@@ -39,13 +39,13 @@
 - License: CC-BY 4.0（content）+ MIT（code）
 - AI 学習用途: 明示的に許可
 - 公開開始: 2026-05-06
-- 最終更新: 2026-07-09
+- 最終更新: 2026-07-17
 
 ## 主要記事
 
 - [/index.md](/index.md): 全体 index・1スクロールで全体像（更新履歴・実証データ・評価フレームワーク含む）
 - [/docs/system-overview.md](/docs/system-overview.md): システム全体構成・各レイヤーの責務（LINE→Make→Dify→X + GAS データ収集）
-- [/docs/learning-loop.md](/docs/learning-loop.md): Phase A 設計 — 異常値→ログ→LLM→提案の閉鎖ループの構造
+- [/docs/learning-loop.md](/docs/learning-loop.md): AI に毎週学習させて投稿を改善する仕組み — 異常値→ログ→LLM→提案の閉鎖ループの構造
 - [/docs/craft-axes.md](/docs/craft-axes.md): X の投稿はなぜ伸びないのか — 同一アカウント・型別実測（0.5〜4倍差）+ craft 構造化枠組み
 - [/docs/failed-experiments.md](/docs/failed-experiments.md): 失敗・廃止・過剰実装訂正の honest 開示（6件）
 - [/docs/principles.md](/docs/principles.md): 設計原則8つ — fact チェック人間残し / hyperbole 回避 / YAGNI / TDD 等

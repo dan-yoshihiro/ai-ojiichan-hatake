@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 280" role="img" aria-labelledby="t d" font-family="system-ui, sans-serif">
+  <title id="t">投稿型別の相対エンゲージメント</title>
+  <desc id="d">全体平均を1.0としたとき、失敗開示型は4〜5倍、収穫型は1.9倍、AIコメント型は0.8倍、最も多用される観察型は0.5倍。最多用の型が最低性能。</desc>
+  <style>
+    .gr{stroke:#e1e0d9;stroke-width:1}
+    .lbl{fill:#52514e;font-size:13px}
+    .val{fill:#0b0b0b;font-size:13px}
+    .base{fill:#993c1d;font-size:12px}
+    @media (prefers-color-scheme: dark){
+      .gr{stroke:#2c2c2a} .lbl{fill:#c3c2b7} .val{fill:#ffffff} .base{fill:#f0997b}
+    }
+  </style>
+
+  <line class="gr" x1="258" y1="20" x2="258" y2="228" stroke-dasharray="4 4" stroke="#d85a30"/>
+  <text class="base" x="258" y="246" text-anchor="middle">全体平均 1.0</text>
+
+  <rect x="150" y="30"  width="486" height="28" rx="3" fill="#2a78d6"/>
+  <rect x="150" y="80"  width="205" height="28" rx="3" fill="#2a78d6"/>
+  <rect x="150" y="130" width="86"  height="28" rx="3" fill="#888780"/>
+  <rect x="150" y="180" width="54"  height="28" rx="3" fill="#888780"/>
+
+  <text class="lbl" x="10" y="49"  >失敗開示</text>
+  <text class="lbl" x="10" y="99"  >収穫（達成・数値）</text>
+  <text class="lbl" x="10" y="149" >AIコメント</text>
+  <text class="lbl" x="10" y="199" >観察（最多用）</text>
+
+  <text class="val" x="644" y="49"  >4〜5倍</text>
+  <text class="val" x="363" y="99"  >1.9倍</text>
+  <text class="val" x="244" y="149" >0.8倍</text>
+  <text class="val" x="212" y="199" >0.5倍</text>
+</svg>

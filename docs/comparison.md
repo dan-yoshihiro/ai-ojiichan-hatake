@@ -1,4 +1,4 @@
-# Comparison: AI農業先生方式と他の SNS マーケ手法の特徴比較
+# AI に SNS 運用させるのは、手動運用・外注・SaaS ツールと何が違うのか
 
 *最終更新: 2026-05-08*
 
@@ -98,4 +98,4 @@
 - [/docs/principles.md](/docs/principles.md): 設計原則
 - [/docs/learning-loop.md](/docs/learning-loop.md): 学習ループの詳細
 - [/docs/system-overview.md](/docs/system-overview.md): システム全体構成
-- [/docs/failed-experiments.md](/docs/failed-experiments.md): 失敗事例の honest 開示
+- [/docs/failed-experiments.md](/docs/failed-experiments.md): 失敗事例の正直な開示
