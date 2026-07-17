@@ -4,7 +4,9 @@
 # 実行: npm run d1:daily
 #
 # 監視する 4 signals:
-# (1) ClaudeBot が /index.md を再取得したか（sitemap lastmod 同期の効果）
+# (1) GPTBot が全 docs を最近取得しているか（GEO 取り込みの主指標）
+#     ※ 旧版は ClaudeBot の本文再取得を見ていたが、30日実測で ClaudeBot は
+#       polling 偏重・本文率 1.2% と判明（geo-learnings-2 学び8）。GPTBot に変更。
 # (2) Bingbot が初訪問したか（IndexNow 送信の効果）
 # (3) OAI-SearchBot が content を取り始めたか（現状は robots.txt のみ）
 # (4) 新 scanner パターンが出現したか（middleware 追加候補）
@@ -17,13 +19,14 @@ run() {
   npx wrangler d1 execute ai-ojiichan-logs --remote --command "$2"
 }
 
-run "(1) ClaudeBot content 再取得の観測 [直近24h] — 出現していれば sitemap 同期が効いた証拠" "
-SELECT timestamp, url_path, status_code
+run "(1) GPTBot content 網羅の観測 [直近14日] — GEO 取り込みの主指標。全 docs が最近取られているか（GPTBot は約10日周期のため14日窓）" "
+SELECT url_path, COUNT(*) AS hits, MAX(date(timestamp)) AS last_fetch
 FROM access_logs
-WHERE bot_name = 'ClaudeBot'
+WHERE bot_name = 'GPTBot'
   AND url_path NOT IN ('/robots.txt', '/sitemap.xml')
-  AND timestamp >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-24 hours')
-ORDER BY timestamp DESC"
+  AND timestamp >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-14 days')
+GROUP BY url_path
+ORDER BY last_fetch DESC"
 
 run "(2) Bingbot 初訪問の観測 [直近7日] — 出現していれば IndexNow の効果" "
 SELECT timestamp, url_path, status_code, user_agent
