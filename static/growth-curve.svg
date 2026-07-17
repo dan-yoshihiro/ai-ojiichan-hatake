@@ -1,48 +1,46 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 400" role="img" aria-labelledby="t d" font-family="system-ui, sans-serif">
-  <title id="t">フォロワー1→100人の成長曲線</title>
-  <desc id="d">2026-04-04 に1人。第1局面（低成長）は約4週で18人、GW と重なる第2局面（急加速）は約2週で59人、第3局面（安定成長）で100人に到達。到達後は100人前後で停滞。</desc>
+  <title id="t">フォロワー1人から126人までの実測成長曲線</title>
+  <desc id="d">2026-04-04 に1人。第1局面（低成長）は約4週で18人、GW と重なる第2局面（急加速）は約2週で59人、第3局面（安定成長）で 2026-06-19 に100人到達。到達後いったん105前後まで停滞し、7月に再加速して 2026-07-17 時点で126人。</desc>
   <style>
     .ax{stroke:#c3c2b7;stroke-width:1}
     .gr{stroke:#e1e0d9;stroke-width:1}
     .lbl{fill:#52514e;font-size:13px}
-    .ttl{fill:#0b0b0b;font-size:14px}
     .cap{fill:#52514e;font-size:12px}
+    .now{fill:#0b0b0b;font-size:13px}
     @media (prefers-color-scheme: dark){
       .ax{stroke:#383835} .gr{stroke:#2c2c2a}
-      .lbl{fill:#c3c2b7} .ttl{fill:#ffffff} .cap{fill:#c3c2b7}
+      .lbl{fill:#c3c2b7} .cap{fill:#c3c2b7} .now{fill:#ffffff}
     }
   </style>
 
-  <line class="gr" x1="60" y1="30"  x2="690" y2="30"/>
-  <line class="gr" x1="60" y1="180" x2="690" y2="180"/>
+  <line class="gr" x1="60" y1="215" x2="690" y2="215"/>
+  <line class="gr" x1="60" y1="99"  x2="690" y2="99" stroke-dasharray="4 4"/>
   <line class="ax" x1="60" y1="330" x2="690" y2="330"/>
   <line class="ax" x1="60" y1="30"  x2="60"  y2="330"/>
 
-  <text class="lbl" x="52" y="34"  text-anchor="end">100</text>
-  <text class="lbl" x="52" y="184" text-anchor="end">50</text>
+  <text class="lbl" x="52" y="219" text-anchor="end">50</text>
+  <text class="lbl" x="52" y="103" text-anchor="end">100</text>
   <text class="lbl" x="52" y="334" text-anchor="end">0</text>
   <text class="lbl" x="60"  y="352" text-anchor="middle">0</text>
-  <text class="lbl" x="254" y="352" text-anchor="middle">4</text>
-  <text class="lbl" x="351" y="352" text-anchor="middle">6</text>
-  <text class="lbl" x="545" y="352" text-anchor="middle">10</text>
-  <text class="lbl" x="690" y="352" text-anchor="middle">13</text>
+  <text class="lbl" x="270" y="352" text-anchor="middle">5</text>
+  <text class="lbl" x="480" y="352" text-anchor="middle">10</text>
+  <text class="lbl" x="690" y="352" text-anchor="middle">15</text>
   <text class="cap" x="375" y="378" text-anchor="middle">週（2026-04-04 起点）</text>
 
-  <line x1="60"  y1="327" x2="254" y2="276" stroke="#888780" stroke-width="3" stroke-linecap="round"/>
-  <line x1="254" y1="276" x2="351" y2="153" stroke="#eda100" stroke-width="3" stroke-linecap="round"/>
-  <line x1="351" y1="153" x2="545" y2="30"  stroke="#2a78d6" stroke-width="3" stroke-linecap="round"/>
-  <line x1="545" y1="30"  x2="690" y2="39"  stroke="#b4b2a9" stroke-width="3" stroke-dasharray="5 5" stroke-linecap="round"/>
+  <polyline fill="none" stroke="#2a78d6" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"
+    points="60,328 102,316 144,314 186,293 228,288 270,235 312,194 354,173 396,157 438,134 480,106 522,99 564,85 606,81 648,69 690,39"/>
 
   <g stroke="#fcfcfb" stroke-width="2">
-    <circle cx="60"  cy="327" r="5" fill="#888780"/>
-    <circle cx="254" cy="276" r="5" fill="#888780"/>
-    <circle cx="351" cy="153" r="5" fill="#eda100"/>
-    <circle cx="545" cy="30"  r="5" fill="#2a78d6"/>
-    <circle cx="690" cy="39"  r="5" fill="#b4b2a9"/>
+    <circle cx="60"  cy="328" r="4.5" fill="#888780"/>
+    <circle cx="312" cy="194" r="4.5" fill="#eda100"/>
+    <circle cx="522" cy="99"  r="4.5" fill="#2a78d6"/>
+    <circle cx="690" cy="39"  r="5"   fill="#199e70"/>
   </g>
 
-  <text class="cap" x="140" y="318" text-anchor="middle" fill="#888780">① 低成長 +0.6/日</text>
-  <text class="cap" x="270" y="200" text-anchor="middle" fill="#a5700f">② 急加速 +2.9/日（GW）</text>
-  <text class="cap" x="500" y="140" text-anchor="middle" fill="#2a78d6">③ 安定成長 +1.5/日</text>
-  <text class="cap" x="628" y="26"  text-anchor="middle">100人の壁（停滞）</text>
+  <text class="cap" x="140" y="278" text-anchor="middle" fill="#888780">① 低成長</text>
+  <text class="cap" x="250" y="262" text-anchor="middle" fill="#a5700f">② 急加速（GW）</text>
+  <text class="cap" x="430" y="205" text-anchor="middle" fill="#2a78d6">③ 安定成長</text>
+  <text class="cap" x="600" y="140" text-anchor="middle" fill="#0f6e56">④ 停滞→再加速</text>
+  <text class="cap" x="150" y="93"  text-anchor="start">100人（6/19 到達）</text>
+  <text class="now" x="686" y="26"  text-anchor="end">126人（7/17）</text>
 </svg>

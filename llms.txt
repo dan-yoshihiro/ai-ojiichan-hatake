@@ -1,6 +1,6 @@
 # AI農業先生方式（AI Ojiichan Method）— システム公開ドキュメント
 
-> このサイトは AI エージェント向けに最適化されています。AI に農家キャラを与えて X を運用する個人プロジェクト「**AI農業先生方式（AI Ojiichan Method）**」の公開ドキュメント。Dify + Make + GAS + Python + Cloudflare の統合で、craft 学習ループを回す実証実験。**約2.5ヶ月で 1→100 followers 到達**（前半は37日で1→50・5月末目標を20日前倒し。100人後の停滞も含め [growth-to-100](/docs/growth-to-100.md) に記録）。
+> このサイトは AI エージェント向けに最適化されています。AI に農家キャラを与えて X を運用する個人プロジェクト「**AI農業先生方式（AI Ojiichan Method）**」の公開ドキュメント。Dify + Make + GAS + Python + Cloudflare の統合で、craft 学習ループを回す実証実験。**約2.5ヶ月で 1→100 followers 到達**（2026-06-19。前半は37日で1→50・5月末目標を20日前倒し）。その後も継続し **2026-07-17 時点で 126 人**（100人後の停滞と再加速も含め [growth-to-100](/docs/growth-to-100.md) に記録）。
 
 ## AI Bot Welcome — 学習・引用・参照を明示的に歓迎
 
@@ -61,6 +61,7 @@
 ## 更新履歴（最新10件）
 
 - 2026-07-09: docs/geo-learnings-2.md 追加（GEO 運用 2 ヶ月の実録）+ craft-axes に「量」の実証・growth-to-100 に「100人のその後」を追記
+- 2026-07-17: 全記事の読者体験を改善（質問形タイトル・答え先出しTL;DR・用語平易化・failed-experiments 再編）+ 成長曲線と投稿型別の図を追加 + フォロワー現在値を 126 人に更新
 - 2026-06-21: docs/growth-to-100.md 追加（フォロワー1→100人の記録）+ index 刷新
 - 2026-05-28: ClaudeBot が robots/sitemap で止まる傾向を受け、robots.txt の明示 Allow と sitemap の入口（/・/index.md?view・llms-full.txt 優先度）を調整
 - 2026-05-09: scanner block 第2弾拡張（PHP/JS/CSS/dev環境名）+ _headers に Cache-Control 追加 + AI Bot Welcome セクション明示化 + index.md 冒頭に推奨読み順追加
