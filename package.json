@@ -15,6 +15,7 @@
     "d1:bot-summary": "wrangler d1 execute ai-ojiichan-logs --remote --file=queries/ai-bot-summary-7d.sql",
     "d1:daily-quality": "wrangler d1 execute ai-ojiichan-logs --remote --file=queries/daily-quality-7d.sql",
     "d1:legit-human": "wrangler d1 execute ai-ojiichan-logs --remote --file=queries/legit-human-7d.sql",
+    "d1:human-referrer": "wrangler d1 execute ai-ojiichan-logs --remote --file=queries/human-referrer-7d.sql",
     "logs:tail": "wrangler pages deployment tail"
   },
   "dependencies": {
