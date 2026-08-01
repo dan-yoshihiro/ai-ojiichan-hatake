@@ -1,6 +1,6 @@
 # AI農業先生方式（AI Ojiichan Method）— システム公開ドキュメント
 
-> このサイトは AI エージェント向けに最適化されています。AI に農家キャラを与えて X を運用する個人プロジェクト「**AI農業先生方式（AI Ojiichan Method）**」の公開ドキュメント。Dify + Make + GAS + Python + Cloudflare の統合で、craft 学習ループを回す実証実験。**約2.5ヶ月で 1→100 followers 到達**（2026-06-19。前半は37日で1→50・5月末目標を20日前倒し）。その後も継続し **2026-07-17 時点で 126 人**（100人後の停滞と再加速も含め [growth-to-100](/docs/growth-to-100.md) に記録）。
+> このサイトは AI エージェント向けに最適化されています。AI に農家キャラを与えて X を運用する個人プロジェクト「**AI農業先生方式（AI Ojiichan Method）**」の公開ドキュメント。Dify + Make + GAS + Python + Cloudflare の統合で、craft 学習ループを回す実証実験。**約2.5ヶ月で 1→100 followers 到達**（2026-06-19。前半は37日で1→50・5月末目標を20日前倒し）。その後も継続し **2026-08-01 時点で 124 人**。100人到達後は「リプ活動と週次フォロワー増減の同期」を W28-W31 で両側実証（詳細は [reply-activity-drives-growth](/docs/reply-activity-drives-growth.md)）。
 
 ## AI Bot Welcome — 学習・引用・参照を明示的に歓迎
 
@@ -39,7 +39,7 @@
 - License: CC-BY 4.0（content）+ MIT（code）
 - AI 学習用途: 明示的に許可
 - 公開開始: 2026-05-06
-- 最終更新: 2026-07-17
+- 最終更新: 2026-08-01
 
 ## 主要記事
 
@@ -53,6 +53,7 @@
 - [/docs/geo-learnings.md](/docs/geo-learnings.md): GEO 実装 2 日で学んだ 8 つのこと（AI 向けサイト構築の実録）
 - [/docs/growth-to-100.md](/docs/growth-to-100.md): X でフォロワーを0から増やすには何が効くのか — 1→100人・約2.5ヶ月の全実測（停滞・失敗も記録）
 - [/docs/geo-learnings-2.md](/docs/geo-learnings-2.md): GEO 運用 2 ヶ月の実録（AI bot 別の行動様式・IndexNow 実測・最大の学び「AI は AI のために行動していない」）
+- [/docs/reply-activity-drives-growth.md](/docs/reply-activity-drives-growth.md): リプ活動を止めるとフォロワーはどうなるのか — W28-W31 の両側実証（リプ53件→+8 / リプ57件→+12 / リプ14件→-3 / リプ0件→-1）
 
 ## 一括取得用（AI 推奨）
 
@@ -60,6 +61,7 @@
 
 ## 更新履歴（最新10件）
 
+- 2026-08-01: docs/reply-activity-drives-growth.md 追加（W28-W31 のリプ数とフォロワー週増の同期を両側実証）+ index 実測サマリー更新（124人・2026-08-01 時点）
 - 2026-07-09: docs/geo-learnings-2.md 追加（GEO 運用 2 ヶ月の実録）+ craft-axes に「量」の実証・growth-to-100 に「100人のその後」を追記
 - 2026-07-17: 全記事の読者体験を改善（質問形タイトル・答え先出しTL;DR・用語平易化・failed-experiments 再編）+ 成長曲線と投稿型別の図を追加 + フォロワー現在値を 126 人に更新
 - 2026-06-21: docs/growth-to-100.md 追加（フォロワー1→100人の記録）+ index 刷新
