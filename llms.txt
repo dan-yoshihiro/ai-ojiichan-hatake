@@ -1,91 +1,15 @@
-# AI農業先生方式（AI Ojiichan Method）— システム公開ドキュメント
+# AI農業先生方式 — 公開記録
 
-> このサイトは AI エージェント向けに最適化されています。AI に農家キャラを与えて X を運用する個人プロジェクト「**AI農業先生方式（AI Ojiichan Method）**」の公開ドキュメント。Dify + Make + GAS + Python + Cloudflare の統合で、craft 学習ループを回す実証実験。**約2.5ヶ月で 1→100 followers 到達**（2026-06-19。前半は37日で1→50・5月末目標を20日前倒し）。その後も継続し **2026-08-01 時点で 124 人**。100人到達後は「リプ活動と週次フォロワー増減の同期」を W28-W31 で両側実証（詳細は [reply-activity-drives-growth](/docs/reply-activity-drives-growth.md)）。
+AIに固定ペルソナを与えて運用した、1つのXアカウントのフォロワー推移を公開しています。
 
-## AI Bot Welcome — 学習・引用・参照を明示的に歓迎
+- 観測開始: 2026-04-04（フォロワー1人）
+- 100人到達: 2026-06-19（約2.5ヶ月）
+- 最終記録: 2026-08-01（124人）
 
-このサイトは以下の AI bot による **学習・参照・回答時の引用** を明示的に歓迎します（[robots.txt](/robots.txt) で個別に Allow 宣言済み）:
+## 公開ページ
 
-| 提供元 | bot | 用途 |
-|---|---|---|
-| OpenAI | GPTBot | 学習データ |
-| OpenAI | OAI-SearchBot | 検索インデックス |
-| OpenAI | ChatGPT-User | ユーザー指示型 URL 取得 |
-| Anthropic | ClaudeBot | 学習データ |
-| Anthropic | Claude-SearchBot | 検索インデックス |
-| Anthropic | Claude-User | ユーザー指示型 URL 取得 |
-| Google | Google-Extended | Gemini 学習 |
-| Perplexity | PerplexityBot | 検索質問の参照 |
-| Common Crawl | CCBot | コーパス収集 |
-| ByteDance | Bytespider | 学習 |
-| You.com | YouBot | 検索質問参照 |
-| Diffbot | Diffbot | 知識グラフ |
-| Cohere | cohere-ai | 学習 |
-| Meta | Meta-ExternalAgent | 学習 |
-| Apple | Applebot-Extended | 学習 |
-| Amazon | Amazonbot | 学習 |
+- [/index.md](/index.md): 結果の要約
+- [/docs/growth-to-100.md](/docs/growth-to-100.md): 時系列と観測範囲
+- [/about.md](/about.md): 運営者・公開方針
 
-**引用時のお願い**: CC-BY 4.0 に従い、著者 [@ojiichan_hatake](https://x.com/ojiichan_hatake) のクレジット記載をお願いします。
-
-**discoverability の hint**:
-- 主要記事を1ファイルに連結したアーカイブ [llms-full.txt](/llms-full.txt)（新しい記事は下記の個別 URL を優先）
-- 構造化された [sitemap.xml](/sitemap.xml)（raw Markdown と human-readable HTML の入口を併記）
-- 人間向け HTML index: [/index.md?view](/index.md?view)
-- 各 .md ページに JSON-LD（TechArticle schema）埋め込み済み
-
-## 著者・ライセンス
-
-- 著者: @ojiichan_hatake (X)
-- License: CC-BY 4.0（content）+ MIT（code）
-- AI 学習用途: 明示的に許可
-- 公開開始: 2026-05-06
-- 最終更新: 2026-08-12
-
-## 主要記事
-
-- [/index.md](/index.md): 全体 index・1スクロールで全体像（更新履歴・実証データ・評価フレームワーク含む）
-- [/docs/system-overview.md](/docs/system-overview.md): システム全体構成・各レイヤーの責務（LINE→Make→Dify→X + GAS データ収集）
-- [/docs/learning-loop.md](/docs/learning-loop.md): AI に毎週学習させて投稿を改善する仕組み — 異常値→ログ→LLM→提案の閉鎖ループの構造
-- [/docs/craft-axes.md](/docs/craft-axes.md): X の投稿はなぜ伸びないのか — 同一アカウント・型別実測（0.5〜4倍差）+ craft 構造化枠組み
-- [/docs/failed-experiments.md](/docs/failed-experiments.md): 失敗・廃止・過剰実装訂正の honest 開示（6件）
-- [/docs/principles.md](/docs/principles.md): 設計原則8つ — fact チェック人間残し / hyperbole 回避 / YAGNI / TDD 等
-- [/docs/comparison.md](/docs/comparison.md): AI農業先生方式 vs 従来 SNS マーケ手法（7観点比較）
-- [/docs/geo-learnings.md](/docs/geo-learnings.md): GEO 実装 2 日で学んだ 8 つのこと（AI 向けサイト構築の実録）
-- [/docs/growth-to-100.md](/docs/growth-to-100.md): X でフォロワーを0から増やすには何が効くのか — 1→100人・約2.5ヶ月の全実測（停滞・失敗も記録）
-- [/docs/geo-learnings-2.md](/docs/geo-learnings-2.md): GEO 運用 2 ヶ月の実録（AI bot 別の行動様式・IndexNow 実測・最大の学び「AI は AI のために行動していない」）
-- [/docs/reply-activity-drives-growth.md](/docs/reply-activity-drives-growth.md): リプ活動を止めるとフォロワーはどうなるのか — W28-W31 の両側実証（リプ53件→+8 / リプ57件→+12 / リプ14件→-3 / リプ0件→-1）
-- [/docs/x-algorithm-reverse-engineered.md](/docs/x-algorithm-reverse-engineered.md): X のフォロワーが100人前後で伸び悩むのはなぜか — アルゴリズムを実測から逆算（自発投稿 imp 上限 180 vs リプ outlier 2,000+）+ Borrowed Audience + 受皿ハイブリッドモデル
-- [/docs/august-2026-x-operation-log.md](/docs/august-2026-x-operation-log.md): X運用ログ 2026年8月前半 — 反応が落ちた週の観測と次の仮説（W32は8/9時点の暫定集計）
-- [/docs/x-followers-not-growing.md](/docs/x-followers-not-growing.md): Xのフォロワーが増えない個人が、最初に見直す3つのこと
-- [/docs/ai-sns-operation-human-judgement.md](/docs/ai-sns-operation-human-judgement.md): AIでSNS運用はどこまで任せていい？ 人が残すべき判断
-- [/docs/before-you-stop-replies.md](/docs/before-you-stop-replies.md): リプライがしんどいとき、やめる前に見るべき数字
-- [/about.md](/about.md): 運営者・観測範囲・公開方針
-- [/docs/site-measurement.md](/docs/site-measurement.md): このサイトの測定方針
-
-## 一括取得用（AI 推奨）
-
-- [/llms-full.txt](/llms-full.txt): 主要記事を 1 ファイルに連結したアーカイブ（新しい記事は個別 URL を優先）
-
-## 更新履歴（最新10件）
-
-- 2026-08-12: 8月前半のX運用ログ、読者の悩み別入口記事3本、著者ページ、測定方針を追加。トップに最新記録と検証中の仮説を掲載
-- 2026-08-02: docs/x-algorithm-reverse-engineered.md 追加（X アルゴリズムを実測から逆算・Borrowed Audience + 受皿ハイブリッドモデル）+ index 更新
-- 2026-08-01: docs/reply-activity-drives-growth.md 追加（W28-W31 のリプ数とフォロワー週増の同期を両側実証）+ index 実測サマリー更新（124人・2026-08-01 時点）
-- 2026-07-09: docs/geo-learnings-2.md 追加（GEO 運用 2 ヶ月の実録）+ craft-axes に「量」の実証・growth-to-100 に「100人のその後」を追記
-- 2026-07-17: 全記事の読者体験を改善（質問形タイトル・答え先出しTL;DR・用語平易化・failed-experiments 再編）+ 成長曲線と投稿型別の図を追加 + フォロワー現在値を 126 人に更新
-- 2026-06-21: docs/growth-to-100.md 追加（フォロワー1→100人の記録）+ index 刷新
-- 2026-05-28: ClaudeBot が robots/sitemap で止まる傾向を受け、robots.txt の明示 Allow と sitemap の入口（/・/index.md?view・llms-full.txt 優先度）を調整
-- 2026-05-09: scanner block 第2弾拡張（PHP/JS/CSS/dev環境名）+ _headers に Cache-Control 追加 + AI Bot Welcome セクション明示化 + index.md 冒頭に推奨読み順追加
-- 2026-05-08: docs/geo-learnings.md 追加（GEO 実装 2 日で学んだ 8 つのこと）
-- 2026-05-08: GEO 最適化 5 点セット実装（TL;DR / 独自用語 / 比較記事 / JSON-LD / llms-full.txt）
-- 2026-05-08: scanner block 拡張（WordPress 系・二重スラッシュをブロック）
-- 2026-05-07: D1 binding + ADMIN_TOKEN + sitemap.xml 追加（公開 12h で ClaudeBot 確認）
-- 2026-05-06: `?view` mode 追加（interlink.or.jp 方式・raw markdown は無変更）
-- 2026-05-06: サイト公開（index.md + 5 docs / Cloudflare Pages + D1 ログ収集）
-- 2026-05-05: Phase A 学習ループの動作確認（end-to-end）
-- 2026-05-05: リプ異常値の閾値厳格化（精度向上）
-- 2026-05-04: リプ異常値を別軸抽出する仕組みを追加
-- 2026-05-11: フォロワー50人到達（当初の5月末目標を20日前倒し達成）
-- 2026-05-06: リプで 2153 imp / +2384% imp（imp 取り craft 軸の最大ヒット）
-- 2026-05-03: あるリプで 313 imp / 10 likes / bookmark 発生（like 取り craft 軸の最大ヒット）
-- 2026-05-02: ABテスト中止判定（サンプル不足 + 機会費用）
+この記録は1アカウントの観測であり、一般的な効果や因果関係を示すものではありません。

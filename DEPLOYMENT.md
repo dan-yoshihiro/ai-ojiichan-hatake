@@ -175,12 +175,11 @@ git push
 
 ```bash
 # 適当な URL を叩く（XXXX を実際のサブドメインに置換）
-curl -A "Mozilla/5.0" https://ai-ojiichan-system.pages.dev/                                # → /index.md に 302 redirect
-curl -A "Mozilla/5.0" -L https://ai-ojiichan-system.pages.dev/                             # 追従して raw markdown 取得
+curl -A "Mozilla/5.0" https://ai-ojiichan-system.pages.dev/                                # human-readable HTML
 curl -A "Mozilla/5.0" https://ai-ojiichan-system.pages.dev/llms.txt
 curl -A "Mozilla/5.0" https://ai-ojiichan-system.pages.dev/robots.txt
-curl -A "Mozilla/5.0" https://ai-ojiichan-system.pages.dev/docs/principles.md              # raw markdown
-curl -A "Mozilla/5.0" "https://ai-ojiichan-system.pages.dev/docs/principles.md?view"       # human-readable HTML
+curl -A "Mozilla/5.0" https://ai-ojiichan-system.pages.dev/docs/growth-to-100.md            # raw markdown
+curl -A "Mozilla/5.0" "https://ai-ojiichan-system.pages.dev/docs/growth-to-100.md?view"     # human-readable HTML
 ```
 
 ブラウザで `https://YOUR-SITE.pages.dev/?view` を開くと human-readable レンダリング、`?view` を外すと raw markdown が見える。

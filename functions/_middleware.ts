@@ -324,7 +324,7 @@ function buildJsonLd(title: string, description: string, rawPath: string, canoni
       contentUrl: rawPath,
       encodingFormat: 'text/markdown',
     },
-    keywords: '個人 SNS マーケ実験, AI ペルソナ運用, llms.txt 実装事例, AI bot detection, GEO optimization',
+    keywords: 'X運用実測, フォロワー推移, AIペルソナ運用, 個人SNS運用',
   };
   return JSON.stringify(ld);
 }
@@ -340,8 +340,8 @@ function buildHtmlPage(html: string, title: string, rawPath: string, markdown: s
     ? ''
     : `<nav class="site-nav" aria-label="サイト内ナビゲーション">
   <a href="/">トップ</a>
-  <a href="/docs/growth-to-100.md?view">まず読む：1→100人の実測</a>
-  <a href="/docs/reply-activity-drives-growth.md?view">最新の実証</a>
+  <a href="/docs/growth-to-100.md?view">1→100人の実測</a>
+  <a href="/about.md?view">このサイトについて</a>
 </nav>`;
   return `<!DOCTYPE html>
 <html lang="ja">
@@ -377,9 +377,8 @@ ${html}
 <hr>
 <aside class="reader-next" aria-label="次に読む記事">
   <strong>次に読む</strong>
-  <p><a href="/docs/growth-to-100.md?view">1→100人までに何が効いたか</a> — この方式の全実測</p>
-  <p><a href="/docs/reply-activity-drives-growth.md?view">リプ活動を止めると何が起きるか</a> — 直近の両側実証</p>
-  <p>質問・引用希望は <a href="https://x.com/ojiichan_hatake">@ojiichan_hatake</a> まで。</p>
+  <p><a href="/docs/growth-to-100.md?view">1人→100人の実測記録</a></p>
+  <p><a href="/about.md?view">観測範囲と公開方針</a></p>
 </aside>
 <p class="view-footer">
   CC-BY 4.0 / 著者: @ojiichan_hatake / このサイトは AI エージェント向けに最適化されています。

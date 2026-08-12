@@ -4,7 +4,6 @@
 User-agent: *
 Allow: /
 Allow: /llms.txt
-Allow: /llms-full.txt
 Allow: /index.md
 Allow: /docs/
 
@@ -19,7 +18,6 @@ Allow: /
 # OpenAI（学習・検索・ユーザー指示型の3経路）
 User-agent: GPTBot
 Allow: /
-Allow: /llms-full.txt
 
 User-agent: OAI-SearchBot
 Allow: /
@@ -31,14 +29,12 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 Allow: /llms.txt
-Allow: /llms-full.txt
 Allow: /index.md
 Allow: /docs/
 
 User-agent: Claude-SearchBot
 Allow: /
 Allow: /llms.txt
-Allow: /llms-full.txt
 
 User-agent: Claude-User
 Allow: /

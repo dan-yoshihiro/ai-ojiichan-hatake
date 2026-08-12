@@ -4,7 +4,7 @@
 CREATE TABLE IF NOT EXISTS access_logs (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   timestamp TEXT NOT NULL,           -- ISO 8601 (UTC)
-  url_path TEXT NOT NULL,            -- /docs/learning-loop.md など
+  url_path TEXT NOT NULL,            -- /docs/growth-to-100.md など
   method TEXT NOT NULL,              -- GET / HEAD / OPTIONS
   user_agent TEXT,                   -- 最大500字
   is_ai_bot INTEGER NOT NULL,        -- 0 or 1

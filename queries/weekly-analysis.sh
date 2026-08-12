@@ -86,7 +86,7 @@ SELECT
   MAX(timestamp) AS last_seen
 FROM access_logs
 WHERE status_code = 200
-  AND url_path NOT IN ('/', '/robots.txt', '/sitemap.xml', '/llms.txt', '/llms-full.txt',
+  AND url_path NOT IN ('/', '/robots.txt', '/sitemap.xml', '/llms.txt',
                        '/LICENSE', '/DEPLOYMENT.md', '/index.md',
                        '/.well-known/security.txt',
                        '/7b01cad7f5e8511cbccdca2f33065357.txt')

@@ -6,7 +6,7 @@
 # 監視する 4 signals:
 # (1) GPTBot が全 docs を最近取得しているか（GEO 取り込みの主指標）
 #     ※ 旧版は ClaudeBot の本文再取得を見ていたが、30日実測で ClaudeBot は
-#       polling 偏重・本文率 1.2% と判明（geo-learnings-2 学び8）。GPTBot に変更。
+#       polling 偏重を避けるため、本文取得を優先する bot を対象にする。
 # (2) Bingbot が初訪問したか（IndexNow 送信の効果）
 # (3) OAI-SearchBot が content を取り始めたか（現状は robots.txt のみ）
 # (4) 新 scanner パターンが出現したか（middleware 追加候補）
