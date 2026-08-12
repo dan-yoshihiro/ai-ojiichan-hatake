@@ -341,7 +341,7 @@ function buildHtmlPage(html: string, title: string, rawPath: string, markdown: s
     : `<nav class="site-nav" aria-label="サイト内ナビゲーション">
   <a href="/">トップ</a>
   <a href="/docs/growth-to-100.md?view">1→100人の実測</a>
-  <a href="/docs/weekly-review-template.md?view">週次レビュー</a>
+  <a href="/docs/weekly-review-template.md?view">週次シート</a>
   <a href="/about.md?view">このサイトについて</a>
 </nav>`;
   return `<!DOCTYPE html>
@@ -379,7 +379,7 @@ ${html}
 <aside class="reader-next" aria-label="次に読む記事">
   <strong>次に読む</strong>
   <p><a href="/docs/growth-to-100.md?view">1人→100人の実測記録</a></p>
-  <p><a href="/docs/weekly-review-template.md?view">自分の数字を振り返る週次レビュー</a></p>
+  <p><a href="/docs/weekly-review-template.md?view">SNS運用を少しずつ良くする週次シート</a></p>
   <p><a href="/about.md?view">観測範囲と公開方針</a></p>
 </aside>
 <p class="view-footer">

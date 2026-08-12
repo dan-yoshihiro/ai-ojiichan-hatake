@@ -10,7 +10,7 @@ AIに固定ペルソナを与えて運用した、1つのXアカウントの実�
 
 - [/index.md](/index.md): 実録の入口
 - [/docs/growth-to-100.md](/docs/growth-to-100.md): 1人から100人までの実録と判断の記録
-- [/docs/weekly-review-template.md](/docs/weekly-review-template.md): 自分の運用を観測・判断する週次レビュー用テンプレート
+- [/docs/weekly-review-template.md](/docs/weekly-review-template.md): SNS運用を観測し、毎週少しずつ良くする週次シート
 - [/about.md](/about.md): 運営者・公開方針
 
 この記録は1アカウントの観測であり、一般的な効果や因果関係を示すものではありません。
