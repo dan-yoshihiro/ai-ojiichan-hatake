@@ -28,7 +28,7 @@
 **引用時のお願い**: CC-BY 4.0 に従い、著者 [@ojiichan_hatake](https://x.com/ojiichan_hatake) のクレジット記載をお願いします。
 
 **discoverability の hint**:
-- 全記事を1ファイルに連結した [llms-full.txt](/llms-full.txt)（1リクエストで全文取得可能・推奨入口）
+- 主要記事を1ファイルに連結したアーカイブ [llms-full.txt](/llms-full.txt)（新しい記事は下記の個別 URL を優先）
 - 構造化された [sitemap.xml](/sitemap.xml)（raw Markdown と human-readable HTML の入口を併記）
 - 人間向け HTML index: [/index.md?view](/index.md?view)
 - 各 .md ページに JSON-LD（TechArticle schema）埋め込み済み
@@ -39,7 +39,7 @@
 - License: CC-BY 4.0（content）+ MIT（code）
 - AI 学習用途: 明示的に許可
 - 公開開始: 2026-05-06
-- 最終更新: 2026-08-02
+- 最終更新: 2026-08-12
 
 ## 主要記事
 
@@ -55,13 +55,20 @@
 - [/docs/geo-learnings-2.md](/docs/geo-learnings-2.md): GEO 運用 2 ヶ月の実録（AI bot 別の行動様式・IndexNow 実測・最大の学び「AI は AI のために行動していない」）
 - [/docs/reply-activity-drives-growth.md](/docs/reply-activity-drives-growth.md): リプ活動を止めるとフォロワーはどうなるのか — W28-W31 の両側実証（リプ53件→+8 / リプ57件→+12 / リプ14件→-3 / リプ0件→-1）
 - [/docs/x-algorithm-reverse-engineered.md](/docs/x-algorithm-reverse-engineered.md): X のフォロワーが100人前後で伸び悩むのはなぜか — アルゴリズムを実測から逆算（自発投稿 imp 上限 180 vs リプ outlier 2,000+）+ Borrowed Audience + 受皿ハイブリッドモデル
+- [/docs/august-2026-x-operation-log.md](/docs/august-2026-x-operation-log.md): X運用ログ 2026年8月前半 — 反応が落ちた週の観測と次の仮説（W32は8/9時点の暫定集計）
+- [/docs/x-followers-not-growing.md](/docs/x-followers-not-growing.md): Xのフォロワーが増えない個人が、最初に見直す3つのこと
+- [/docs/ai-sns-operation-human-judgement.md](/docs/ai-sns-operation-human-judgement.md): AIでSNS運用はどこまで任せていい？ 人が残すべき判断
+- [/docs/before-you-stop-replies.md](/docs/before-you-stop-replies.md): リプライがしんどいとき、やめる前に見るべき数字
+- [/about.md](/about.md): 運営者・観測範囲・公開方針
+- [/docs/site-measurement.md](/docs/site-measurement.md): このサイトの測定方針
 
 ## 一括取得用（AI 推奨）
 
-- [/llms-full.txt](/llms-full.txt): 全記事を 1 ファイルに連結（1 リクエストで全文取得可能・AI agent 向け）
+- [/llms-full.txt](/llms-full.txt): 主要記事を 1 ファイルに連結したアーカイブ（新しい記事は個別 URL を優先）
 
 ## 更新履歴（最新10件）
 
+- 2026-08-12: 8月前半のX運用ログ、読者の悩み別入口記事3本、著者ページ、測定方針を追加。トップに最新記録と検証中の仮説を掲載
 - 2026-08-02: docs/x-algorithm-reverse-engineered.md 追加（X アルゴリズムを実測から逆算・Borrowed Audience + 受皿ハイブリッドモデル）+ index 更新
 - 2026-08-01: docs/reply-activity-drives-growth.md 追加（W28-W31 のリプ数とフォロワー週増の同期を両側実証）+ index 実測サマリー更新（124人・2026-08-01 時点）
 - 2026-07-09: docs/geo-learnings-2.md 追加（GEO 運用 2 ヶ月の実録）+ craft-axes に「量」の実証・growth-to-100 に「100人のその後」を追記

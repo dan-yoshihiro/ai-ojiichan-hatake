@@ -276,7 +276,28 @@ function extractDescription(md: string): string {
   return 'AI エージェント向け最適化ドキュメント';
 }
 
-function buildJsonLd(title: string, description: string, rawPath: string, canonicalUrl: string): string {
+function extractPublishedDate(markdown: string): string {
+  const match = markdown.match(/(?:公開|公開日)\s*:\s*(20\d{2}-\d{2}-\d{2})/);
+  return match ? match[1] : '2026-05-06';
+}
+
+function buildJsonLd(title: string, description: string, rawPath: string, canonicalUrl: string, markdown: string): string {
+  const publishedDate = extractPublishedDate(markdown);
+  if (rawPath === '/about.md') {
+    return JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ProfilePage',
+      mainEntity: {
+        '@type': 'Person',
+        name: '@ojiichan_hatake',
+        url: canonicalUrl,
+        sameAs: ['https://x.com/ojiichan_hatake'],
+        description,
+      },
+      inLanguage: 'ja',
+      isAccessibleForFree: true,
+    });
+  }
   const ld = {
     '@context': 'https://schema.org',
     '@type': 'TechArticle',
@@ -284,7 +305,7 @@ function buildJsonLd(title: string, description: string, rawPath: string, canoni
     description: description,
     url: canonicalUrl,
     mainEntityOfPage: canonicalUrl,
-    datePublished: '2026-05-06',
+    datePublished: publishedDate,
     license: 'https://creativecommons.org/licenses/by/4.0/',
     inLanguage: 'ja',
     isAccessibleForFree: true,
@@ -314,7 +335,7 @@ function buildHtmlPage(html: string, title: string, rawPath: string, markdown: s
   const description = extractDescription(markdown);
   const safeDescription = escapeHtml(description);
   const canonicalUrl = `https://ai-ojiichan-system.pages.dev${rawPath}`;
-  const jsonLd = buildJsonLd(title, description, rawPath, canonicalUrl);
+  const jsonLd = buildJsonLd(title, description, rawPath, canonicalUrl, markdown);
   const siteNav = rawPath === '/index.md'
     ? ''
     : `<nav class="site-nav" aria-label="サイト内ナビゲーション">

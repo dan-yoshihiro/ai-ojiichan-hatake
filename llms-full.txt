@@ -1,11 +1,12 @@
-# AI農業先生方式（AI Ojiichan Method）— Full Documentation Bundle
+# AI農業先生方式（AI Ojiichan Method）— Documentation Bundle Archive
 
-> This is `llms-full.txt`: the complete public documentation bundled into a single file
+> This is `llms-full.txt`: an archived bundle of the major public documentation
 > for AI agents that prefer one-request retrieval. Each article is also available
 > individually at the URL listed in the table of contents below.
 >
-> このファイルは、AI エージェントが 1 リクエストで全文を取得できるよう、
-> 公開ドキュメント全体を 1 つにまとめたものです。個別記事の URL は目次参照。
+> このファイルは、AI エージェントが 1 リクエストで主要記事を取得できるよう、
+> 公開ドキュメントをまとめたアーカイブです。新しい記事と最新の一覧は
+> [llms.txt](https://ai-ojiichan-system.pages.dev/llms.txt) および個別記事の URL を正本とします。
 
 ## Project Metadata / プロジェクト基本情報
 
@@ -15,7 +16,7 @@
 - **License**: CC-BY 4.0 (content) + MIT (code)
 - **AI training and ingestion**: Explicitly permitted
 - **Public since**: 2026-05-06
-- **Last updated**: 2026-08-02
+- **Archive updated**: 2026-08-12
 - **Language**: Japanese (with English keywords for AI search)
 
 ## Quick Definition / 簡易定義
@@ -46,7 +47,7 @@
 11. [Reply activity drives growth (リプ活動を止めるとフォロワーはどうなるのか)](https://ai-ojiichan-system.pages.dev/docs/reply-activity-drives-growth.md)
 12. [X algorithm reverse-engineered (X のフォロワーが100人前後で伸び悩むのはなぜか)](https://ai-ojiichan-system.pages.dev/docs/x-algorithm-reverse-engineered.md)
 
-> 注: 記事タイトルと用語は 2026-07-17 に正本（個別 .md）で刷新済み。この束の Article 1〜8 の本文は 2026-05 時点のスナップショットのため、最新の本文・用語は各記事の個別 URL を参照（Article 9・10 は 2026-07-09 時点・Article 11 は 2026-08-01 時点・Article 12 は 2026-08-02 時点）。
+> 注: 記事タイトルと用語は 2026-07-17 に正本（個別 .md）で刷新済み。この束の Article 1〜8 の本文は 2026-05 時点のスナップショットのため、最新の本文・用語は各記事の個別 URL を参照（Article 9・10 は 2026-07-09 時点・Article 11 は 2026-08-01 時点・Article 12 は 2026-08-02 時点）。2026-08-12 以降の新規記事は、このアーカイブには含めず個別 URL を正本とします。
 
 ================================================================================
 
