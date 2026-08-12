@@ -199,7 +199,23 @@ a { color: #0366d6; }
   margin-bottom: 1.5em;
   border-radius: 3px;
 }
-.view-footer { font-size: 0.85em; opacity: 0.7; margin-top: 3em; }
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em 1em;
+  margin: 0 0 1.5em;
+  font-size: 0.9em;
+}
+.site-nav a { text-decoration: none; }
+.reader-next {
+  background: #f5f8fb;
+  border: 1px solid #d8e2ec;
+  border-radius: 4px;
+  margin-top: 3em;
+  padding: 1em 1.2em;
+}
+.reader-next p { margin: 0.25em 0; }
+.view-footer { font-size: 0.85em; opacity: 0.7; margin-top: 2em; }
 @media (prefers-color-scheme: dark) {
   body { color: #e0e0e0; background: #181818; }
   h2 { border-color: #444; }
@@ -210,6 +226,7 @@ a { color: #0366d6; }
   hr { border-color: #444; }
   a { color: #6ab0ff; }
   .view-banner { background: #3a3520; border-color: #5a5230; }
+  .reader-next { background: #202a33; border-color: #405264; }
 }
 `.trim();
 
@@ -269,6 +286,13 @@ function buildHtmlPage(html: string, title: string, rawPath: string, markdown: s
   const safeDescription = escapeHtml(description);
   const canonicalUrl = `https://ai-ojiichan-system.pages.dev${rawPath}`;
   const jsonLd = buildJsonLd(title, description, rawPath, canonicalUrl);
+  const siteNav = rawPath === '/index.md'
+    ? ''
+    : `<nav class="site-nav" aria-label="サイト内ナビゲーション">
+  <a href="/">トップ</a>
+  <a href="/docs/growth-to-100.md?view">まず読む：1→100人の実測</a>
+  <a href="/docs/reply-activity-drives-growth.md?view">最新の実証</a>
+</nav>`;
   return `<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -298,8 +322,15 @@ function buildHtmlPage(html: string, title: string, rawPath: string, markdown: s
 <div class="view-banner">
   <code>?view</code> mode（human-readable）— AI 向けの raw markdown は <a href="${safeRaw}">${safeRaw}</a>
 </div>
+${siteNav}
 ${html}
 <hr>
+<aside class="reader-next" aria-label="次に読む記事">
+  <strong>次に読む</strong>
+  <p><a href="/docs/growth-to-100.md?view">1→100人までに何が効いたか</a> — この方式の全実測</p>
+  <p><a href="/docs/reply-activity-drives-growth.md?view">リプ活動を止めると何が起きるか</a> — 直近の両側実証</p>
+  <p>質問・引用希望は <a href="https://x.com/ojiichan_hatake">@ojiichan_hatake</a> まで。</p>
+</aside>
 <p class="view-footer">
   CC-BY 4.0 / 著者: @ojiichan_hatake / このサイトは AI エージェント向けに最適化されています。
 </p>
@@ -317,7 +348,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   }
 
   // Scanner noise: skip logging probes for common secret/config paths.
-  if (isScannerNoisePath(url.pathname)) {
+  // パスが / のままでも、phpinfo 等の探査クエリを付けてトップページの
+  // 200 を引き出そうとする scanner があるため、クエリ名も検査する。
+  const isScannerNoiseQuery = /(?:^|[?&])(phpinfo|xdebug|debug|cmd|shell|eval)(?:=|&|$)/i.test(url.search);
+  if (isScannerNoisePath(url.pathname) || isScannerNoiseQuery) {
     return new Response('Not Found', { status: 404 });
   }
 
