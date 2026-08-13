@@ -51,6 +51,22 @@ const AI_BOT_PATTERNS: Array<{ pattern: string; name: string }> = [
   { pattern: 'amazonbot', name: 'Amazonbot' },              // Amazon
 ];
 
+// 2026-08-13: サイトを「SNSの週次振り返り」へ絞り込んだ際に削除した記事の移転先。
+// 検索結果・外部リンクの評価を引き継ぎ、閲覧者を最も近い現行コンテンツへ案内する。
+const LEGACY_REDIRECTS: Record<string, string> = {
+  '/docs/craft-axes.md': '/docs/growth-to-100.md',
+  '/docs/failed-experiments.md': '/docs/growth-to-100.md',
+  '/docs/reply-activity-drives-growth.md': '/docs/growth-to-100.md',
+  '/docs/x-algorithm-reverse-engineered.md': '/docs/growth-to-100.md',
+  '/docs/learning-loop.md': '/docs/weekly-review-template.md',
+  '/docs/principles.md': '/docs/weekly-review-template.md',
+  '/docs/comparison.md': '/docs/weekly-review-template.md',
+  '/docs/system-overview.md': '/about.md',
+  '/docs/geo-learnings.md': '/about.md',
+  '/docs/geo-learnings-2.md': '/about.md',
+  '/llms-full.txt': '/llms.txt',
+};
+
 interface BotDetection {
   is_ai_bot: boolean;
   bot_name: string | null;
@@ -446,6 +462,16 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       }
     })());
   };
+
+  // 削除済みの記事は恒久的に対応先へ移転する。クエリ文字列も維持し、
+  // 旧URLの ?view 閲覧や UTM パラメータを失わないようにする。
+  const legacyDestination = LEGACY_REDIRECTS[url.pathname];
+  if (legacyDestination) {
+    const redirectUrl = new URL(legacyDestination, url.origin);
+    redirectUrl.search = url.search;
+    logRequest(301);
+    return Response.redirect(redirectUrl.toString(), 301);
+  }
 
   // /.well-known/security.txt（RFC 9116）: 2026-07-06 設置
   // scanner が23回探査していた。実物を返して 404 ノイズを止め、脆弱性報告の窓口も明示する
