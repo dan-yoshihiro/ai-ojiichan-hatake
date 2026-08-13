@@ -9,7 +9,7 @@ AIに固定ペルソナを与えて運用した、1つのXアカウントの実�
 ## 公開ページ
 
 - [/index.md](/index.md): 実録の入口
-- [/docs/growth-to-100.md](/docs/growth-to-100.md): 1人から100人までの実録と判断の記録
+- [/docs/growth-to-100.md](/docs/growth-to-100.md): フォロワーが減った週に、投稿を変える前に確認する3つと実測記録
 - [/docs/weekly-review-template.md](/docs/weekly-review-template.md): SNS運用を観測し、毎週少しずつ良くする週次シート
 - [/about.md](/about.md): 運営者・公開方針
 
