@@ -191,9 +191,9 @@ blockquote { border-left: 3px solid #ccc; margin: 1em 0; padding: 0.2em 1em; col
 hr { border: none; border-top: 1px solid #ddd; margin: 2em 0; }
 img { max-width: 100%; }
 a { color: #0366d6; }
-.view-banner {
-  background: #fffbe6;
-  border: 1px solid #e8d77b;
+.site-purpose {
+  background: #f5f8fb;
+  border: 1px solid #d8e2ec;
   padding: 0.6em 1em;
   font-size: 0.88em;
   margin-bottom: 1.5em;
@@ -252,7 +252,7 @@ a { color: #0366d6; }
   blockquote { border-color: #555; color: #aaa; }
   hr { border-color: #444; }
   a { color: #6ab0ff; }
-  .view-banner { background: #3a3520; border-color: #5a5230; }
+  .site-purpose { background: #202a33; border-color: #405264; }
   .reader-next { background: #202a33; border-color: #405264; }
   .audience-card { background: #202a33; border-color: #405264; }
   .featured-card { background: #1d242b; border-color: #405264; }
@@ -261,7 +261,7 @@ a { color: #0366d6; }
 
 function extractDescription(md: string): string {
   // TL;DR ブロックを優先抽出（GEO 最適化）
-  const tldrMatch = md.match(/>\s*\*\*TL;DR\*\*[：:]\s*([^\n]+(?:\n>[^\n]+)*)/);
+  const tldrMatch = md.match(/>\s*\*\*TL;DR[：:]?\*\*\s*[：:]?\s*([^\n]+(?:\n>[^\n]+)*)/);
   if (tldrMatch) {
     return tldrMatch[1].replace(/\n>\s*/g, ' ').replace(/\*\*/g, '').slice(0, 300);
   }
@@ -370,8 +370,8 @@ function buildHtmlPage(html: string, title: string, rawPath: string, markdown: s
 <style>${VIEW_CSS}</style>
 </head>
 <body>
-<div class="view-banner">
-  <code>?view</code> mode（human-readable）— AI 向けの raw markdown は <a href="${safeRaw}">${safeRaw}</a>
+<div class="site-purpose">
+  SNS運用の実測と、来週に試すことを1つ決める週次振り返りのためのサイトです。
 </div>
 ${siteNav}
 ${html}
@@ -383,7 +383,7 @@ ${html}
   <p><a href="/about.md?view">観測範囲と公開方針</a></p>
 </aside>
 <p class="view-footer">
-  CC-BY 4.0 / 著者: @ojiichan_hatake / このサイトは AI エージェント向けに最適化されています。
+  CC-BY 4.0 / 著者: @ojiichan_hatake / <a href="${safeRaw}">Markdown版を読む</a>
 </p>
 </body>
 </html>`;
