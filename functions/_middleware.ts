@@ -340,8 +340,8 @@ function buildHtmlPage(html: string, title: string, rawPath: string, markdown: s
     ? ''
     : `<nav class="site-nav" aria-label="サイト内ナビゲーション">
   <a href="/">トップ</a>
-  <a href="/docs/growth-to-100.md?view">1→100人の実測</a>
-  <a href="/docs/weekly-review-template.md?view">週次シート</a>
+  <a href="/docs/growth-to-100.md?view">X投稿の分析方法</a>
+  <a href="/docs/weekly-review-template.md?view">SNS運用の週次振り返り</a>
   <a href="/about.md?view">このサイトについて</a>
 </nav>`;
   return `<!DOCTYPE html>
