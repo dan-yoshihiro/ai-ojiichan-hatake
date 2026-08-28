@@ -15,6 +15,7 @@ AIに固定ペルソナを与えて運用した、1つのXアカウントの実�
 1. [/index.md](/index.md): サイトの目的、対象読者、各ページへの入口
 2. [/docs/growth-to-100.md](/docs/growth-to-100.md): X投稿の分析方法。フォロワーが減った週に確認する3つ、実測、判断できる範囲
 3. [/docs/weekly-review-template.md](/docs/weekly-review-template.md): SNS投稿を分析し、次の施策を1つ決める週次振り返りシート
+4. [/docs/x-impressions-drop.md](/docs/x-impressions-drop.md): Xのインプレッションが減ったときに、実施量・外れ値・投稿種別を分けて確認する方法
 4. [/about.md](/about.md): 運営者、観測対象、公開範囲と注意事項
 
 ## 根拠と制約

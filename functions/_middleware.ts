@@ -72,6 +72,7 @@ const LEGACY_REDIRECTS: Record<string, string> = {
 const READER_ROUTES: Record<string, string> = {
   '/sns-post-analysis': '/docs/growth-to-100.md',
   '/sns-weekly-review': '/docs/weekly-review-template.md',
+  '/x-impressions-drop': '/docs/x-impressions-drop.md',
 };
 
 interface BotDetection {
@@ -371,6 +372,7 @@ function buildHtmlPage(
   <a href="/">トップ</a>
   <a href="/sns-post-analysis">X投稿の分析方法</a>
   <a href="/sns-weekly-review">SNS運用の週次振り返り</a>
+  <a href="/x-impressions-drop">インプレッション減少時の確認</a>
   <a href="/about.md?view">このサイトについて</a>
 </nav>`;
   return `<!DOCTYPE html>
@@ -409,6 +411,7 @@ ${html}
   <strong>次に読む</strong>
   <p><a href="/sns-post-analysis">1人→100人の実測記録</a></p>
   <p><a href="/sns-weekly-review">SNS運用を少しずつ良くする週次シート</a></p>
+  <p><a href="/x-impressions-drop">Xのインプレッションが減ったときの確認項目</a></p>
   <p><a href="/about.md?view">観測範囲と公開方針</a></p>
 </aside>
 <p class="view-footer">
