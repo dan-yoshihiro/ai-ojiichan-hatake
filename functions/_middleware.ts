@@ -54,17 +54,24 @@ const AI_BOT_PATTERNS: Array<{ pattern: string; name: string }> = [
 // 2026-08-13: サイトを「SNSの週次振り返り」へ絞り込んだ際に削除した記事の移転先。
 // 検索結果・外部リンクの評価を引き継ぎ、閲覧者を最も近い現行コンテンツへ案内する。
 const LEGACY_REDIRECTS: Record<string, string> = {
-  '/docs/craft-axes.md': '/docs/growth-to-100.md',
-  '/docs/failed-experiments.md': '/docs/growth-to-100.md',
-  '/docs/reply-activity-drives-growth.md': '/docs/growth-to-100.md',
-  '/docs/x-algorithm-reverse-engineered.md': '/docs/growth-to-100.md',
-  '/docs/learning-loop.md': '/docs/weekly-review-template.md',
-  '/docs/principles.md': '/docs/weekly-review-template.md',
-  '/docs/comparison.md': '/docs/weekly-review-template.md',
+  '/docs/craft-axes.md': '/sns-post-analysis',
+  '/docs/failed-experiments.md': '/sns-post-analysis',
+  '/docs/reply-activity-drives-growth.md': '/sns-post-analysis',
+  '/docs/x-algorithm-reverse-engineered.md': '/sns-post-analysis',
+  '/docs/learning-loop.md': '/sns-weekly-review',
+  '/docs/principles.md': '/sns-weekly-review',
+  '/docs/comparison.md': '/sns-weekly-review',
   '/docs/system-overview.md': '/about.md',
   '/docs/geo-learnings.md': '/about.md',
   '/docs/geo-learnings-2.md': '/about.md',
   '/llms-full.txt': '/llms.txt',
+};
+
+// 人が共有・検索から読むための固定URL。Markdown の直URLは AI / ツール連携用に維持し、
+// サイト内の導線と sitemap はこちらに統一する。
+const READER_ROUTES: Record<string, string> = {
+  '/sns-post-analysis': '/docs/growth-to-100.md',
+  '/sns-weekly-review': '/docs/weekly-review-template.md',
 };
 
 interface BotDetection {
@@ -345,19 +352,25 @@ function buildJsonLd(title: string, description: string, rawPath: string, canoni
   return JSON.stringify(ld);
 }
 
-function buildHtmlPage(html: string, title: string, rawPath: string, markdown: string): string {
+function buildHtmlPage(
+  html: string,
+  title: string,
+  rawPath: string,
+  markdown: string,
+  canonicalPath = rawPath,
+): string {
   const safeTitle = escapeHtml(title);
   const safeRaw = escapeHtml(rawPath);
   const description = extractDescription(markdown);
   const safeDescription = escapeHtml(description);
-  const canonicalUrl = `https://ai-ojiichan-system.pages.dev${rawPath}`;
+  const canonicalUrl = `https://ai-ojiichan-system.pages.dev${canonicalPath}`;
   const jsonLd = buildJsonLd(title, description, rawPath, canonicalUrl, markdown);
   const siteNav = rawPath === '/index.md'
     ? ''
     : `<nav class="site-nav" aria-label="サイト内ナビゲーション">
   <a href="/">トップ</a>
-  <a href="/docs/growth-to-100.md?view">X投稿の分析方法</a>
-  <a href="/docs/weekly-review-template.md?view">SNS運用の週次振り返り</a>
+  <a href="/sns-post-analysis">X投稿の分析方法</a>
+  <a href="/sns-weekly-review">SNS運用の週次振り返り</a>
   <a href="/about.md?view">このサイトについて</a>
 </nav>`;
   return `<!DOCTYPE html>
@@ -394,8 +407,8 @@ ${html}
 <hr>
 <aside class="reader-next" aria-label="次に読む記事">
   <strong>次に読む</strong>
-  <p><a href="/docs/growth-to-100.md?view">1人→100人の実測記録</a></p>
-  <p><a href="/docs/weekly-review-template.md?view">SNS運用を少しずつ良くする週次シート</a></p>
+  <p><a href="/sns-post-analysis">1人→100人の実測記録</a></p>
+  <p><a href="/sns-weekly-review">SNS運用を少しずつ良くする週次シート</a></p>
   <p><a href="/about.md?view">観測範囲と公開方針</a></p>
 </aside>
 <p class="view-footer">
@@ -512,7 +525,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     }
     html = preserveViewInLinks(html);
     const title = extractTitle(md);
-    const fullPage = buildHtmlPage(html, title, '/index.md', md);
+    const fullPage = buildHtmlPage(html, title, '/index.md', md, '/');
 
     const headers = new Headers();
     headers.set('content-type', 'text/html; charset=utf-8');
@@ -524,6 +537,39 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     }
     logRequest(200);
     return new Response(fullPage, { status: 200, headers });
+  }
+
+  // 検索結果や共有リンクからは拡張子・クエリのないURLで読ませる。
+  // 原文の .md は llms.txt 等から参照する機械可読な入口として残す。
+  const readerSourcePath = READER_ROUTES[url.pathname];
+  if (readerSourcePath) {
+    const sourceUrl = new URL(readerSourcePath, url.origin);
+    const assetResponse = await env.ASSETS.fetch(sourceUrl.toString());
+    if (!assetResponse.ok) {
+      logRequest(404);
+      return new Response('Article not found', { status: 404 });
+    }
+    const md = await assetResponse.text();
+    let html: string;
+    try {
+      html = await marked.parse(md, { gfm: true, breaks: false });
+    } catch (err) {
+      console.error('reader route render failed:', err);
+      logRequest(500);
+      return new Response('Render error', { status: 500 });
+    }
+    html = preserveViewInLinks(html);
+    const headers = new Headers();
+    headers.set('content-type', 'text/html; charset=utf-8');
+    headers.set('X-AI-Friendly', 'true');
+    headers.set('X-Content-License', 'CC-BY-4.0');
+    headers.set('X-Markdown-Source', readerSourcePath);
+    if (is_ai_bot && bot_name) headers.set('X-Detected-Bot', bot_name);
+    logRequest(200);
+    return new Response(
+      buildHtmlPage(html, extractTitle(md), readerSourcePath, md, url.pathname),
+      { status: 200, headers },
+    );
   }
 
   const isViewMode = url.searchParams.has('view');

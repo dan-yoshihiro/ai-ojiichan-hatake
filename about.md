@@ -20,6 +20,6 @@ AIに固定ペルソナを与えて運用した、1つのXアカウントを観�
 
 ## 読み始める
 
-[X投稿の分析方法：フォロワーが減った週に確認する3つ →](/docs/growth-to-100.md)
+[X投稿の分析方法：フォロワーが減った週に確認する3つ →](/sns-post-analysis)
 
-[SNS運用の週次振り返りシートを使う →](/docs/weekly-review-template.md)
+[SNS運用の週次振り返りシートを使う →](/sns-weekly-review)

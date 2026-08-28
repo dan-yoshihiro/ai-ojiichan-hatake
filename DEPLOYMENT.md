@@ -179,7 +179,7 @@ curl -A "Mozilla/5.0" https://ai-ojiichan-system.pages.dev/                     
 curl -A "Mozilla/5.0" https://ai-ojiichan-system.pages.dev/llms.txt
 curl -A "Mozilla/5.0" https://ai-ojiichan-system.pages.dev/robots.txt
 curl -A "Mozilla/5.0" https://ai-ojiichan-system.pages.dev/docs/growth-to-100.md            # raw markdown
-curl -A "Mozilla/5.0" "https://ai-ojiichan-system.pages.dev/docs/growth-to-100.md?view"     # human-readable HTML
+curl -A "Mozilla/5.0" "https://ai-ojiichan-system.pages.dev/sns-post-analysis"              # human-readable HTML
 ```
 
 ブラウザで `https://YOUR-SITE.pages.dev/?view` を開くと human-readable レンダリング、`?view` を外すと raw markdown が見える。
