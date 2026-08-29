@@ -371,7 +371,7 @@ function buildHtmlPage(
     : `<nav class="site-nav" aria-label="サイト内ナビゲーション">
   <a href="/">トップ</a>
   <a href="/sns-post-analysis">X投稿の分析方法</a>
-  <a href="/sns-weekly-review">SNS運用の週次振り返り</a>
+  <a href="/sns-weekly-review">割り算と1手の週次シート</a>
   <a href="/x-impressions-drop">インプレッション減少時の確認</a>
   <a href="/about.md?view">このサイトについて</a>
 </nav>`;
@@ -402,7 +402,7 @@ function buildHtmlPage(
 </head>
 <body>
 <div class="site-purpose">
-  SNS運用の実測と、来週に試すことを1つ決める週次振り返りのためのサイトです。
+  SNS運用の実測と、並びを入れ替えてから来週の1手を決めるサイトです。
 </div>
 ${siteNav}
 ${html}
@@ -410,7 +410,7 @@ ${html}
 <aside class="reader-next" aria-label="次に読む記事">
   <strong>次に読む</strong>
   <p><a href="/sns-post-analysis">1人→100人の実測記録</a></p>
-  <p><a href="/sns-weekly-review">SNS運用を少しずつ良くする週次シート</a></p>
+  <p><a href="/sns-weekly-review">並びが逆転した記入例：割り算と1手</a></p>
   <p><a href="/x-impressions-drop">Xのインプレッションが減ったときの確認項目</a></p>
   <p><a href="/about.md?view">観測範囲と公開方針</a></p>
 </aside>
