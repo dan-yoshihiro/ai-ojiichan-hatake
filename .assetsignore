@@ -1,0 +1,16 @@
+# pages_build_output_dir="." のため、公開しないファイルを静的アセットから外す
+node_modules
+.git
+.claude
+.sf
+.wrangler
+schema
+queries
+functions
+wrangler.toml
+package.json
+package-lock.json
+.gitignore
+.assetsignore
+*.ts
+*.toml

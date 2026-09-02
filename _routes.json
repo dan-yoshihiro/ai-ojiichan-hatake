@@ -1,5 +1,23 @@
 {
   "version": 1,
-  "include": ["/*"],
-  "exclude": ["/static/*"]
+  "include": [
+    "/",
+    "/index.md",
+    "/about.md",
+    "/DEPLOYMENT.md",
+    "/LICENSE",
+    "/docs/*",
+    "/sns-post-analysis",
+    "/sns-weekly-review",
+    "/x-impressions-drop",
+    "/admin/*",
+    "/llms.txt",
+    "/llms-full.txt",
+    "/robots.txt",
+    "/sitemap.xml",
+    "/.well-known/security.txt"
+  ],
+  "exclude": [
+    "/static/*"
+  ]
 }
