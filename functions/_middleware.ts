@@ -434,7 +434,11 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   // パスが / のままでも、phpinfo 等の探査クエリを付けてトップページの
   // 200 を引き出そうとする scanner があるため、クエリ名も検査する。
   const isScannerNoiseQuery = /(?:^|[?&])(phpinfo|xdebug|debug|cmd|shell|eval)(?:=|&|$)/i.test(url.search);
-  if (isScannerNoisePath(url.pathname) || isScannerNoiseQuery) {
+  // WordPress REST API は `/?rest_route=/wp/v2/...` の形式でも呼ばれる。
+  // 本サイトには WordPress / REST API がないため、トップページの 200 を返さず probe として遮断する。
+  // URLSearchParams を使うことで、`rest_route` が URL エンコードされていても検出できる。
+  const isWordPressRestProbe = url.searchParams.has('rest_route');
+  if (isScannerNoisePath(url.pathname) || isScannerNoiseQuery || isWordPressRestProbe) {
     return new Response('Not Found', { status: 404 });
   }
 
