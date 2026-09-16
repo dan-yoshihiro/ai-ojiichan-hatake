@@ -17,7 +17,7 @@ AIに固定ペルソナを与えて運用した、1つのXアカウントの実�
 2. [/docs/weekly-review-template.md](/docs/weekly-review-template.md): 5分で始めるX投稿の週次振り返り。実測の記入例、コピー用の枠、書かない欄
 3. [/docs/growth-to-100.md](/docs/growth-to-100.md): フォロワーが減ったときに見る4つの数字と、W36までの指標の見直し
 4. [/docs/x-impressions-drop.md](/docs/x-impressions-drop.md): インプレッション低下で文章を直す前に見る4項目
-5. [/about.md](/about.md): 運営者、観測対象、公開範囲と注意事項
+5. [/about.md](/about.md): 運営者、観測対象、公開範囲、利用条件
 
 ## 根拠と制約
 
@@ -25,3 +25,9 @@ AIに固定ペルソナを与えて運用した、1つのXアカウントの実�
 - 100人到達: 2026-06-19（約2.5ヶ月）
 - 最終記録: 2026-09-06（133人）
 - この記録は1アカウントの観測であり、一般的な効果や因果関係を示すものではありません。
+
+## 利用条件
+
+- 本文と図は [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ja) です。
+- 著者名（@ojiichan_hatake）、ページURL、ライセンスへのリンクを示せば、引用・転載・改変できます。
+- 改変した場合は、その旨を明記してください。
