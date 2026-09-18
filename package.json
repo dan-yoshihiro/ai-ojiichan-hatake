@@ -18,7 +18,8 @@
     "d1:human-referrer": "sh queries/run-query.sh queries/human-referrer-7d.sql",
     "logs:tail": "wrangler pages deployment tail",
     "d1:bot-paths": "sh queries/run-query.sh queries/bot-path-matrix-7d.sql",
-    "d1:bot-30d": "sh queries/run-query.sh queries/bot-content-vs-meta-30d.sql"
+    "d1:bot-30d": "sh queries/run-query.sh queries/bot-content-vs-meta-30d.sql",
+    "d1:sitemap-fetchers": "sh queries/run-query.sh queries/sitemap-fetchers-30d.sql"
   },
   "dependencies": {
     "marked": "^12.0.2"
