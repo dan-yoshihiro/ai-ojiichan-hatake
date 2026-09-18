@@ -13,6 +13,9 @@
 # 制約:
 # - 複数文の .sql は渡せない（--command は1文のみ）。
 #   schema/init.sql のような複数文は --file のままにする
+# - SQL 冒頭の `--` コメント行は落としてから渡す。残すと wrangler が
+#   CLI フラグと解釈して「Unknown argument」で落ちる（2026-09-18 に発生）。
+#   行頭が `--` の行だけを対象にするので、文字列リテラル中の `--` は残る
 
 set -e
 
@@ -26,4 +29,11 @@ if [ ! -f "$1" ]; then
   exit 2
 fi
 
-npx wrangler d1 execute ai-ojiichan-logs --remote --command "$(cat "$1")"
+sql=$(sed -e 's/^[[:space:]]*--.*$//' "$1" | sed -e '/^[[:space:]]*$/d')
+
+if [ -z "$sql" ]; then
+  echo "run-query: $1 に実行できるSQLがない" >&2
+  exit 2
+fi
+
+npx wrangler d1 execute ai-ojiichan-logs --remote --command="$sql"
