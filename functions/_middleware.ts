@@ -61,9 +61,9 @@ const LEGACY_REDIRECTS: Record<string, string> = {
   '/docs/learning-loop.md': '/sns-weekly-review',
   '/docs/principles.md': '/sns-weekly-review',
   '/docs/comparison.md': '/sns-weekly-review',
-  '/docs/system-overview.md': '/about.md',
-  '/docs/geo-learnings.md': '/about.md',
-  '/docs/geo-learnings-2.md': '/about.md',
+  '/docs/system-overview.md': '/about',
+  '/docs/geo-learnings.md': '/about',
+  '/docs/geo-learnings-2.md': '/about',
   '/llms-full.txt': '/llms.txt',
 };
 
@@ -73,6 +73,7 @@ const READER_ROUTES: Record<string, string> = {
   '/sns-post-analysis': '/docs/growth-to-100.md',
   '/sns-weekly-review': '/docs/weekly-review-template.md',
   '/x-impressions-drop': '/docs/x-impressions-drop.md',
+  '/about': '/about.md',
 };
 
 interface BotDetection {
@@ -373,7 +374,7 @@ function buildHtmlPage(
   <a href="/sns-post-analysis">X投稿の分析方法</a>
   <a href="/sns-weekly-review">割り算と1手の週次シート</a>
   <a href="/x-impressions-drop">インプレッション減少時の確認</a>
-  <a href="/about.md?view">このサイトについて</a>
+  <a href="/about">このサイトについて</a>
 </nav>`;
   return `<!DOCTYPE html>
 <html lang="ja">
@@ -412,7 +413,7 @@ ${html}
   <p><a href="/sns-post-analysis">1人→100人の実測記録</a></p>
   <p><a href="/sns-weekly-review">並びが逆転した記入例：割り算と1手</a></p>
   <p><a href="/x-impressions-drop">Xのインプレッションが減ったときの確認項目</a></p>
-  <p><a href="/about.md?view">観測範囲と公開方針</a></p>
+  <p><a href="/about">観測範囲と公開方針</a></p>
 </aside>
 <p class="view-footer">
   CC-BY 4.0 / 著者: @ojiichan_hatake / <a href="${safeRaw}">Markdown版を読む</a>
@@ -482,6 +483,16 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       }
     })());
   };
+
+  // 旧来の人間向け URL を正規のクエリなし URL へ統合する。
+  // UTM 等の他パラメータは引き継ぐ。
+  if (url.pathname === '/about.md' && url.searchParams.has('view')) {
+    const redirectUrl = new URL('/about', url.origin);
+    url.searchParams.delete('view');
+    redirectUrl.search = url.searchParams.toString();
+    logRequest(301);
+    return Response.redirect(redirectUrl.toString(), 301);
+  }
 
   // 削除済みの記事は恒久的に対応先へ移転する。クエリ文字列も維持し、
   // 旧URLの ?view 閲覧や UTM パラメータを失わないようにする。
