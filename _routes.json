@@ -15,7 +15,6 @@
     "/llms.txt",
     "/llms-full.txt",
     "/robots.txt",
-    "/sitemap.xml",
     "/.well-known/security.txt"
   ],
   "exclude": [
