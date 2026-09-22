@@ -6,9 +6,13 @@
  * 2026-09-22 変更: access_logs ではなく access_logs_classified ビューを見る。
  * is_other_bot は書き込み時点の判定で過去行に遡らないため、ビュー側で UA から再判定する。
  *
+ * 2026-09-22 変更: is_owner = 0 で運営者自身の閲覧を除外する。除外しないと
+ * internal カテゴリが運営者のサイト内回遊（228 件）で埋まり、外部流入が読めない。
+ *
  * 除外:
  * - kind = 'ai_bot'（AI bot）
  * - kind = 'other_bot'（一般クローラー・CLI 等の機械アクセス。過去分も再判定済み）
+ * - is_owner = 1（運営者自身。owner_ips に登録された ip_hash）
  * - status_code != 200（NULL は許容＝旧レコード）
  * - allowlist 外のパス（scanner probe 除外）
  * - 自サイト内の遷移（内部リンククリックは referer が自ホストになるため category="internal" として分離）
@@ -44,6 +48,7 @@ WITH filtered AS (
     END AS host
   FROM access_logs_classified
   WHERE kind = 'human_candidate'
+    AND is_owner = 0
     AND (status_code IS NULL OR status_code = 200)
     AND timestamp >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-7 days')
     AND (

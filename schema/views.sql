@@ -26,6 +26,27 @@
 --   - Mozilla/ 前方一致は TS 側が startsWith() で大小区別するため GLOB（GLOB は大小区別する）
 --
 
+-- 運営者自身の閲覧を識別するための ip_hash 登録表（2026-09-22 追加）
+--
+-- なぜリポジトリに ip_hash を直接書かないか:
+-- ip_hash は SHA-256 の先頭16字だが、IPv4 は約43億通りしかないため総当たりで
+-- 元の IP を復元できる。リポジトリに置くと運営者の自宅 IP 履歴を公開することになり、
+-- about.md の「公開しないもの: 個人情報」と衝突する。値は D1 側にだけ置く。
+--
+-- 運営者 IP の見つけ方（プロバイダの割り当てが変わったら追加する）:
+--   SELECT ip_hash, COUNT(*) hits, COUNT(DISTINCT url_path) paths,
+--          SUM(CASE WHEN referer LIKE '%pages.dev%' THEN 1 ELSE 0 END) internal_ref
+--   FROM access_logs_classified
+--   WHERE country='JP' AND kind='human_candidate' AND is_owner=0
+--   GROUP BY ip_hash ORDER BY hits DESC;
+-- internal_ref が多い（サイト内リンクを踏んで回っている）行が運営者。
+-- 追加: INSERT OR IGNORE INTO owner_ips (ip_hash, note, added_at) VALUES ('...', '...', '...');
+CREATE TABLE IF NOT EXISTS owner_ips (
+  ip_hash TEXT PRIMARY KEY,
+  note TEXT,        -- 判定根拠（期間・端末など）
+  added_at TEXT
+);
+
 DROP VIEW IF EXISTS access_logs_classified;
 
 CREATE VIEW access_logs_classified AS
@@ -72,5 +93,10 @@ SELECT
       AND LOWER(user_agent) NOT LIKE '%version/%'
       THEN 'other_bot'
     ELSE 'human_candidate'
-  END AS kind
+  END AS kind,
+  -- 運営者自身の閲覧。kind とは直交させ、除外するかどうかはクエリ側で決める
+  -- （運営者の動きだけを見たいこともあるため、kind に混ぜない）
+  CASE WHEN EXISTS (
+    SELECT 1 FROM owner_ips o WHERE o.ip_hash = access_logs.ip_hash
+  ) THEN 1 ELSE 0 END AS is_owner
 FROM access_logs;
