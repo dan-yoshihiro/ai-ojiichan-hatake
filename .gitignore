@@ -3,6 +3,10 @@
 .dev.vars
 .dev.vars.*
 
+# Salesforce CLI のローカルキャッシュ
+# 起動のたびに writtenAt と generation だけが書き換わり、差分がノイズになる
+.sf/
+
 # Node.js
 node_modules/
 npm-debug.log*
