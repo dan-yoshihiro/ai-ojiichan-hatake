@@ -11,6 +11,8 @@
     "/sns-post-analysis",
     "/sns-weekly-review",
     "/x-impressions-drop",
+    "/cloudflare-bot-detection",
+    "/drafts/*",
     "/admin/*",
     "/llms.txt",
     "/llms-full.txt",

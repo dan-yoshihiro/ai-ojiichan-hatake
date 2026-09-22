@@ -65,6 +65,8 @@ const LEGACY_REDIRECTS: Record<string, string> = {
   '/docs/geo-learnings.md': '/about',
   '/docs/geo-learnings-2.md': '/about',
   '/llms-full.txt': '/llms.txt',
+  // 2026-09-22: 下書きを drafts/ に置いた間だけ公開されていた URL の受け皿
+  '/drafts/bot-detection-on-cloudflare-pages.md': '/cloudflare-bot-detection',
 };
 
 // 人が共有・検索から読むための固定URL。Markdown の直URLは AI / ツール連携用に維持し、
@@ -73,6 +75,7 @@ const READER_ROUTES: Record<string, string> = {
   '/sns-post-analysis': '/docs/growth-to-100.md',
   '/sns-weekly-review': '/docs/weekly-review-template.md',
   '/x-impressions-drop': '/docs/x-impressions-drop.md',
+  '/cloudflare-bot-detection': '/docs/bot-detection-on-cloudflare-pages.md',
   '/about': '/about.md',
 };
 
@@ -383,6 +386,7 @@ function buildHtmlPage(
   <a href="/sns-post-analysis">X投稿の分析方法</a>
   <a href="/sns-weekly-review">割り算と1手の週次シート</a>
   <a href="/x-impressions-drop">インプレッション減少時の確認</a>
+  <a href="/cloudflare-bot-detection">人間とボットの見分け方</a>
   <a href="/about">このサイトについて</a>
 </nav>`;
   return `<!DOCTYPE html>
@@ -422,6 +426,7 @@ ${html}
   <p><a href="/sns-post-analysis">1人→100人の実測記録</a></p>
   <p><a href="/sns-weekly-review">並びが逆転した記入例：割り算と1手</a></p>
   <p><a href="/x-impressions-drop">Xのインプレッションが減ったときの確認項目</a></p>
+  <p><a href="/cloudflare-bot-detection">「人間」4,165件を数え直したら35%が機械だった</a></p>
   <p><a href="/about">観測範囲と公開方針</a></p>
 </aside>
 <p class="view-footer">
