@@ -1,5 +1,9 @@
 -- Cloudflare D1 SQLite schema
 -- 全アクセスログを記録する単一テーブル
+--
+-- 注意: 機械/人間を再判定する access_logs_classified ビューは schema/views.sql にある。
+-- 判定ルールが変わるたびに作り直すため、このファイルには含めない。
+-- 新規 DB では init.sql の後に views.sql も流すこと（npm run d1:init → npm run d1:views）。
 
 CREATE TABLE IF NOT EXISTS access_logs (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -14,7 +18,11 @@ CREATE TABLE IF NOT EXISTS access_logs (
   referer TEXT,                      -- 最大500字
   -- 2026-07-06 追加（既存 DB には migrations/2026-07-06-status-otherbot.sql を適用）
   status_code INTEGER,               -- HTTP status（200/404 等。旧レコードは NULL）
-  is_other_bot INTEGER NOT NULL DEFAULT 0  -- AI bot 以外の機械アクセス（一般クローラー・CLI 等）
+  is_other_bot INTEGER NOT NULL DEFAULT 0, -- AI bot 以外の機械アクセス（一般クローラー・CLI 等）
+  -- 2026-09-22 追加（既存 DB には migrations/2026-09-22-asn.sql を適用）
+  asn INTEGER,                       -- 接続元の AS 番号（Cloudflare 自動付与）
+  as_organization TEXT,              -- AS 組織名。最大200字。UA 偽装と無関係に素性が出る
+  colo TEXT                          -- 受けた Cloudflare エッジの IATA コード（NRT 等）
 );
 
 CREATE INDEX IF NOT EXISTS idx_access_logs_timestamp
@@ -28,6 +36,9 @@ CREATE INDEX IF NOT EXISTS idx_access_logs_bot_name
 
 CREATE INDEX IF NOT EXISTS idx_access_logs_url_path
   ON access_logs(url_path, timestamp DESC);
+
+CREATE INDEX IF NOT EXISTS idx_access_logs_asn
+  ON access_logs(asn, timestamp DESC);
 
 -- 集計用ビュー: bot 別の累計アクセス数
 CREATE VIEW IF NOT EXISTS bot_summary AS

@@ -98,15 +98,24 @@ function detectAIBot(userAgent: string): BotDetection {
 const OTHER_BOT_UA_REGEX =
   /bot|crawler|spider|slurp|scrapy|curl|wget|python|go-http-client|httpx|aiohttp|okhttp|libwww|java\/|node-fetch|axios|headless|phantomjs|selenium|playwright|puppeteer|facebookexternalhit/i;
 
+// 同期先: schema/views.sql の access_logs_classified が同じ規則を SQL で持つ
+// （過去ログを遡って再判定するため）。この関数を変えたら views.sql も直して流し直すこと
 function detectOtherBot(userAgent: string): boolean {
   if (!userAgent) return true; // UA 空は正規ブラウザではあり得ない → 機械アクセス扱い
   if (OTHER_BOT_UA_REGEX.test(userAgent)) return true;
+  // 2026-09-22 追加: Mozilla/ で始まらない UA は正規ブラウザではない。
+  // 従来は OTHER_BOT_UA_REGEX の語彙に依存していたため、自ら scanner と名乗る UA を
+  // 取りこぼしていた（Palo Alto Cortex Xpanse 15 / visionheight.com/scan 9 /
+  // crusader-worker 8 / domain-harvester 2 hit が human 扱いだった）。
+  // 全期間の非 Mozilla UA を D1 で洗い出したところ人間の閲覧は1件も無かったため、
+  // 語彙の追加ではなく前方一致で切る
+  if (!userAgent.startsWith('Mozilla/')) return true;
   // 2026-07-07 追加: UA 完全性チェック。Mozilla を名乗るなら本物ブラウザには必ず
   // Chrome/Firefox/Safari/Edg/OPR/Trident のバージョンタグが含まれる。
   // 抜けているものは偽装 UA（scanner の常套手段）。
   // 事例: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" が / を
   // 定期 poll しつつ referer null で ZA から 11 回。本物 Chrome なら末尾に Chrome/x + Safari/x が付く
-  if (userAgent.startsWith('Mozilla/') && !/(Chrome|Firefox|Safari\/[\d.]+|Edg|OPR|Trident|Version\/[\d.]+)/i.test(userAgent)) {
+  if (!/(Chrome|Firefox|Safari\/[\d.]+|Edg|OPR|Trident|Version\/[\d.]+)/i.test(userAgent)) {
     return true;
   }
   return false;
@@ -446,6 +455,12 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const userAgent = request.headers.get('User-Agent') || '';
   const referer = request.headers.get('Referer') || null;
   const country = (request as any).cf?.country || null;
+  // 2026-09-22 追加: 接続元ネットワークの素性。country + user_agent だけでは
+  // 同一 UA が9カ国11IPに分散する scanner 群（住宅プロキシ網かデータセンターか）を
+  // 判別できなかった。asn/as_organization があれば UA 偽装と無関係に切り分けられる
+  const asn = (request as any).cf?.asn ?? null;
+  const asOrganization = (request as any).cf?.asOrganization || null;
+  const colo = (request as any).cf?.colo || null;
   const ip = request.headers.get('CF-Connecting-IP') || '';
 
   const { is_ai_bot, bot_name } = detectAIBot(userAgent);
@@ -461,8 +476,9 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         await env.LOGS_DB.prepare(
           `INSERT INTO access_logs (
             timestamp, url_path, method, user_agent, is_ai_bot, bot_name,
-            ip_hash, country, referer, status_code, is_other_bot
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+            ip_hash, country, referer, status_code, is_other_bot,
+            asn, as_organization, colo
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
           .bind(
             new Date().toISOString(),
@@ -475,7 +491,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
             country,
             referer ? referer.slice(0, 500) : null,
             status,
-            is_other_bot ? 1 : 0
+            is_other_bot ? 1 : 0,
+            asn,
+            asOrganization ? asOrganization.slice(0, 200) : null,
+            colo
           )
           .run();
       } catch (err) {

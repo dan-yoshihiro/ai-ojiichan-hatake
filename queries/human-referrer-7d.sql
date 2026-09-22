@@ -3,9 +3,12 @@
  * 目的: GEO サイトへの人間流入の中身を可視化する。
  * 現状 legit-human-7d.sql は url_path 別 hits のみで、referer を集計するクエリが存在しなかった。
  *
+ * 2026-09-22 変更: access_logs ではなく access_logs_classified ビューを見る。
+ * is_other_bot は書き込み時点の判定で過去行に遡らないため、ビュー側で UA から再判定する。
+ *
  * 除外:
- * - is_ai_bot = 1（AI bot）
- * - is_other_bot = 1（一般クローラー・CLI 等の機械アクセス。NULL は 0 扱い＝2026-07-06 以前の旧レコード）
+ * - kind = 'ai_bot'（AI bot）
+ * - kind = 'other_bot'（一般クローラー・CLI 等の機械アクセス。過去分も再判定済み）
  * - status_code != 200（NULL は許容＝旧レコード）
  * - allowlist 外のパス（scanner probe 除外）
  * - 自サイト内の遷移（内部リンククリックは referer が自ホストになるため category="internal" として分離）
@@ -39,9 +42,8 @@ WITH filtered AS (
         )
       )
     END AS host
-  FROM access_logs
-  WHERE is_ai_bot = 0
-    AND (is_other_bot IS NULL OR is_other_bot = 0)
+  FROM access_logs_classified
+  WHERE kind = 'human_candidate'
     AND (status_code IS NULL OR status_code = 200)
     AND timestamp >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-7 days')
     AND (

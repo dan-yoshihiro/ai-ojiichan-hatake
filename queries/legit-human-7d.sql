@@ -3,15 +3,18 @@
  * サーバーリクエストだけで「人間」は断定できないため、結果は人間候補として扱う。
  * AI bot / 一般 bot / 失敗応答 / scanner probe を除外し、実コンテンツの 200 応答だけを集計する。
  * unique_ip_candidates は同一ネットワーク（NAT）を一人にまとめることもあるため、人数ではない。
+ *
+ * 2026-09-22 変更: access_logs の is_other_bot 列ではなく access_logs_classified ビューを見る。
+ * is_other_bot は書き込み時点の判定なので、ルールを直しても過去行に遡らない。
+ * 実際この変更時点で、旧 human? 4,165 行のうち 1,475 行が現行ルールでは機械だった。
  */
 SELECT
   url_path,
   COUNT(*) AS human_candidate_pageviews,
   COUNT(DISTINCT ip_hash) AS unique_ip_candidates,
   MAX(timestamp) AS last_seen
-FROM access_logs
-WHERE is_ai_bot = 0
-  AND COALESCE(is_other_bot, 0) = 0
+FROM access_logs_classified
+WHERE kind = 'human_candidate'
   AND COALESCE(status_code, 200) = 200
   AND timestamp >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-7 days')
   AND (
