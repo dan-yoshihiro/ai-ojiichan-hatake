@@ -7,6 +7,8 @@ node_modules
 schema
 queries
 functions
+drafts
+editorial
 wrangler.toml
 package.json
 package-lock.json
