@@ -15,7 +15,7 @@ Pages Functions で HTML を生成している人向けの記録です。「Web 
 | Pages のプロジェクトから | Workers & Pages → プロジェクト → Metrics タブの下の方 → Enable | Cloudflare が入れる |
 | アカウントから | 左メニューの Analytics → Web analytics → Add a site | 自分で貼る（JS Snippet） |
 
-このサイトは2つ目で登録していました。Metrics タブを見ると、いまも「Web analytics is disabled」のままです。登録の種類は、Web analytics のサイト一覧で見分けられます。自分で貼る方式なら、サイト名の横に「JS Snippet installation」と出ます。
+自分がどちらで登録したかは、Web analytics のサイト一覧で見分けられます。自分で貼る方式なら、サイト名の横に「JS Snippet installation」と出ます。このサイトの Metrics タブは、いまも「Web analytics is disabled」のままです。
 
 1つ目の入口で有効にした場合、Functions が組み立てる応答にも Cloudflare がビーコンを入れてくれるのかは試していません。
 
@@ -25,7 +25,7 @@ Pages Functions で HTML を生成している人向けの記録です。「Web 
 
 Cloudflare Web Analytics は設定済みで、すでに計測できているつもりでした。ところが実際の配信 HTML を確認すると、`beacon.min.js` も `data-cf-beacon` もありませんでした。設定画面を見て安心していましたが、ブラウザまで計測コードが届いていなかったのです。
 
-設定していたのは、Web Analytics の sites 画面でのサイト登録でした。管理画面をあらためて開くと「Install JS Snippet」とあります。自分で貼る方式です。Pages のプロジェクト設定から有効にしたわけではないので、Cloudflare が HTML に何かを差し込んでくれる登録ではありませんでした。
+設定していたのは、2つ目の入口からのサイト登録でした。サイトの管理画面を開くと「Install JS Snippet」とあります。`</body>` の直前に自分で貼る方式です。Cloudflare が HTML に何かを差し込んでくれる登録ではありませんでした。いま残っている登録は、ビーコンをコードに入れた日にやり直したものです。
 
 貼る先も無かった。このサイトは静的な HTML ファイルを置いていません。Pages Functions のミドルウェアが Markdown を `marked` で変換し、組み立てた HTML を `Response` として返しているので、スニペットを入れるならコードの中しかありません。そこに入れていなかったので、ビーコンはどのページにも載っていませんでした。
 
@@ -37,11 +37,11 @@ Cloudflare Web Analytics は設定済みで、すでに計測できているつ�
 curl -s https://自分のサイト.example/ | grep -E 'beacon\.min\.js|data-cf-beacon'
 ```
 
-ブラウザの「ページのソースを表示」で `beacon.min.js` を検索しても確認できます。何も見つからなければ、少なくとも HTML に計測コードは入っていません。DevTools の Network パネルで、`beacon.min.js` が読み込まれているかを見る方法もあります。
+ブラウザの「ページのソースを表示」で `beacon.min.js` を検索しても確認できます。何も見つからなければ、少なくとも HTML に計測コードは入っていません。
 
 ## Functions で生成する HTML へビーコンを追加する
 
-スニペットは、HTML を組み立てるコードの側に入れました。
+スニペットは、HTML を組み立てるコードの側に入れました。スニペットの中でサイトごとに違うのは site token だけです。管理画面の JS Snippet に書かれている `"token":"…"` の値で、これを環境変数で渡します。
 
 ### 1. site token を受け取る変数を用意する
 
@@ -93,7 +93,7 @@ curl -s https://自分のサイト.example/ | grep -E 'beacon\.min\.js|data-cf-b
 
 今度はビーコンの `<script>` が返れば、少なくとも計測コードがブラウザまで届く状態です。そのうえで DevTools の Network パネルを開き、スクリプトの取得やビーコン送信がブロックされていないかを確認します。Web Analytics の数字が出るかだけを待つより、「HTML にあるか」「読み込まれたか」「送信されたか」の順で切り分けた方が、どこで止まっているか分かります。
 
-このサイトでは、サイトを登録してから半日ほどで、一覧にページビュー1件、訪問1件が出ました。少なくとも1回は、ビーコンが最後まで動いたことになります。
+このサイトでは、登録をやり直した日のうちに、サイト一覧の「過去24時間」にページビュー1件、訪問1件が出ました。少なくとも1回は、ビーコンが最後まで動いたことになります。
 
 ## これで比べられるようになったもの
 
