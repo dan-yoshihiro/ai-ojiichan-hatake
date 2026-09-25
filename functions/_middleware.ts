@@ -17,6 +17,8 @@ import { marked } from 'marked';
 interface Env {
   LOGS_DB: D1Database;
   ADMIN_TOKEN?: string;
+  /** Cloudflare Web Analytics の JS snippet に表示される site token */
+  CF_WEB_ANALYTICS_TOKEN?: string;
   ASSETS: Fetcher;
 }
 
@@ -372,6 +374,7 @@ function buildHtmlPage(
   rawPath: string,
   markdown: string,
   canonicalPath = rawPath,
+  webAnalyticsToken?: string,
 ): string {
   const safeTitle = escapeHtml(title);
   const safeRaw = escapeHtml(rawPath);
@@ -379,6 +382,12 @@ function buildHtmlPage(
   const safeDescription = escapeHtml(description);
   const canonicalUrl = `https://ai-ojiichan-system.pages.dev${canonicalPath}`;
   const jsonLd = buildJsonLd(title, description, rawPath, canonicalUrl, markdown);
+  // Pages Functions が返す HTML には Web Analytics の自動挿入が効かないため、
+  // Pages の環境変数から取得した site token で明示的にビーコンを追加する。
+  // token が未設定のローカル開発環境ではスクリプトを出力しない。
+  const webAnalyticsBeacon = webAnalyticsToken
+    ? `<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${escapeHtml(webAnalyticsToken)}"}'></script>`
+    : '';
   const siteNav = rawPath === '/index.md'
     ? ''
     : `<nav class="site-nav" aria-label="サイト内ナビゲーション">
@@ -432,6 +441,7 @@ ${html}
 <p class="view-footer">
   CC-BY 4.0 / 著者: @ojiichan_hatake / <a href="${safeRaw}">Markdown版を読む</a>
 </p>
+${webAnalyticsBeacon}
 </body>
 </html>`;
 }
@@ -567,7 +577,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     }
     html = preserveViewInLinks(html);
     const title = extractTitle(md);
-    const fullPage = buildHtmlPage(html, title, '/index.md', md, '/');
+    const fullPage = buildHtmlPage(html, title, '/index.md', md, '/', env.CF_WEB_ANALYTICS_TOKEN);
 
     const headers = new Headers();
     headers.set('content-type', 'text/html; charset=utf-8');
@@ -609,7 +619,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     if (is_ai_bot && bot_name) headers.set('X-Detected-Bot', bot_name);
     logRequest(200);
     return new Response(
-      buildHtmlPage(html, extractTitle(md), readerSourcePath, md, url.pathname),
+      buildHtmlPage(html, extractTitle(md), readerSourcePath, md, url.pathname, env.CF_WEB_ANALYTICS_TOKEN),
       { status: 200, headers },
     );
   }
@@ -630,7 +640,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     }
     html = preserveViewInLinks(html);
     const title = extractTitle(md);
-    const fullPage = buildHtmlPage(html, title, url.pathname, md);
+    const fullPage = buildHtmlPage(html, title, url.pathname, md, url.pathname, env.CF_WEB_ANALYTICS_TOKEN);
 
     const headers = new Headers();
     headers.set('content-type', 'text/html; charset=utf-8');
