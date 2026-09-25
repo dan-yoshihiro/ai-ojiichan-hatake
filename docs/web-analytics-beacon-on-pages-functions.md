@@ -1,16 +1,33 @@
-# Web Analytics を有効にしたのに、Pages Functions が返す HTML にビーコンが無かった
+# Web Analytics に登録したのに、Pages Functions が返す HTML にビーコンが無かった
 
 *最終更新: 2026-09-25*
 
-> **TL;DR:** このサイトでは Cloudflare Web Analytics を有効にしていたのに、Pages Functions が組み立てて返す HTML にビーコンが入っていませんでした。数字が出ないときは、設定画面より先に実際の応答 HTML を `curl` で確かめます。入っていなければ、HTML を組み立てる関数に `<script>` を1か所足せば済みます。
+> **TL;DR:** Cloudflare Web Analytics にサイトを登録しただけで、計測できているつもりでした。登録は JS Snippet を自分で貼る方式で、Pages Functions が組み立てる HTML には誰もスニペットを入れていませんでした。数字が出ないときは、設定画面より先に実際の応答 HTML を `curl` で確かめます。入っていなければ、HTML を組み立てる関数に `<script>` を1か所足せば済みます。
 
-Pages Functions で HTML を生成している人向けの記録です。「Web Analytics を有効にしたのにデータが出ない」ときに、どこから確かめればいいかを書きます。サーバーログで人間とボットを数え直した経緯は[「人間」4,165件を数え直したら35%が機械だった](/cloudflare-bot-detection)にあります。この記事はその途中で見つけた、計測コードが届いていなかった件だけを扱います。
+Pages Functions で HTML を生成している人向けの記録です。「Web Analytics に登録したのにデータが出ない」ときに、どこから確かめればいいかを書きます。サーバーログで人間とボットを数え直した経緯は[「人間」4,165件を数え直したら35%が機械だった](/cloudflare-bot-detection)にあります。この記事はその途中で見つけた、計測コードが届いていなかった件だけを扱います。
+
+## Web Analytics の入口は2つある
+
+まず、ここで迷いました。Web Analytics はダッシュボードのどこにあるのか分かりにくく、しかも入口が2つあって、どちらにも「Web Analytics」と書いてあります。
+
+| 入口 | 場所 | ビーコン |
+|---|---|---|
+| Pages のプロジェクトから | Workers & Pages → プロジェクト → Metrics タブの下の方 → Enable | Cloudflare が入れる |
+| アカウントから | 左メニューの Analytics → Web analytics → Add a site | 自分で貼る（JS Snippet） |
+
+このサイトは2つ目で登録していました。Metrics タブを見ると、いまも「Web analytics is disabled」のままです。登録の種類は、Web analytics のサイト一覧で見分けられます。自分で貼る方式なら、サイト名の横に「JS Snippet installation」と出ます。
+
+1つ目の入口で有効にした場合、Functions が組み立てる応答にも Cloudflare がビーコンを入れてくれるのかは試していません。
+
+見られるのは、ページビューと訪問数、どのページがどこから読まれたか、国、ブラウザや端末の内訳です。数えるのはビーコンの JavaScript が動いたページだけで、ASN や生の UA、IP といった1件ずつの中身は出ません。同じ Analytics のメニューには Account analytics も並んでいて、国別のリクエスト数はそちらに出ます。似た名前が隣にあるのも、迷う理由の1つでした。
 
 ## 設定済みなのに、HTML にビーコンが無かった
 
 Cloudflare Web Analytics は設定済みで、すでに計測できているつもりでした。ところが実際の配信 HTML を確認すると、`beacon.min.js` も `data-cf-beacon` もありませんでした。設定画面を見て安心していましたが、ブラウザまで計測コードが届いていなかったのです。
 
-このサイトは静的な HTML ファイルを置いているわけではありません。Pages Functions のミドルウェアが Markdown を `marked` で変換し、生成した HTML を `Response` として返しています。設定は有効なのに、この応答にはビーコンが入っていませんでした。自動挿入がどの種類の応答に効くのかまでは確かめていません。分かっているのは、この構成では入らなかったということです。
+設定していたのは、Web Analytics の sites 画面でのサイト登録でした。管理画面をあらためて開くと「Install JS Snippet」とあります。自分で貼る方式です。Pages のプロジェクト設定から有効にしたわけではないので、Cloudflare が HTML に何かを差し込んでくれる登録ではありませんでした。
+
+貼る先も無かった。このサイトは静的な HTML ファイルを置いていません。Pages Functions のミドルウェアが Markdown を `marked` で変換し、組み立てた HTML を `Response` として返しているので、スニペットを入れるならコードの中しかありません。そこに入れていなかったので、ビーコンはどのページにも載っていませんでした。
 
 ## まず応答 HTML を確かめる
 
@@ -24,7 +41,7 @@ curl -s https://自分のサイト.example/ | grep -E 'beacon\.min\.js|data-cf-b
 
 ## Functions で生成する HTML へビーコンを追加する
 
-今回の構成では自動挿入に頼らず、Pages Functions が生成する HTML へビーコンを明示的に追加しました。
+スニペットは、HTML を組み立てるコードの側に入れました。
 
 ### 1. site token を受け取る変数を用意する
 
@@ -75,6 +92,8 @@ curl -s https://自分のサイト.example/ | grep -E 'beacon\.min\.js|data-cf-b
 ```
 
 今度はビーコンの `<script>` が返れば、少なくとも計測コードがブラウザまで届く状態です。そのうえで DevTools の Network パネルを開き、スクリプトの取得やビーコン送信がブロックされていないかを確認します。Web Analytics の数字が出るかだけを待つより、「HTML にあるか」「読み込まれたか」「送信されたか」の順で切り分けた方が、どこで止まっているか分かります。
+
+このサイトでは、サイトを登録してから半日ほどで、一覧にページビュー1件、訪問1件が出ました。少なくとも1回は、ビーコンが最後まで動いたことになります。
 
 ## これで比べられるようになったもの
 

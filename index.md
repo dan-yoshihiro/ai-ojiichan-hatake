@@ -73,7 +73,7 @@ AIに固定ペルソナを与えたXアカウントは、6月12日に99人へ到
 | Xのインプレッションが急に減った | [インプレッション低下で文章を直す前の4項目](/x-impressions-drop) | 実施量・届いた量・当たり・入口と出口を分ける確認方法 |
 | 今週の数字から来週の行動を決めたい | [割り算と1手の週次シート](/sns-weekly-review) | 「まだ分からないこと」と1手だけ書く欄 |
 | アクセス解析の「人間」が本当に人間か疑わしい | [「人間」4,165件を数え直したら35%が機械だった](/cloudflare-bot-detection) | Cloudflare Pages で人間とボットを見分けた実装と、判定の穴と数える相手を直した記録 |
-| Web Analytics を有効にしたのに数字が出ない | [Pages Functions で HTML を返すと、ビーコンが入っていなかった](/cloudflare-web-analytics-beacon) | 応答 HTML の確かめ方と、生成 HTML へのビーコン追加 |
+| Web Analytics に登録したのに数字が出ない | [Pages Functions が返す HTML にビーコンが無かった](/cloudflare-web-analytics-beacon) | 応答 HTML の確かめ方と、生成 HTML へのビーコン追加 |
 
 ## この記録を読むときの注意
 

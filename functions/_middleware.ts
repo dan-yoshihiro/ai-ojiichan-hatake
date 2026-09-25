@@ -383,8 +383,8 @@ function buildHtmlPage(
   const safeDescription = escapeHtml(description);
   const canonicalUrl = `https://ai-ojiichan-system.pages.dev${canonicalPath}`;
   const jsonLd = buildJsonLd(title, description, rawPath, canonicalUrl, markdown);
-  // Pages Functions が返す HTML には Web Analytics の自動挿入が効かないため、
-  // Pages の環境変数から取得した site token で明示的にビーコンを追加する。
+  // Web Analytics は JS Snippet 方式で登録しており、自動挿入はされない。
+  // HTML はここで組み立てるので、環境変数の site token でビーコンを明示的に追加する。
   // token が未設定のローカル開発環境ではスクリプトを出力しない。
   const webAnalyticsBeacon = webAnalyticsToken
     ? `<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${escapeHtml(webAnalyticsToken)}"}'></script>`
