@@ -17,6 +17,7 @@ database_id = "f44a0341-7fa9-4d8e-af0b-11da32e5eb4a"
 [vars]
 ADMIN_TOKEN_HINT = "set ADMIN_TOKEN as encrypted env var via dashboard"
 # Web Analytics の「JS Snippet installation」にある token を、Cloudflare Pages
-# Dashboard の Settings > Environment variables に CF_WEB_ANALYTICS_TOKEN として設定する。
+# Functions 構成のソースであるこのファイルで CF_WEB_ANALYTICS_TOKEN として設定する。
 # Functions が生成する HTML には自動挿入されないため、_middleware.ts がこの値を使って
-# beacon.min.js を </body> 直前へ追加する。トークン値自体はここへコミットしない。
+# beacon.min.js を </body> 直前へ追加する。token はブラウザへ配信される公開識別子である。
+CF_WEB_ANALYTICS_TOKEN = "9b712a6f125e4bddb31a2392102e4243"
