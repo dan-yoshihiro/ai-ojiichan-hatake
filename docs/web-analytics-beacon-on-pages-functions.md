@@ -1,8 +1,8 @@
-# Pages Functions で HTML を返すと、Web Analytics のビーコンが入っていなかった
+# Web Analytics を有効にしたのに、Pages Functions が返す HTML にビーコンが無かった
 
 *最終更新: 2026-09-25*
 
-> **TL;DR:** Cloudflare Web Analytics を有効にしていても、Pages Functions が組み立てて返す HTML にはビーコンが入っていませんでした。数字が出ないときは、設定画面より先に実際の応答 HTML を `curl` で確かめます。入っていなければ、HTML を組み立てる関数に `<script>` を1か所足せば済みます。
+> **TL;DR:** このサイトでは Cloudflare Web Analytics を有効にしていたのに、Pages Functions が組み立てて返す HTML にビーコンが入っていませんでした。数字が出ないときは、設定画面より先に実際の応答 HTML を `curl` で確かめます。入っていなければ、HTML を組み立てる関数に `<script>` を1か所足せば済みます。
 
 Pages Functions で HTML を生成している人向けの記録です。「Web Analytics を有効にしたのにデータが出ない」ときに、どこから確かめればいいかを書きます。サーバーログで人間とボットを数え直した経緯は[「人間」4,165件を数え直したら35%が機械だった](/cloudflare-bot-detection)にあります。この記事はその途中で見つけた、計測コードが届いていなかった件だけを扱います。
 
