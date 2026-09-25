@@ -18,8 +18,9 @@ AIに固定ペルソナを与えて運用した、1つのXアカウントの実�
 2. [/docs/weekly-review-template.md](/docs/weekly-review-template.md): 5分で始めるX投稿の週次振り返り。実測の記入例、コピー用の枠、書かない欄
 3. [/docs/growth-to-100.md](/docs/growth-to-100.md): フォロワーが減ったときに見る4つの数字と、W37（2026年9月7日〜13日）までの指標の見直し
 4. [/docs/x-impressions-drop.md](/docs/x-impressions-drop.md): インプレッション低下で文章を直す前に見る4項目
-5. [/docs/bot-detection-on-cloudflare-pages.md](/docs/bot-detection-on-cloudflare-pages.md): Cloudflare Pages で人間とボットを見分けた記録。Functions + D1 の実装、判定の失敗3回、「人間」4,165件のうち35%が機械で404件が運営者自身だった内訳
-6. [/about.md](/about.md): 運営者、観測対象、公開範囲、利用条件
+5. [/docs/bot-detection-on-cloudflare-pages.md](/docs/bot-detection-on-cloudflare-pages.md): Cloudflare Pages で人間とボットを見分けた記録。Functions + D1 の実装、判定の穴2つと数える相手の決め直し、「人間」4,165件のうち35%が機械で404件が運営者自身だった内訳
+6. [/docs/web-analytics-beacon-on-pages-functions.md](/docs/web-analytics-beacon-on-pages-functions.md): Pages Functions が返す HTML に Web Analytics のビーコンが入っていなかった件。応答 HTML の確かめ方と追加手順
+7. [/about.md](/about.md): 運営者、観測対象、公開範囲、利用条件
 
 ## 根拠と制約
 

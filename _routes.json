@@ -12,6 +12,7 @@
     "/sns-weekly-review",
     "/x-impressions-drop",
     "/cloudflare-bot-detection",
+    "/cloudflare-web-analytics-beacon",
     "/drafts/*",
     "/admin/*",
     "/llms.txt",

@@ -78,6 +78,7 @@ const READER_ROUTES: Record<string, string> = {
   '/sns-weekly-review': '/docs/weekly-review-template.md',
   '/x-impressions-drop': '/docs/x-impressions-drop.md',
   '/cloudflare-bot-detection': '/docs/bot-detection-on-cloudflare-pages.md',
+  '/cloudflare-web-analytics-beacon': '/docs/web-analytics-beacon-on-pages-functions.md',
   '/about': '/about.md',
 };
 
