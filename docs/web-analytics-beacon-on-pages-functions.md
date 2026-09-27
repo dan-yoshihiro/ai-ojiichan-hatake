@@ -1,8 +1,8 @@
-# Web Analytics に登録したのに、Pages Functions が返す HTML にビーコンが無かった
+# Cloudflare Web Analytics にデータが表示されないとき：Pages Functions の HTML にビーコンが無かった
 
-*最終更新: 2026-09-25*
+*最終更新: 2026-09-27*
 
-> **TL;DR:** Cloudflare Web Analytics にサイトを登録しただけで、計測できているつもりでした。登録は JS Snippet を自分で貼る方式で、Pages Functions が組み立てる HTML には誰もスニペットを入れていませんでした。数字が出ないときは、設定画面より先に実際の応答 HTML を `curl` で確かめます。入っていなければ、HTML を組み立てる関数に `<script>` を1か所足せば済みます。
+> **TL;DR:** Cloudflare Web Analytics にデータが表示されない、ページビューが0のまま、というときの確認手順です。私はサイトを登録しただけで、計測できているつもりでした。登録は JS Snippet を自分で貼る方式で、Pages Functions が組み立てる HTML には誰もスニペットを入れていませんでした。数字が出ないときは、設定画面より先に実際の応答 HTML を `curl` で確かめます。入っていなければ、HTML を組み立てる関数に `<script>` を1か所足せば済みます。
 
 Pages Functions で HTML を生成している人向けの記録です。「Web Analytics に登録したのにデータが出ない」ときに、どこから確かめればいいかを書きます。サーバーログで人間とボットを数え直した経緯は[「人間」4,165件を数え直したら35%が機械だった](/cloudflare-bot-detection)にあります。この記事はその途中で見つけた、計測コードが届いていなかった件だけを扱います。
 
