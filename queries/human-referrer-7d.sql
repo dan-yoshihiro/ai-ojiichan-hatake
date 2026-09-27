@@ -15,6 +15,7 @@
  * - is_owner = 1（運営者自身。owner_ips に登録された ip_hash）
  * - status_code != 200（NULL は許容＝旧レコード）
  * - allowlist 外のパス（scanner probe 除外）
+ *   人向け固定 URL と、その URL に UTM 等のクエリが付いた場合も対象に含める。
  * - 自サイト内の遷移（内部リンククリックは referer が自ホストになるため category="internal" として分離）
  *
  * 分類の考え方（学び 7: 「AI は人間の行動シグナルを借りて評価」を実測するため、経路を分けて追う）:
@@ -53,6 +54,19 @@ WITH filtered AS (
     AND timestamp >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-7 days')
     AND (
       url_path = '/'
+      OR url_path LIKE '/?%'
+      OR url_path = '/sns-post-analysis'
+      OR url_path LIKE '/sns-post-analysis?%'
+      OR url_path = '/sns-weekly-review'
+      OR url_path LIKE '/sns-weekly-review?%'
+      OR url_path = '/x-impressions-drop'
+      OR url_path LIKE '/x-impressions-drop?%'
+      OR url_path = '/cloudflare-bot-detection'
+      OR url_path LIKE '/cloudflare-bot-detection?%'
+      OR url_path = '/cloudflare-web-analytics-beacon'
+      OR url_path LIKE '/cloudflare-web-analytics-beacon?%'
+      OR url_path = '/about'
+      OR url_path LIKE '/about?%'
       OR url_path LIKE '%.md'
       OR url_path LIKE '%.md?%'
       OR url_path LIKE '/llms%.txt'
