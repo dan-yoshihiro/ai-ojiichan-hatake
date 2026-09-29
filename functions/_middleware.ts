@@ -14,6 +14,19 @@
 
 import { marked } from 'marked';
 
+const PRODUCTION_PAGES_HOSTNAME = 'ai-ojiichan-system.pages.dev';
+
+/**
+ * `_headers` は Pages Functions が生成したレスポンスには適用されないため、
+ * 本番 pages.dev ホストでは Functions 側でも index 許可を明示する。
+ * ハッシュ・ブランチ付きのプレビューホストには付与しない。
+ */
+function setProductionRobotsHeader(headers: Headers, url: URL): void {
+  if (url.hostname === PRODUCTION_PAGES_HOSTNAME) {
+    headers.set('X-Robots-Tag', 'index, follow');
+  }
+}
+
 interface Env {
   LOGS_DB: D1Database;
   ADMIN_TOKEN?: string;
@@ -585,6 +598,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     headers.set('X-AI-Friendly', 'true');
     headers.set('X-Content-License', 'CC-BY-4.0');
     headers.set('X-Markdown-Source', '/index.md');
+    setProductionRobotsHeader(headers, url);
     if (is_ai_bot && bot_name) {
       headers.set('X-Detected-Bot', bot_name);
     }
@@ -617,6 +631,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     headers.set('X-AI-Friendly', 'true');
     headers.set('X-Content-License', 'CC-BY-4.0');
     headers.set('X-Markdown-Source', readerSourcePath);
+    setProductionRobotsHeader(headers, url);
     if (is_ai_bot && bot_name) headers.set('X-Detected-Bot', bot_name);
     logRequest(200);
     return new Response(
@@ -648,6 +663,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     headers.set('X-AI-Friendly', 'true');
     headers.set('X-Content-License', 'CC-BY-4.0');
     headers.set('X-Markdown-Source', url.pathname);
+    setProductionRobotsHeader(headers, url);
     if (is_ai_bot && bot_name) {
       headers.set('X-Detected-Bot', bot_name);
     }
@@ -659,6 +675,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const newHeaders = new Headers(response.headers);
   newHeaders.set('X-AI-Friendly', 'true');
   newHeaders.set('X-Content-License', 'CC-BY-4.0');
+  setProductionRobotsHeader(newHeaders, url);
   if (is_ai_bot && bot_name) {
     newHeaders.set('X-Detected-Bot', bot_name);
   }

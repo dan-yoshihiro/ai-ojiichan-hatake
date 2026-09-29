@@ -1,3 +1,8 @@
+# 本番の pages.dev ホストは検索エンジン向けに明示的に index を許可する。
+# ホストを限定し、ハッシュ付きのプレビューデプロイには適用しない。
+https://ai-ojiichan-system.pages.dev/*
+  X-Robots-Tag: index, follow
+
 # 静的アセットのみエッジキャッシュする。HTML / Markdown は Functions 生成のため対象外。
 /static/*
   Cache-Control: public, max-age=604800
