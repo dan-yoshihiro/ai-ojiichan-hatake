@@ -1,12 +1,12 @@
-# Cloudflare Web Analytics にデータが表示されないとき：Pages Functions の HTML にビーコンが無かった
+# Cloudflare Web Analytics にデータが表示されない・ページビューが0のとき：Cloudflare Pages Functions の HTML にビーコンが無かった
 
-*最終更新: 2026-09-27*
+*最終更新: 2026-10-02*
 
 > **TL;DR:** Cloudflare Web Analytics にデータが表示されない、ページビューが0のまま、というときの確認手順です。私はサイトを登録しただけで、計測できているつもりでした。登録は JS Snippet を自分で貼る方式で、Pages Functions が組み立てる HTML には誰もスニペットを入れていませんでした。数字が出ないときは、設定画面より先に実際の応答 HTML を `curl` で確かめます。入っていなければ、HTML を組み立てる関数に `<script>` を1か所足せば済みます。
 
 Pages Functions で HTML を生成している人向けの記録です。「Web Analytics に登録したのにデータが出ない」ときに、どこから確かめればいいかを書きます。サーバーログで人間とボットを数え直した経緯は[「人間」4,165件を数え直したら35%が機械だった](/cloudflare-bot-detection)にあります。この記事はその途中で見つけた、計測コードが届いていなかった件だけを扱います。
 
-## Web Analytics の入口は2つある
+## Cloudflare Web Analytics の設定画面はどこにあるか：入口は2つある
 
 まず、ここで迷いました。Web Analytics はダッシュボードのどこにあるのか分かりにくく、しかも入口が2つあって、どちらにも「Web Analytics」と書いてあります。
 
@@ -21,7 +21,7 @@ Pages Functions で HTML を生成している人向けの記録です。「Web 
 
 見られるのは、ページビューと訪問数、どのページがどこから読まれたか、国、ブラウザや端末の内訳です。数えるのはビーコンの JavaScript が動いたページだけで、ASN や生の UA、IP といった1件ずつの中身は出ません。同じ Analytics のメニューには Account analytics も並んでいて、国別のリクエスト数はそちらに出ます。似た名前が隣にあるのも、迷う理由の1つでした。
 
-## 設定済みなのに、HTML にビーコンが無かった
+## 設定済みなのに、HTML にビーコン（beacon.min.js）が無かった
 
 Cloudflare Web Analytics は設定済みで、すでに計測できているつもりでした。ところが実際の配信 HTML を確認すると、`beacon.min.js` も `data-cf-beacon` もありませんでした。設定画面を見て安心していましたが、ブラウザまで計測コードが届いていなかったのです。
 
@@ -29,7 +29,7 @@ Cloudflare Web Analytics は設定済みで、すでに計測できているつ�
 
 貼る先も無かった。このサイトは静的な HTML ファイルを置いていません。Pages Functions のミドルウェアが Markdown を `marked` で変換し、組み立てた HTML を `Response` として返しているので、スニペットを入れるならコードの中しかありません。そこに入れていなかったので、ビーコンはどのページにも載っていませんでした。
 
-## まず応答 HTML を確かめる
+## ビーコンが入っているかを curl で確かめる
 
 同じ構成で数字が出ないときは、設定画面より先に、実際の応答 HTML を見た方が早いです。
 
@@ -39,7 +39,7 @@ curl -s https://自分のサイト.example/ | grep -E 'beacon\.min\.js|data-cf-b
 
 ブラウザの「ページのソースを表示」で `beacon.min.js` を検索しても確認できます。何も見つからなければ、少なくとも HTML に計測コードは入っていません。
 
-## Functions で生成する HTML へビーコンを追加する
+## Pages Functions で生成する HTML へ、Web Analytics のスニペットを追加する
 
 スニペットは、HTML を組み立てるコードの側に入れました。スニペットの中でサイトごとに違うのは site token だけです。管理画面の JS Snippet に書かれている `"token":"…"` の値で、これを環境変数で渡します。
 
@@ -95,7 +95,7 @@ curl -s https://自分のサイト.example/ | grep -E 'beacon\.min\.js|data-cf-b
 
 このサイトでは、登録をやり直した日のうちに、サイト一覧の「過去24時間」にページビュー1件、訪問1件が出ました。少なくとも1回は、ビーコンが最後まで動いたことになります。
 
-## これで比べられるようになったもの
+## Web Analytics とサーバーログ（D1）で、比べられるようになったもの
 
 数字が2種類になりました。
 
