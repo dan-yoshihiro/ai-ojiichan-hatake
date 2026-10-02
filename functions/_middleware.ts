@@ -69,10 +69,14 @@ const AI_BOT_PATTERNS: Array<{ pattern: string; name: string }> = [
 // 2026-08-13: サイトを「SNSの週次振り返り」へ絞り込んだ際に削除した記事の移転先。
 // 検索結果・外部リンクの評価を引き継ぎ、閲覧者を最も近い現行コンテンツへ案内する。
 const LEGACY_REDIRECTS: Record<string, string> = {
-  '/docs/craft-axes.md': '/sns-post-analysis',
-  '/docs/failed-experiments.md': '/sns-post-analysis',
-  '/docs/reply-activity-drives-growth.md': '/sns-post-analysis',
-  '/docs/x-algorithm-reverse-engineered.md': '/sns-post-analysis',
+  '/docs/craft-axes.md': '/x-impressions-drop',
+  '/docs/failed-experiments.md': '/x-impressions-drop',
+  '/docs/reply-activity-drives-growth.md': '/x-impressions-drop',
+  '/docs/x-algorithm-reverse-engineered.md': '/x-impressions-drop',
+  // 2026-10-02: 同じ問いに答える記事が並んでいたため、投稿分析の記事を
+  // インプレッション低下の記事へ統合した。note や X に貼ったリンクの受け皿
+  '/sns-post-analysis': '/x-impressions-drop',
+  '/docs/growth-to-100.md': '/x-impressions-drop',
   '/docs/learning-loop.md': '/sns-weekly-review',
   '/docs/principles.md': '/sns-weekly-review',
   '/docs/comparison.md': '/sns-weekly-review',
@@ -87,13 +91,22 @@ const LEGACY_REDIRECTS: Record<string, string> = {
 // 人が共有・検索から読むための固定URL。Markdown の直URLは AI / ツール連携用に維持し、
 // サイト内の導線と sitemap はこちらに統一する。
 const READER_ROUTES: Record<string, string> = {
-  '/sns-post-analysis': '/docs/growth-to-100.md',
   '/sns-weekly-review': '/docs/weekly-review-template.md',
+  '/weekly': '/docs/weekly-reports.md',
   '/x-impressions-drop': '/docs/x-impressions-drop.md',
   '/cloudflare-bot-detection': '/docs/bot-detection-on-cloudflare-pages.md',
   '/cloudflare-web-analytics-beacon': '/docs/web-analytics-beacon-on-pages-functions.md',
   '/about': '/about.md',
 };
+
+// 週報は毎週1本増えるので、固定表ではなく URL の形から原稿を引く。
+// /weekly/2026-w39 → /docs/weekly-report-2026-w39.md
+function resolveReaderSource(pathname: string): string | undefined {
+  const fixed = READER_ROUTES[pathname];
+  if (fixed) return fixed;
+  const weekly = pathname.match(/^\/weekly\/(\d{4}-w\d{2})$/);
+  return weekly ? `/docs/weekly-report-${weekly[1]}.md` : undefined;
+}
 
 interface BotDetection {
   is_ai_bot: boolean;
@@ -406,9 +419,9 @@ function buildHtmlPage(
     ? ''
     : `<nav class="site-nav" aria-label="サイト内ナビゲーション">
   <a href="/">トップ</a>
-  <a href="/sns-post-analysis">X投稿の分析方法</a>
-  <a href="/sns-weekly-review">割り算と1手の週次シート</a>
-  <a href="/x-impressions-drop">インプレッション減少時の確認</a>
+  <a href="/x-impressions-drop">数字が減ったときの見方</a>
+  <a href="/sns-weekly-review">週1回の振り返りシート</a>
+  <a href="/weekly">毎週の実測</a>
   <a href="/cloudflare-bot-detection">人間とボットの見分け方</a>
   <a href="/about">このサイトについて</a>
 </nav>`;
@@ -439,16 +452,16 @@ function buildHtmlPage(
 </head>
 <body>
 <div class="site-purpose">
-  SNS運用の実測と、並びを入れ替えてから来週の1手を決めるサイトです。
+  AIに運用させた1つのXアカウントの実測と、週1回の振り返り方を公開しています。
 </div>
 ${siteNav}
 ${html}
 <hr>
 <aside class="reader-next" aria-label="次に読む記事">
   <strong>次に読む</strong>
-  <p><a href="/sns-post-analysis">1人→100人の実測記録</a></p>
-  <p><a href="/sns-weekly-review">並びが逆転した記入例：割り算と1手</a></p>
-  <p><a href="/x-impressions-drop">Xのインプレッションが減ったときの確認項目</a></p>
+  <p><a href="/x-impressions-drop">インプレッションやフォロワーが減ったときに見る4項目</a></p>
+  <p><a href="/sns-weekly-review">5分で終わる週1回の振り返りシート</a></p>
+  <p><a href="/weekly">毎週の実測（最新週から）</a></p>
   <p><a href="/cloudflare-bot-detection">「人間」4,165件を数え直したら35%が機械だった</a></p>
   <p><a href="/about">観測範囲と公開方針</a></p>
 </aside>
@@ -608,7 +621,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
   // 検索結果や共有リンクからは拡張子・クエリのないURLで読ませる。
   // 原文の .md は llms.txt 等から参照する機械可読な入口として残す。
-  const readerSourcePath = READER_ROUTES[url.pathname];
+  const readerSourcePath = resolveReaderSource(url.pathname);
   if (readerSourcePath) {
     const sourceUrl = new URL(readerSourcePath, url.origin);
     const assetResponse = await env.ASSETS.fetch(sourceUrl.toString());

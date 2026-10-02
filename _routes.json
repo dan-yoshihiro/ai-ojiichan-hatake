@@ -10,6 +10,8 @@
     "/docs/*",
     "/sns-post-analysis",
     "/sns-weekly-review",
+    "/weekly",
+    "/weekly/*",
     "/x-impressions-drop",
     "/cloudflare-bot-detection",
     "/cloudflare-web-analytics-beacon",
