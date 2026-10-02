@@ -91,6 +91,7 @@ const LEGACY_REDIRECTS: Record<string, string> = {
 // 人が共有・検索から読むための固定URL。Markdown の直URLは AI / ツール連携用に維持し、
 // サイト内の導線と sitemap はこちらに統一する。
 const READER_ROUTES: Record<string, string> = {
+  '/ai-x-operation': '/docs/ai-x-account-6-months.md',
   '/sns-weekly-review': '/docs/weekly-review-template.md',
   '/weekly': '/docs/weekly-reports.md',
   '/x-impressions-drop': '/docs/x-impressions-drop.md',
@@ -419,6 +420,7 @@ function buildHtmlPage(
     ? ''
     : `<nav class="site-nav" aria-label="サイト内ナビゲーション">
   <a href="/">トップ</a>
+  <a href="/ai-x-operation">AIでXを運用した記録</a>
   <a href="/x-impressions-drop">数字が減ったときの見方</a>
   <a href="/sns-weekly-review">週1回の振り返りシート</a>
   <a href="/weekly">毎週の実測</a>
@@ -459,6 +461,7 @@ ${html}
 <hr>
 <aside class="reader-next" aria-label="次に読む記事">
   <strong>次に読む</strong>
+  <p><a href="/ai-x-operation">AIでXを約6ヶ月運用した仕組みと失敗</a></p>
   <p><a href="/x-impressions-drop">インプレッションやフォロワーが減ったときに見る4項目</a></p>
   <p><a href="/sns-weekly-review">5分で終わる週1回の振り返りシート</a></p>
   <p><a href="/weekly">毎週の実測（最新週から）</a></p>

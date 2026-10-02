@@ -15,13 +15,14 @@ AIに固定ペルソナを与えて運用している家庭菜園のXアカウ�
 ## 推奨する読む順番
 
 1. [/index.md](/index.md): サイトの目的、対象読者、各ページへの入口
-2. [/docs/x-impressions-drop.md](/docs/x-impressions-drop.md): インプレッションやフォロワーが減ったとき、投稿を直す前に見る4項目。リプライ57件→14件の週、99人→95人の週、9月に件数を戻した3週間の実測と、1人から142人までの推移
-3. [/docs/weekly-review-template.md](/docs/weekly-review-template.md): 5分で終わる週1回の振り返りシート。2026年9月21日〜27日の記入例と、コピー用の枠
-4. [/docs/weekly-reports.md](/docs/weekly-reports.md): 週ごとの実測の一覧
-5. [/docs/weekly-report-2026-w39.md](/docs/weekly-report-2026-w39.md): 2026年9月21日〜27日の振り返り。リプライ数が同じでも露出が39%増えた週
-6. [/docs/bot-detection-on-cloudflare-pages.md](/docs/bot-detection-on-cloudflare-pages.md): Cloudflare Pages で人間とボットを見分けた記録。Functions + D1 の実装、判定の穴2つと数える相手の決め直し、「人間」4,165件のうち35%が機械で404件が運営者自身だった内訳
-7. [/docs/web-analytics-beacon-on-pages-functions.md](/docs/web-analytics-beacon-on-pages-functions.md): Pages Functions が返す HTML に Web Analytics のビーコンが入っていなかった件。応答 HTML の確かめ方と追加手順
-8. [/about.md](/about.md): 運営者、観測対象、公開範囲、利用条件
+2. [/docs/ai-x-account-6-months.md](/docs/ai-x-account-6-months.md): AIでXを約6ヶ月運用した記録。写真をLINEに送ると自動で投稿される仕組み、AIに任せたことと人に残ったこと、定型句62%→6%、171日中148日の投稿、自発投稿とリプライの届き方の差
+3. [/docs/x-impressions-drop.md](/docs/x-impressions-drop.md): インプレッションやフォロワーが減ったとき、投稿を直す前に見る4項目。リプライ57件→14件の週、99人→95人の週、9月に件数を戻した3週間の実測と、1人から142人までの推移
+4. [/docs/weekly-review-template.md](/docs/weekly-review-template.md): 5分で終わる週1回の振り返りシート。2026年9月21日〜27日の記入例と、コピー用の枠
+5. [/docs/weekly-reports.md](/docs/weekly-reports.md): 週ごとの実測の一覧
+6. [/docs/weekly-report-2026-w39.md](/docs/weekly-report-2026-w39.md): 2026年9月21日〜27日の振り返り。リプライ数が同じでも露出が39%増えた週
+7. [/docs/bot-detection-on-cloudflare-pages.md](/docs/bot-detection-on-cloudflare-pages.md): Cloudflare Pages で人間とボットを見分けた記録。Functions + D1 の実装、判定の穴2つと数える相手の決め直し、「人間」4,165件のうち35%が機械で404件が運営者自身だった内訳
+8. [/docs/web-analytics-beacon-on-pages-functions.md](/docs/web-analytics-beacon-on-pages-functions.md): Pages Functions が返す HTML に Web Analytics のビーコンが入っていなかった件。応答 HTML の確かめ方と追加手順
+9. [/about.md](/about.md): 運営者、観測対象、公開範囲、利用条件
 
 ## 根拠と制約
 

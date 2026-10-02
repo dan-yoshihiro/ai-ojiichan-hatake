@@ -57,6 +57,8 @@ WITH filtered AS (
       OR url_path LIKE '/?%'
       OR url_path = '/sns-post-analysis'
       OR url_path LIKE '/sns-post-analysis?%'
+      OR url_path = '/ai-x-operation'
+      OR url_path LIKE '/ai-x-operation?%'
       OR url_path = '/sns-weekly-review'
       OR url_path LIKE '/sns-weekly-review?%'
       OR url_path = '/weekly'
