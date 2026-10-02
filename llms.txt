@@ -15,7 +15,7 @@ AIに固定ペルソナを与えて運用している家庭菜園のXアカウ�
 ## 推奨する読む順番
 
 1. [/index.md](/index.md): サイトの目的、対象読者、各ページへの入口
-2. [/docs/ai-x-account-6-months.md](/docs/ai-x-account-6-months.md): AIでXを約6ヶ月運用した記録。写真をLINEに送ると自動で投稿される仕組み、AIに任せたことと人に残ったこと、定型句62%→6%、171日中148日の投稿、自発投稿とリプライの届き方の差
+2. [/docs/ai-x-account-6-months.md](/docs/ai-x-account-6-months.md): AIでXを約6ヶ月運用した記録。写真をLINEに送ると自動で投稿される仕組み、AIに任せたことと人に残ったこと、定型句62%→6%、171日中151日の投稿、自発投稿とリプライの届き方の差
 3. [/docs/x-impressions-drop.md](/docs/x-impressions-drop.md): インプレッションやフォロワーが減った週、文章を疑う前に見るべきだったのはリプライの件数だったという記録。毎日投稿していてもリプライを止めた7月の週に減ったこと、件数が同じでも届いた量が半分以下だった週、9月に件数を戻した4週の実測と、いま毎週見ている4つの数字
 4. [/docs/weekly-review-template.md](/docs/weekly-review-template.md): 5分で終わる週1回の振り返りシート。2026年9月21日〜27日の記入例と、コピー用の枠
 5. [/docs/weekly-reports.md](/docs/weekly-reports.md): 週ごとの実測の一覧
