@@ -232,97 +232,317 @@ function preserveViewInLinks(html: string): string {
   });
 }
 
+// オールドポップ: クリーム地に、トマト赤・からし・焦げ茶の3色だけ。太い線とぼかさないずらし影。
+// 読みやすさのため、水玉は本文の外（画面の余白）にだけ敷き、本文の列は無地にする。
+// 看板書体（Dela Gothic One）はサイト名と数字だけに使い、見出しは丸ゴシックの極太で組む。
+// 色は :root のトークンだけで決め、ダークモードはトークンの差し替えで済ませる。人＝トマト赤、AI＝焦げ茶
 const VIEW_CSS = `
-:root { color-scheme: light dark; }
+:root {
+  color-scheme: light dark;
+  --bg: #fbf1dc;
+  --margin-bg: #f4e3c1;
+  --dot: rgba(74, 46, 30, 0.10);
+  --surface: #fffaf0;
+  --surface-muted: #f6e6c4;
+  --ink: #3b2418;
+  --text: #2a1a12;
+  --text-muted: #5c463a;
+  --shadow: #3b2418;
+  --red: #d9422a;
+  --red-soft: #fbe0d6;
+  --mustard: #f2b43c;
+  --mustard-soft: #fdecc0;
+  --link: #a8321b;
+  --on-color: #fffaf0;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #231b16;
+    --margin-bg: #1b1511;
+    --dot: rgba(255, 226, 180, 0.07);
+    --surface: #2d231d;
+    --surface-muted: #3a2d25;
+    --ink: #f0ddb8;
+    --text: #f6ecd8;
+    --text-muted: #d0bda2;
+    --shadow: #000000;
+    --red: #ef6a4f;
+    --red-soft: #45261d;
+    --mustard: #f2b43c;
+    --mustard-soft: #44361a;
+    --link: #ffb39c;
+    --on-color: #231b16;
+  }
+}
+* { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%;
+  background-color: var(--margin-bg);
+  background-image: radial-gradient(var(--dot) 1.4px, transparent 1.6px);
+  background-size: 18px 18px;
+}
 body {
-  font-family: system-ui, -apple-system, "Hiragino Sans", "Yu Gothic", sans-serif;
+  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+  font-weight: 500;
+  font-size: 17px;
   max-width: 760px;
-  margin: 2rem auto;
-  padding: 0 1rem 4rem;
-  line-height: 1.7;
-  color: #222;
-  background: #fff;
+  min-height: 100vh;
+  margin: 0 auto;
+  --gutter: 24px;
+  padding: 0 var(--gutter) 4rem;
+  line-height: 1.95;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  background: var(--bg);
+  overflow-wrap: anywhere;
 }
-h1, h2, h3, h4 { line-height: 1.3; margin-top: 2em; }
-h1 { font-size: 1.6em; }
-h2 { font-size: 1.3em; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
-h3 { font-size: 1.1em; }
-pre, code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.92em; }
-pre { background: #f5f5f5; padding: 0.9em 1em; overflow-x: auto; border-radius: 3px; }
-code { background: #f5f5f5; padding: 0.1em 0.35em; border-radius: 3px; }
+.stat-value, .brand {
+  font-family: "Dela Gothic One", "Hiragino Sans", "Yu Gothic", sans-serif;
+  font-weight: 400;
+}
+h1, h2, h3, h4 { font-weight: 900; line-height: 1.5; letter-spacing: 0.02em; color: var(--ink); }
+/* 見出しの行を揃えるのは、文節で改行できるブラウザだけ。balance 単独だと「投稿していた / のに」のように語の途中で割れる */
+@supports (word-break: auto-phrase) {
+  h1, h2, h3, h4 { word-break: auto-phrase; text-wrap: balance; }
+}
+h1 { font-size: 1.75em; margin: 0.9em 0 0.5em; }
+h1 { background: linear-gradient(transparent 60%, var(--mustard) 60%, var(--mustard) 92%, transparent 92%); display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+h2 {
+  font-size: 1.32em;
+  margin: 2.6em 0 0.9em;
+  padding-bottom: 0.25em;
+  border-bottom: 3px solid var(--ink);
+}
+h2::before {
+  content: "";
+  display: inline-block;
+  width: 0.62em;
+  height: 0.62em;
+  margin: 0 0.5em 0.08em 0;
+  background: var(--red);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  vertical-align: baseline;
+}
+h3 { font-size: 1.12em; margin: 1.9em 0 0.5em; padding-bottom: 0.1em; background: linear-gradient(transparent 70%, var(--mustard-soft) 70%); display: inline; }
+p, ul, ol { margin: 0 0 1.1em; }
+li + li { margin-top: 0.35em; }
+li::marker { color: var(--red); }
+strong { color: var(--ink); }
+h1 + p { margin-top: 1em; }
+h1 + p em { color: var(--text-muted); font-size: 0.82em; font-style: normal; }
+pre, code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.86em; }
+pre { background: var(--surface); padding: 1em 1.1em; overflow-x: auto; border: 2px solid var(--ink); border-radius: 12px; box-shadow: 3px 3px 0 var(--shadow); line-height: 1.65; }
+code { background: var(--surface-muted); padding: 0.1em 0.35em; border-radius: 5px; }
 pre code { background: none; padding: 0; }
-table { border-collapse: collapse; margin: 1em 0; font-size: 0.95em; }
-th, td { border: 1px solid #ccc; padding: 0.4em 0.8em; text-align: left; vertical-align: top; }
-th { background: #f5f5f5; }
-blockquote { border-left: 3px solid #ccc; margin: 1em 0; padding: 0.2em 1em; color: #555; }
-hr { border: none; border-top: 1px solid #ddd; margin: 2em 0; }
-img { max-width: 100%; }
-a { color: #0366d6; }
-.site-purpose {
-  background: #f5f8fb;
-  border: 1px solid #d8e2ec;
-  padding: 0.6em 1em;
-  font-size: 0.88em;
-  margin-bottom: 1.5em;
-  border-radius: 3px;
+/* 表はスマホで列が潰れないよう、表ごと横スクロールさせる */
+table { display: block; max-width: 100%; overflow-x: auto; border-collapse: separate; border-spacing: 0; margin: 1.3em 0; font-size: 0.92em; line-height: 1.65; border: 2.5px solid var(--ink); border-radius: 12px; box-shadow: 4px 4px 0 var(--shadow); background: var(--surface); }
+th, td { border-bottom: 1.5px solid var(--ink); border-right: 1.5px dashed var(--text-muted); padding: 0.55em 0.85em; text-align: left; vertical-align: top; min-width: 5.5em; }
+th:last-child, td:last-child { border-right: none; }
+/* 本文の overflow-wrap: anywhere がセルに効くと「8月31 / 日〜9月」のように日付が割れるので、
+   セル内は通常の折り返しに戻し、見出し列（期間・指標名）に幅を確保する */
+th, td { overflow-wrap: normal; }
+th:first-child, td:first-child { min-width: 11em; }
+tr:last-child td { border-bottom: none; }
+th { background: var(--mustard); color: #33211a; white-space: nowrap; font-weight: 700; }
+blockquote {
+  position: relative;
+  margin: 1.4em 0 1.8em;
+  padding: 1.2em 1.2em 1em;
+  background: var(--mustard-soft);
+  border: 2.5px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: 5px 5px 0 var(--shadow);
+  color: var(--text);
+  font-size: 0.95em;
+  line-height: 1.85;
 }
-.site-nav {
+blockquote p { margin: 0; }
+blockquote strong:first-child {
+  display: inline-block;
+  margin-right: 0.4em;
+  padding: 0 0.6em;
+  color: var(--on-color);
+  background: var(--red);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-size: 0.85em;
+  transform: rotate(-3deg);
+}
+hr { border: none; height: 10px; margin: 2.6em 0; background: repeating-linear-gradient(-45deg, var(--red) 0 8px, var(--mustard) 8px 16px); border: 2px solid var(--ink); border-radius: 999px; }
+/* 記事の図は青い線画なので、少しセピアに寄せて古い印刷物の色にそろえる */
+img { max-width: 100%; height: auto; border: 2.5px solid var(--ink); border-radius: 16px; box-shadow: 5px 5px 0 var(--shadow); filter: sepia(0.3) saturate(1.2); }
+a { color: var(--link); text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
+a:hover { color: var(--red); }
+/* サイトの頭: 色の縞と、看板のような名前 */
+/* 3色の縞は本文の幅ではなく画面の端から端まで引く（body は position 指定なしなので、
+   absolute の基準は初期包含ブロック＝画面幅になる） */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(var(--red) 0 10px, var(--mustard) 10px 16px, var(--ink) 16px 18px, transparent 18px);
+}
+.site-head {
+  margin: 0 0 0.6em;
+  padding: 2.1em 0 0.7em;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4em 1em;
-  margin: 0 0 1.5em;
-  font-size: 0.9em;
+  align-items: center;
+  gap: 0.3em 0.8em;
 }
-.site-nav a { text-decoration: none; }
+.brand {
+  display: inline-block;
+  font-size: 1.05em;
+  color: var(--on-color);
+  background: var(--red);
+  border: 2.5px solid var(--ink);
+  border-radius: 10px;
+  padding: 0.1em 0.7em;
+  box-shadow: 3px 3px 0 var(--shadow);
+  text-decoration: none;
+  transform: rotate(-2deg);
+}
+.brand:hover { color: var(--bg); background: var(--ink); }
+.site-purpose { color: var(--text-muted); font-size: 0.78em; line-height: 1.6; margin: 0; flex: 1 1 16em; }
+.site-nav {
+  display: flex;
+  gap: 0.6em;
+  margin: 0 calc(-1 * var(--gutter)) 1.5em;
+  padding: 0.4em var(--gutter) 0.9em;
+  overflow-x: auto;
+  scrollbar-width: none;
+  font-size: 0.84em;
+}
+.site-nav::-webkit-scrollbar { display: none; }
+.site-nav a {
+  flex: none;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.25em 0.95em;
+  white-space: nowrap;
+  box-shadow: 2px 2px 0 var(--shadow);
+  font-weight: 700;
+}
+.site-nav a:hover { background: var(--mustard); color: #33211a; }
 .reader-next {
-  background: #f5f8fb;
-  border: 1px solid #d8e2ec;
-  border-radius: 4px;
+  background: var(--surface);
+  border: 2.5px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: 5px 5px 0 var(--shadow);
   margin-top: 3em;
-  padding: 1em 1.2em;
+  padding: 1.1em 1.3em;
+  background-image: linear-gradient(var(--red) 0 0);
+  background-size: 100% 8px;
+  background-repeat: no-repeat;
+  padding-top: 1.5em;
 }
-.reader-next p { margin: 0.25em 0; }
-.audience-grid,
-.featured-grid {
+.reader-next strong { display: block; margin-bottom: 0.4em; font-size: 1.05em; }
+.reader-next p { margin: 0.45em 0; line-height: 1.6; }
+.reader-next p a::before { content: "★ "; color: var(--red); }
+.view-footer { color: var(--text-muted); font-size: 0.8em; margin-top: 2em; text-align: center; }
+.view-footer a { color: inherit; }
+/* トップページ: 数字のタイル。4色を順に当てる */
+.stat-grid {
+  list-style: none;
+  padding: 0;
+  margin: 1.4em 0 1.8em;
   display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.9em;
-  margin: 1.25em 0 2em;
 }
-.audience-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.featured-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.audience-card,
-.featured-card {
-  border: 1px solid #d8e2ec;
-  border-radius: 5px;
-  padding: 1em;
+.stat-grid li + li { margin-top: 0; }
+.stat {
+  border: 2.5px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 var(--shadow);
+  padding: 0.9em 0.9em 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  color: var(--text);
 }
-.audience-card { background: #f8fafc; }
-.featured-card { background: #fff; }
-.audience-card strong,
-.featured-card strong { display: block; margin-bottom: 0.35em; }
-.audience-card p,
-.featured-card p { margin: 0; font-size: 0.93em; }
-.featured-card a { font-weight: 650; }
-.evidence-list { padding-left: 1.2em; }
-.evidence-list li + li { margin-top: 0.5em; }
+.stat:nth-child(odd) { background: var(--red-soft); }
+.stat:nth-child(even) { background: var(--mustard-soft); }
+.stat-value { font-size: 1.6em; line-height: 1.15; font-variant-numeric: tabular-nums; color: var(--ink); }
+.stat:nth-child(odd) .stat-value { color: var(--red); }
+.stat-value small { font-family: "Zen Maru Gothic", sans-serif; font-size: 0.5em; font-weight: 700; }
+.stat-label { font-size: 0.78em; line-height: 1.55; font-weight: 700; }
+/* トップページ: 担当ごとの流れ。人＝トマト赤、AI と自動＝青緑 */
+.flow { list-style: none; padding: 0; margin: 1.3em 0 1.6em; }
+.flow-step {
+  display: grid;
+  grid-template-columns: 3.6em 1fr;
+  column-gap: 0.9em;
+  padding: 0.85em 1em;
+  border-radius: 16px;
+  border: 2.5px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--shadow);
+}
+.flow li + li { margin-top: 0.8em; }
+.flow-step strong { grid-column: 2; line-height: 1.5; }
+.flow-step > span:last-child { grid-column: 2; font-size: 0.84em; line-height: 1.6; color: var(--text-muted); }
+.flow-who {
+  grid-row: 1 / span 2;
+  align-self: center;
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  width: 3.1em;
+  height: 3.1em;
+  font-size: 0.8em;
+  font-weight: 700;
+  color: var(--on-color);
+  border: 2.5px solid var(--ink);
+  border-radius: 50%;
+  transform: rotate(-8deg);
+}
+.flow-step.is-human { background: var(--red-soft); }
+.flow-step.is-human .flow-who { background: var(--red); }
+.flow-step.is-ai { background: var(--surface); }
+.flow-step.is-ai .flow-who { background: var(--ink); color: var(--bg); }
+/* トップページ: 入口のカード。押すと影の上に沈む */
+.route-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1em; margin: 1.3em 0 1.8em; }
+.route-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding: 1em 1.1em;
+  border: 2.5px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: 5px 5px 0 var(--shadow);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.route-card:hover { color: var(--text); transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--shadow); }
+.route-card:active { transform: translate(4px, 4px); box-shadow: 1px 1px 0 var(--shadow); }
+.route-q { font-weight: 700; line-height: 1.5; color: var(--ink); }
+.route-a { align-self: flex-start; font-size: 0.82em; line-height: 1.5; font-weight: 700; color: var(--on-color); background: var(--red); border: 2px solid var(--ink); border-radius: 10px; padding: 0.2em 0.8em; }
+.route-a::after { content: " →"; }
+.route-card:nth-child(even) .route-a { background: var(--mustard); color: #2a1a12; }
+/* 横スクロールのナビはスマホ用。広い画面では折り返して全部見せる */
+@media (min-width: 641px) {
+  .site-nav { flex-wrap: wrap; overflow: visible; margin: 0 0 1.5em; padding: 0.4em 0 0.9em; }
+}
 @media (max-width: 640px) {
-  .audience-grid,
-  .featured-grid { grid-template-columns: 1fr; }
+  body { --gutter: 18px; font-size: 16px; line-height: 1.9; }
+  h1 { font-size: 1.5em; }
+  h2 { font-size: 1.2em; }
+  .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75em; }
+  .stat-value { font-size: 1.35em; }
+  .route-grid { grid-template-columns: 1fr; }
 }
-.view-footer { font-size: 0.85em; opacity: 0.7; margin-top: 2em; }
-@media (prefers-color-scheme: dark) {
-  body { color: #e0e0e0; background: #181818; }
-  h2 { border-color: #444; }
-  pre, code { background: #2a2a2a; }
-  th { background: #2a2a2a; }
-  th, td { border-color: #444; }
-  blockquote { border-color: #555; color: #aaa; }
-  hr { border-color: #444; }
-  a { color: #6ab0ff; }
-  .site-purpose { background: #202a33; border-color: #405264; }
-  .reader-next { background: #202a33; border-color: #405264; }
-  .audience-card { background: #202a33; border-color: #405264; }
-  .featured-card { background: #1d242b; border-color: #405264; }
+@media (prefers-reduced-motion: reduce) {
+  .route-card { transition: none; }
+  .route-card:hover, .route-card:active { transform: none; }
 }
 `.trim();
 
@@ -416,6 +636,13 @@ function buildHtmlPage(
   const webAnalyticsBeacon = webAnalyticsToken
     ? `<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${escapeHtml(webAnalyticsToken)}"}'></script>`
     : '';
+  // 看板（サイト名）は全ページに出す。トップは H1 がサイトの説明を兼ねるので、説明文とナビは記事ページにだけ出す
+  const sitePurpose = `<header class="site-head">
+  <a class="brand" href="/">AI農業先生方式</a>${rawPath === '/index.md'
+    ? ''
+    : `
+  <p class="site-purpose">AIにSNSの投稿を任せたい事業者向けに、1つのXアカウントを6ヶ月自動投稿した実測を公開しています。</p>`}
+</header>`;
   const siteNav = rawPath === '/index.md'
     ? ''
     : `<nav class="site-nav" aria-label="サイト内ナビゲーション">
@@ -449,12 +676,13 @@ function buildHtmlPage(
 <link rel="alternate" type="text/markdown" href="${safeRaw}">
 <link rel="canonical" href="${escapeHtml(canonicalUrl)}">
 <script type="application/ld+json">${jsonLd}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
 <style>${VIEW_CSS}</style>
 </head>
 <body>
-<div class="site-purpose">
-  AIにSNSの投稿を任せたい事業者向けに、1つのXアカウントを6ヶ月自動投稿した実測を公開しています。
-</div>
+${sitePurpose}
 ${siteNav}
 ${html}
 <hr>
@@ -472,6 +700,42 @@ ${html}
 ${webAnalyticsBeacon}
 </body>
 </html>`;
+}
+
+// 人が開いた存在しないページ用。以前は空白の画面になっていた。
+// 記事と同じ枠で出し、検索に載らないよう noindex にして記事用の JSON-LD は外す
+const NOT_FOUND_MD = `# このページは見つかりませんでした
+
+URLが変わったか、削除されたページです。下の入口から探してください。
+
+<div class="route-grid">
+  <a class="route-card" href="/"><span class="route-q">トップページ</span><span class="route-a">サイトの全体と6ヶ月の数字</span></a>
+  <a class="route-card" href="/ai-x-operation"><span class="route-q">AIにどこまで任せられて、何が人に残るか</span><span class="route-a">仕組み・費用・事故</span></a>
+  <a class="route-card" href="/x-impressions-drop"><span class="route-q">自動で投稿しているのに伸びない</span><span class="route-a">直す前に見る4項目</span></a>
+  <a class="route-card" href="/weekly"><span class="route-q">毎週の実測</span><span class="route-a">最新週から</span></a>
+</div>
+`;
+
+async function buildNotFoundResponse(webAnalyticsToken?: string): Promise<Response> {
+  const html = await marked.parse(NOT_FOUND_MD, { gfm: true, breaks: false });
+  const page = buildHtmlPage(html, 'ページが見つかりません', '/404', NOT_FOUND_MD, '/404', webAnalyticsToken)
+    .replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex">')
+    .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>\n?/, '')
+    .replace(/<link rel="(?:alternate|canonical)"[^>]*>\n?/g, '')
+    .replace(/ \/ <a href="\/404">Markdown版を読む<\/a>/, '');
+  return new Response(page, {
+    status: 404,
+    headers: { 'content-type': 'text/html; charset=utf-8', 'X-Robots-Tag': 'noindex' },
+  });
+}
+
+// 拡張子のないパスか .md を、ブラウザが HTML として求めているときだけ人向けの 404 を返す。
+// 画像・txt・xml や機械アクセスには、従来どおり素の 404 を返す
+function wantsHtmlPage(request: Request, pathname: string): boolean {
+  const accept = request.headers.get('Accept') || '';
+  if (!accept.includes('text/html')) return false;
+  const last = pathname.split('/').pop() || '';
+  return !last.includes('.') || last.endsWith('.md');
 }
 
 export const onRequest: PagesFunction<Env> = async (context) => {
@@ -628,7 +892,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     const assetResponse = await env.ASSETS.fetch(sourceUrl.toString());
     if (!assetResponse.ok) {
       logRequest(404);
-      return new Response('Article not found', { status: 404 });
+      return buildNotFoundResponse(env.CF_WEB_ANALYTICS_TOKEN);
     }
     const md = await assetResponse.text();
     let html: string;
@@ -683,6 +947,11 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     }
     logRequest(200);
     return new Response(fullPage, { status: 200, headers });
+  }
+
+  if (response.status === 404 && wantsHtmlPage(request, url.pathname)) {
+    logRequest(404);
+    return buildNotFoundResponse(env.CF_WEB_ANALYTICS_TOKEN);
   }
 
   // それ以外: AI 向け raw 配信 + 識別ヘッダ付与

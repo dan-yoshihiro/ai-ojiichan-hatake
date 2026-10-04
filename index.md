@@ -4,18 +4,36 @@
 
 > **TL;DR:** 写真をLINEに送ると、AIが本文を書いてXに投稿する仕組みを作り、家庭菜園のアカウント1つで2026年4月4日から運用しています。自動にできたのは、本文を書いて出すことと、数字を集めることまででした。写真を撮って送る時間、相手の投稿へ返信しに行くこと、週に1回数字を見て次の1手を決めることは、6ヶ月ずっと人の仕事でした。費用は、生成AIが無料枠の範囲、X API が月2ドルほどです。
 
-![夜のベランダのミニトマトと、下がってから上がる線が描かれたノート。](/static/hero-growth-journey.webp)
+<ul class="stat-grid" aria-label="6ヶ月の主な数字">
+  <li class="stat"><span class="stat-value">151<small> / 171日</small></span><span class="stat-label">投稿があった日。空いた日は、人が写真を送れなかった日</span></li>
+  <li class="stat"><span class="stat-value">62%<small> → </small>6%</span><span class="stat-label">定型句「元気な」を含む投稿。言葉の決まりを表にして渡した前後</span></li>
+  <li class="stat"><span class="stat-value">月2<small>ドルほど</small></span><span class="stat-label">X API の費用。生成AIは無料枠の範囲</span></li>
+  <li class="stat"><span class="stat-value">1<small> → </small>142<small>人</small></span><span class="stat-label">フォロワー。2026年4月4日から9月27日まで</span></li>
+</ul>
 
 店や教室、農園などで、AIにSNSの投稿を任せて手間を減らしたい人向けのサイトです。任せる前なら、どこまでAIに渡せて何が自分に残るか。任せたあとなら、自動で出しているのに伸びない週にどこを見るか。どちらも、1つのアカウントの実測で確かめられます。
 
+## AIがやったこと、人に残ったこと
+
+投稿が出るまでの流れを、担当ごとに色を分けて並べました。自動で回ったのは真ん中の段だけです。
+
+<ol class="flow" aria-label="投稿が出るまでの流れと担当">
+  <li class="flow-step is-human"><span class="flow-who">人</span><strong>写真を撮ってLINEに送る</strong><span>ここが止まると、その日の投稿は出ない</span></li>
+  <li class="flow-step is-ai"><span class="flow-who">AI</span><strong>本文を書く</strong><span>作物ごとの栽培メモを参照し、口調と言葉の決まりを守って書く</span></li>
+  <li class="flow-step is-ai"><span class="flow-who">自動</span><strong>投稿前に確かめて、Xに出す</strong><span>農薬の量やLINE向けの定型文が入っていれば止める</span></li>
+  <li class="flow-step is-ai"><span class="flow-who">自動</span><strong>数字を集めて、週次レポートを作る</strong><span>投稿ごとの数字とフォロワー数を毎日記録する</span></li>
+  <li class="flow-step is-human"><span class="flow-who">人</span><strong>リプライの相手を選んで送る</strong><span>AIは草案を2案出すまで。知らない人に届いたのはこちらだった</span></li>
+  <li class="flow-step is-human"><span class="flow-who">人</span><strong>週1回、レポートを見て来週の1手を決める</strong><span>どの数字を画面に出すかも、人が決め直す</span></li>
+</ol>
+
 ## 知りたいことから選ぶ
 
-| 知りたいこと | 読むページ |
-|---|---|
-| AIにどこまで任せられて、何が人に残るか。費用と事故の防ぎ方 | [AIでXを6ヶ月運用した仕組みと失敗](/ai-x-operation) |
-| 自動で投稿しているのに、表示やフォロワーが伸びない・落ちた | [投稿を直す前に見る4項目](/x-impressions-drop) |
-| 自動化したあと、週に1回なにを見て決めればいいか | [5分で終わる週1回の振り返りシート](/sns-weekly-review) |
-| 実際の週の数字を見たい | [毎週の実測](/weekly) |
+<div class="route-grid">
+  <a class="route-card" href="/ai-x-operation"><span class="route-q">AIにどこまで任せられて、何が人に残るか</span><span class="route-a">仕組み・人に残った3つの仕事・費用・1回だけ起きた事故</span></a>
+  <a class="route-card" href="/x-impressions-drop"><span class="route-q">自動で投稿しているのに、表示やフォロワーが伸びない</span><span class="route-a">AIへの指示を直す前に見る4項目</span></a>
+  <a class="route-card" href="/sns-weekly-review"><span class="route-q">自動化したあと、週に1回なにを見て決めればいいか</span><span class="route-a">5分で終わる振り返りシートと記入例</span></a>
+  <a class="route-card" href="/weekly"><span class="route-q">実際の週の数字を見たい</span><span class="route-a">毎週の実測（最新週から）</span></a>
+</div>
 
 ## 6ヶ月で分かったこと
 
