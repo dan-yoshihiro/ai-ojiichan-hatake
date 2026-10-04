@@ -391,7 +391,7 @@ function buildJsonLd(title: string, description: string, rawPath: string, canoni
       contentUrl: rawPath,
       encodingFormat: 'text/markdown',
     },
-    keywords: 'X運用実測, フォロワー推移, AIペルソナ運用, 個人SNS運用',
+    keywords: 'AI SNS自動投稿, X自動投稿, 事業者SNS運用, AIペルソナ運用, X運用実測',
   };
   return JSON.stringify(ld);
 }
@@ -420,11 +420,10 @@ function buildHtmlPage(
     ? ''
     : `<nav class="site-nav" aria-label="サイト内ナビゲーション">
   <a href="/">トップ</a>
-  <a href="/ai-x-operation">AIでXを運用した記録</a>
-  <a href="/x-impressions-drop">数字が減ったときの見方</a>
+  <a href="/ai-x-operation">AIにどこまで任せられるか</a>
+  <a href="/x-impressions-drop">伸びないときの見方</a>
   <a href="/sns-weekly-review">週1回の振り返りシート</a>
   <a href="/weekly">毎週の実測</a>
-  <a href="/cloudflare-bot-detection">人間とボットの見分け方</a>
   <a href="/about">このサイトについて</a>
 </nav>`;
   return `<!DOCTYPE html>
@@ -436,7 +435,7 @@ function buildHtmlPage(
 <meta name="description" content="${safeDescription}">
 <meta name="robots" content="index, follow">
 <meta name="google-site-verification" content="fuTMLD_lGpfrl7HahiI0rqBBzo2B6rnSm6qQ5njg3TE">
-<meta name="keywords" content="個人 SNS マーケ実験, AI ペルソナ運用, llms.txt 実装事例, AI bot detection, GEO optimization, AI農業先生方式">
+<meta name="keywords" content="AI SNS 自動投稿, X 自動投稿, 事業者 SNS 運用, AI ペルソナ運用, X 運用 実測, AI農業先生方式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="${safeTitle} — AI農業先生方式">
 <meta property="og:description" content="${safeDescription}">
@@ -454,18 +453,17 @@ function buildHtmlPage(
 </head>
 <body>
 <div class="site-purpose">
-  AIに運用させた1つのXアカウントの実測と、週1回の振り返り方を公開しています。
+  AIにSNSの投稿を任せたい事業者向けに、1つのXアカウントを6ヶ月自動投稿した実測を公開しています。
 </div>
 ${siteNav}
 ${html}
 <hr>
 <aside class="reader-next" aria-label="次に読む記事">
   <strong>次に読む</strong>
-  <p><a href="/ai-x-operation">AIでXを約6ヶ月運用した仕組みと失敗</a></p>
-  <p><a href="/x-impressions-drop">インプレッションやフォロワーが減ったときに見る4項目</a></p>
+  <p><a href="/ai-x-operation">AIにXの投稿をどこまで任せられるか：人に残った3つの仕事と費用</a></p>
+  <p><a href="/x-impressions-drop">自動で投稿しているのに伸びないとき、投稿を直す前に見る4項目</a></p>
   <p><a href="/sns-weekly-review">5分で終わる週1回の振り返りシート</a></p>
   <p><a href="/weekly">毎週の実測（最新週から）</a></p>
-  <p><a href="/cloudflare-bot-detection">「人間」4,165件を数え直したら35%が機械だった</a></p>
   <p><a href="/about">観測範囲と公開方針</a></p>
 </aside>
 <p class="view-footer">

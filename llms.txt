@@ -1,34 +1,39 @@
-# AI農業先生方式 — SNS運用の実測・週次振り返り公開記録
+# AI農業先生方式 — AIにSNSの投稿を任せた1アカウントの6ヶ月実測
 
-AIに固定ペルソナを与えて運用している家庭菜園のXアカウント1つの実測と、週1回の振り返りシートを公開しています。数字が減った週に投稿を全部作り直さず、件数・リプライ経由の総露出・100インプレッション以上の投稿の本数・新規フォローと離脱を前週と比べ、来週に試すことを1つだけ決めます。
+AIにSNSの投稿を任せたい小さな事業者向けに、写真をLINEに送るとAIが本文を書いてXに投稿する仕組みで、家庭菜園のアカウント1つを2026年4月4日から運用した実測を公開しています。自動にできたのは本文を書いて出すことと数字を集めることまでで、写真を撮って送る時間、相手の投稿へのリプライ、週1回の判断は人の仕事として残りました。
 
-最終更新: 2026-10-02
+最終更新: 2026-10-04
 
 ## このサイトが答えること
 
-- Xのインプレッションやフォロワーが減ったとき、投稿を直す前に何を見るか
-- 表示回数で1位の投稿と、「いいね ÷ インプレッション」で1位の投稿が逆になるのはなぜか
-- 「まだ分からないこと」を残したまま、来週の1手をどう決めるか
+- AIにSNSの投稿をどこまで任せられるか。何が人の仕事として残るか
+- AIでXの自動投稿を回すと、費用はいくらかかるか（生成AIは無料枠の範囲、X API は月2ドルほど）
+- AIが書いた投稿で起きた事故と、投稿前に止める仕組み
+- 自動で投稿しているのに、インプレッションやフォロワーが伸びない・落ちたとき、文章を直す前に何を見るか
+- 自動化したあと、週1回・5分で来週の1手をどう決めるか
 - AIに運用させたXアカウントの、週ごとの実測
-- アクセスログの「人間」が本当に人間か（Cloudflare Pages で Functions + D1 を使った実測）
 
 ## 推奨する読む順番
 
 1. [/index.md](/index.md): サイトの目的、対象読者、各ページへの入口
-2. [/docs/ai-x-account-6-months.md](/docs/ai-x-account-6-months.md): AIでXを約6ヶ月運用した記録。写真をLINEに送ると自動で投稿される仕組み、AIに任せたことと人に残ったこと、定型句62%→6%、171日中151日の投稿、自発投稿とリプライの届き方の差
-3. [/docs/x-impressions-drop.md](/docs/x-impressions-drop.md): インプレッションやフォロワーが減った週、文章を疑う前に見るべきだったのはリプライの件数だったという記録。毎日投稿していてもリプライを止めた7月の週に減ったこと、件数が同じでも届いた量が半分以下だった週、9月に件数を戻した4週の実測と、いま毎週見ている4つの数字
+2. [/docs/ai-x-account-6-months.md](/docs/ai-x-account-6-months.md): AIにXの投稿をどこまで任せられるか。写真をLINEに送ると自動で投稿される仕組み、AIに任せたことと人に残った3つの仕事、定型句62%→6%、171日中151日の投稿、自発投稿とリプライの届き方の差、AIの定型返答が公開された事故と対策、費用
+3. [/docs/x-impressions-drop.md](/docs/x-impressions-drop.md): 自動投稿を毎日出していてもインプレッションやフォロワーが減った週、文章を疑う前に見るべきだったのは手で送るリプライの件数だったという記録。件数が同じでも届いた量が半分以下だった週、9月に件数を戻した4週の実測と、いま毎週見ている4つの数字
 4. [/docs/weekly-review-template.md](/docs/weekly-review-template.md): 5分で終わる週1回の振り返りシート。2026年9月21日〜27日の記入例と、コピー用の枠
 5. [/docs/weekly-reports.md](/docs/weekly-reports.md): 週ごとの実測の一覧
 6. [/docs/weekly-report-2026-w39.md](/docs/weekly-report-2026-w39.md): 2026年9月21日〜27日の振り返り。リプライ数が同じでも露出が39%増えた週
-7. [/docs/bot-detection-on-cloudflare-pages.md](/docs/bot-detection-on-cloudflare-pages.md): Cloudflare Pages で人間とボットを見分けた記録。Functions + D1 の実装、判定の穴2つと数える相手の決め直し、「人間」4,165件のうち35%が機械で404件が運営者自身だった内訳
-8. [/docs/web-analytics-beacon-on-pages-functions.md](/docs/web-analytics-beacon-on-pages-functions.md): Pages Functions が返す HTML に Web Analytics のビーコンが入っていなかった件。応答 HTML の確かめ方と追加手順
-9. [/about.md](/about.md): 運営者、観測対象、公開範囲、利用条件
+7. [/about.md](/about.md): 運営者、観測対象、公開範囲、利用条件
+
+## 技術の記録（Cloudflare Pages の運用者向け）
+
+- [/docs/bot-detection-on-cloudflare-pages.md](/docs/bot-detection-on-cloudflare-pages.md): Cloudflare Pages で人間とボットを見分けた記録。Functions + D1 の実装、判定の穴2つと数える相手の決め直し、「人間」4,165件のうち35%が機械で404件が運営者自身だった内訳
+- [/docs/web-analytics-beacon-on-pages-functions.md](/docs/web-analytics-beacon-on-pages-functions.md): Pages Functions が返す HTML に Web Analytics のビーコンが入っていなかった件。応答 HTML の確かめ方と追加手順
 
 ## 根拠と制約
 
 - 観測開始: 2026-04-04（フォロワー1人）
 - 100人到達: 2026-06-19（約2.5ヶ月）
 - 最終記録: 2026-09-27（142人）
+- 店や商品の宣伝用のアカウントではなく、売上・問い合わせ・来店は測っていません
 - この記録は1アカウントの観測であり、一般的な効果や因果関係を示すものではありません。
 
 ## 利用条件
