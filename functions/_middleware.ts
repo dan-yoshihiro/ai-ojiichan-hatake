@@ -252,6 +252,7 @@ const VIEW_CSS = `
   --red-soft: #fbe0d6;
   --mustard: #f2b43c;
   --mustard-soft: #fdecc0;
+  --mark: #f2b43c;
   --link: #a8321b;
   --on-color: #fffaf0;
 }
@@ -270,6 +271,8 @@ const VIEW_CSS = `
     --red-soft: #45261d;
     --mustard: #f2b43c;
     --mustard-soft: #44361a;
+    /* 明るい文字に明るいからしの下線だと読めないので、ダークでは暗いからしにする */
+    --mark: #6e5218;
     --link: #ffb39c;
     --on-color: #231b16;
   }
@@ -306,7 +309,7 @@ h1, h2, h3, h4 { font-weight: 900; line-height: 1.5; letter-spacing: 0.02em; col
   h1, h2, h3, h4 { word-break: auto-phrase; text-wrap: balance; }
 }
 h1 { font-size: 1.75em; margin: 0.9em 0 0.5em; }
-h1 { background: linear-gradient(transparent 60%, var(--mustard) 60%, var(--mustard) 92%, transparent 92%); display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+h1 { background: linear-gradient(transparent 60%, var(--mark) 60%, var(--mark) 92%, transparent 92%); display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 h2 {
   font-size: 1.32em;
   margin: 2.6em 0 0.9em;

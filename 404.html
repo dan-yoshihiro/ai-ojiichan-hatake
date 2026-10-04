@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!-- Functions を通らないURL（_routes.json の include 外）で Cloudflare Pages が返す 404。
+     見た目は functions/_middleware.ts の buildNotFoundResponse と同じ。VIEW_CSS の色や枠を変えたら、ここも合わせて直す -->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ページが見つかりません — AI農業先生方式</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<style>
+:root{color-scheme:light dark;--bg:#fbf1dc;--margin-bg:#f4e3c1;--dot:rgba(74,46,30,0.10);--surface:#fffaf0;--ink:#3b2418;--text:#2a1a12;--text-muted:#5c463a;--shadow:#3b2418;--red:#d9422a;--mustard:#f2b43c;--mark:#f2b43c;--link:#a8321b;--on-color:#fffaf0}
+@media (prefers-color-scheme:dark){:root{--bg:#231b16;--margin-bg:#1b1511;--dot:rgba(255,226,180,0.07);--surface:#2d231d;--ink:#f0ddb8;--text:#f6ecd8;--text-muted:#d0bda2;--shadow:#000000;--red:#ef6a4f;--mustard:#f2b43c;--mark:#6e5218;--link:#ffb39c;--on-color:#231b16}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background-color:var(--margin-bg);background-image:radial-gradient(var(--dot) 1.4px,transparent 1.6px);background-size:18px 18px}
+body{font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;font-weight:500;font-size:17px;max-width:760px;min-height:100vh;margin:0 auto;--gutter:24px;padding:0 var(--gutter) 4rem;line-height:1.95;letter-spacing:0.02em;color:var(--text);background:var(--bg);overflow-wrap:anywhere}
+.brand{font-family:"Dela Gothic One","Hiragino Sans","Yu Gothic",sans-serif;font-weight:400}
+h1{font-weight:900;line-height:1.5;letter-spacing:0.02em;color:var(--ink);font-size:1.75em;margin:0.9em 0 0.5em;background:linear-gradient(transparent 60%,var(--mark) 60%,var(--mark) 92%,transparent 92%);display:inline;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+h1+p{margin-top:1em}
+p{margin:0 0 1.1em}
+hr{border:none;height:10px;margin:2.6em 0;background:repeating-linear-gradient(-45deg,var(--red) 0 8px,var(--mustard) 8px 16px);border:2px solid var(--ink);border-radius:999px}
+a{color:var(--link);text-decoration-thickness:2px;text-underline-offset:0.2em}
+a:hover{color:var(--red)}
+body::before{content:"";position:absolute;top:0;left:0;right:0;height:20px;background:linear-gradient(var(--red) 0 10px,var(--mustard) 10px 16px,var(--ink) 16px 18px,transparent 18px)}
+.site-head{margin:0 0 0.6em;padding:2.1em 0 0.7em;display:flex;flex-wrap:wrap;align-items:center;gap:0.3em 0.8em}
+.brand{display:inline-block;font-size:1.05em;color:var(--on-color);background:var(--red);border:2.5px solid var(--ink);border-radius:10px;padding:0.1em 0.7em;box-shadow:3px 3px 0 var(--shadow);text-decoration:none;transform:rotate(-2deg)}
+.brand:hover{color:var(--bg);background:var(--ink)}
+.site-purpose{color:var(--text-muted);font-size:0.78em;line-height:1.6;margin:0;flex:1 1 16em}
+.site-nav{display:flex;gap:0.6em;margin:0 calc(-1 * var(--gutter)) 1.5em;padding:0.4em var(--gutter) 0.9em;overflow-x:auto;scrollbar-width:none;font-size:0.84em}
+.site-nav::-webkit-scrollbar{display:none}
+.site-nav a{flex:none;text-decoration:none;color:var(--ink);background:var(--surface);border:2px solid var(--ink);border-radius:999px;padding:0.25em 0.95em;white-space:nowrap;box-shadow:2px 2px 0 var(--shadow);font-weight:700}
+.site-nav a:hover{background:var(--mustard);color:#33211a}
+.reader-next{background:var(--surface);border:2.5px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--shadow);margin-top:3em;padding:1.5em 1.3em 1.1em;background-image:linear-gradient(var(--red) 0 0);background-size:100% 8px;background-repeat:no-repeat}
+.reader-next strong{display:block;margin-bottom:0.4em;font-size:1.05em;color:var(--ink)}
+.reader-next p{margin:0.45em 0;line-height:1.6}
+.reader-next p a::before{content:"★ ";color:var(--red)}
+.view-footer{color:var(--text-muted);font-size:0.8em;margin-top:2em;text-align:center}
+.route-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1em;margin:1.3em 0 1.8em}
+.route-card{display:flex;flex-direction:column;gap:0.5em;padding:1em 1.1em;border:2.5px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--shadow);background:var(--surface);color:var(--text);text-decoration:none;transition:transform 0.12s,box-shadow 0.12s}
+.route-card:hover{color:var(--text);transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--shadow)}
+.route-card:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--shadow)}
+.route-q{font-weight:700;line-height:1.5;color:var(--ink)}
+.route-a{align-self:flex-start;font-size:0.82em;line-height:1.5;font-weight:700;color:var(--on-color);background:var(--red);border:2px solid var(--ink);border-radius:10px;padding:0.2em 0.8em}
+.route-a::after{content:" →"}
+.route-card:nth-child(even) .route-a{background:var(--mustard);color:#2a1a12}
+@media (min-width:641px){.site-nav{flex-wrap:wrap;overflow:visible;margin:0 0 1.5em;padding:0.4em 0 0.9em}}
+@media (max-width:640px){body{--gutter:18px;font-size:16px;line-height:1.9}h1{font-size:1.5em}.route-grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.route-card{transition:none}.route-card:hover,.route-card:active{transform:none}}
+</style>
+</head>
+<body>
+<header class="site-head">
+  <a class="brand" href="/">AI農業先生方式</a>
+  <p class="site-purpose">AIにSNSの投稿を任せたい事業者向けに、1つのXアカウントを6ヶ月自動投稿した実測を公開しています。</p>
+</header>
+<nav class="site-nav" aria-label="サイト内ナビゲーション">
+  <a href="/">トップ</a>
+  <a href="/ai-x-operation">AIにどこまで任せられるか</a>
+  <a href="/x-impressions-drop">伸びないときの見方</a>
+  <a href="/sns-weekly-review">週1回の振り返りシート</a>
+  <a href="/weekly">毎週の実測</a>
+  <a href="/about">このサイトについて</a>
+</nav>
+<h1>このページは見つかりませんでした</h1>
+<p>URLが変わったか、削除されたページです。下の入口から探してください。</p>
+<div class="route-grid">
+  <a class="route-card" href="/"><span class="route-q">トップページ</span><span class="route-a">サイトの全体と6ヶ月の数字</span></a>
+  <a class="route-card" href="/ai-x-operation"><span class="route-q">AIにどこまで任せられて、何が人に残るか</span><span class="route-a">仕組み・費用・事故</span></a>
+  <a class="route-card" href="/x-impressions-drop"><span class="route-q">自動で投稿しているのに伸びない</span><span class="route-a">直す前に見る4項目</span></a>
+  <a class="route-card" href="/weekly"><span class="route-q">毎週の実測</span><span class="route-a">最新週から</span></a>
+</div>
+<hr>
+<aside class="reader-next" aria-label="次に読む記事">
+  <strong>次に読む</strong>
+  <p><a href="/ai-x-operation">AIにXの投稿をどこまで任せられるか：人に残った3つの仕事と費用</a></p>
+  <p><a href="/x-impressions-drop">自動で投稿しているのに伸びないとき、投稿を直す前に見る4項目</a></p>
+  <p><a href="/sns-weekly-review">5分で終わる週1回の振り返りシート</a></p>
+  <p><a href="/weekly">毎週の実測（最新週から）</a></p>
+  <p><a href="/about">観測範囲と公開方針</a></p>
+</aside>
+<p class="view-footer">CC-BY 4.0 / 著者: @ojiichan_hatake</p>
+</body>
+</html>
