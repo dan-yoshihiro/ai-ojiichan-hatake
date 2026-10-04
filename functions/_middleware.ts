@@ -234,25 +234,28 @@ function preserveViewInLinks(html: string): string {
 
 // オールドポップ: クリーム地に、トマト赤・からし・焦げ茶の3色だけ。太い線とぼかさないずらし影。
 // 読みやすさのため、水玉は本文の外（画面の余白）にだけ敷き、本文の列は無地にする。
-// 看板書体（Dela Gothic One）はサイト名と数字だけに使い、見出しは丸ゴシックの極太で組む。
+// 本文は端末標準のゴシック（丸ゴシックは長文で字の輪郭がぼやける）、見出し・ナビ・カードは丸ゴシック、
+// 看板書体（Dela Gothic One）はサイト名と数字だけ。太い線とずらし影はトップの部品にだけ使い、記事は細い線で静かにする。
 // 色は :root のトークンだけで決め、ダークモードはトークンの差し替えで済ませる。人＝トマト赤、AI＝焦げ茶
 const VIEW_CSS = `
 :root {
   color-scheme: light dark;
-  --bg: #fbf1dc;
-  --margin-bg: #f4e3c1;
-  --dot: rgba(74, 46, 30, 0.10);
-  --surface: #fffaf0;
-  --surface-muted: #f6e6c4;
+  /* 紙は黄みを抜いた生成り。黄みの強いクリーム（#fbf1dc）だと古びて見え、赤とからしの差し色も沈んだ */
+  --bg: #fbf8f1;
+  --margin-bg: #efe7d8;
+  --dot: rgba(74, 46, 30, 0.07);
+  --surface: #ffffff;
+  --surface-muted: #f4eee3;
   --ink: #3b2418;
   --text: #2a1a12;
   --text-muted: #5c463a;
   --shadow: #3b2418;
   --red: #d9422a;
-  --red-soft: #fbe0d6;
+  --red-soft: #fbe6de;
   --mustard: #f2b43c;
-  --mustard-soft: #fdecc0;
+  --mustard-soft: #fcefd0;
   --mark: #f2b43c;
+  --line: #e6dccb;
   --link: #a8321b;
   --on-color: #fffaf0;
 }
@@ -273,6 +276,7 @@ const VIEW_CSS = `
     --mustard-soft: #44361a;
     /* 明るい文字に明るいからしの下線だと読めないので、ダークでは暗いからしにする */
     --mark: #6e5218;
+    --line: #4a3a2f;
     --link: #ffb39c;
     --on-color: #231b16;
   }
@@ -285,98 +289,108 @@ html {
   background-size: 18px 18px;
 }
 body {
-  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
-  font-weight: 500;
+  font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+  font-weight: 400;
   font-size: 17px;
-  max-width: 760px;
+  /* 本文の1行を38字前後にする（700px − 左右の余白48px） */
+  max-width: 700px;
   min-height: 100vh;
   margin: 0 auto;
   --gutter: 24px;
   padding: 0 var(--gutter) 4rem;
-  line-height: 1.95;
-  letter-spacing: 0.02em;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
   color: var(--text);
   background: var(--bg);
   overflow-wrap: anywhere;
 }
-.stat-value, .brand {
+.stat-value {
   font-family: "Dela Gothic One", "Hiragino Sans", "Yu Gothic", sans-serif;
   font-weight: 400;
 }
-h1, h2, h3, h4 { font-weight: 900; line-height: 1.5; letter-spacing: 0.02em; color: var(--ink); }
+/* 看板は Dela Gothic One だと「農業」の画数で字が潰れるので、見出しと同じ丸ゴシックの極太にする */
+.brand {
+  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif;
+  font-weight: 900;
+}
+h1, h2, h3, h4, th, .site-nav a, .route-q, .route-a, .stat-label, .flow-step strong, .flow-who, .reader-next strong, blockquote strong:first-child {
+  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif;
+}
+h1, h2, h3, h4 { font-weight: 700; line-height: 1.5; letter-spacing: 0.04em; color: var(--ink); }
+/* 見出し・ナビ・看板は約物を詰める（palt）。「、」「：」の後ろが空きすぎず、組みが締まる */
+h1, h2, h3, h4, .site-nav a, .route-q, .brand { font-feature-settings: "palt"; }
+strong { font-weight: 700; }
 /* 見出しの行を揃えるのは、文節で改行できるブラウザだけ。balance 単独だと「投稿していた / のに」のように語の途中で割れる */
 @supports (word-break: auto-phrase) {
   h1, h2, h3, h4 { word-break: auto-phrase; text-wrap: balance; }
 }
-h1 { font-size: 1.75em; margin: 0.9em 0 0.5em; }
-h1 { background: linear-gradient(transparent 60%, var(--mark) 60%, var(--mark) 92%, transparent 92%); display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+h1 { font-size: 1.7em; font-weight: 900; margin: 0.9em 0 0.5em; }
+h1 { background: linear-gradient(transparent 70%, var(--mark) 70%, var(--mark) 94%, transparent 94%); display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 h2 {
-  font-size: 1.32em;
-  margin: 2.6em 0 0.9em;
-  padding-bottom: 0.25em;
-  border-bottom: 3px solid var(--ink);
+  font-size: 1.28em;
+  margin: 2.8em 0 0.9em;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid var(--line);
 }
 h2::before {
   content: "";
   display: inline-block;
-  width: 0.62em;
-  height: 0.62em;
-  margin: 0 0.5em 0.08em 0;
+  width: 0.42em;
+  height: 0.42em;
+  margin: 0 0.55em 0.16em 0;
   background: var(--red);
-  border: 2px solid var(--ink);
   border-radius: 50%;
   vertical-align: baseline;
 }
-h3 { font-size: 1.12em; margin: 1.9em 0 0.5em; padding-bottom: 0.1em; background: linear-gradient(transparent 70%, var(--mustard-soft) 70%); display: inline; }
+h3 { font-size: 1.08em; margin: 2em 0 0.5em; }
 p, ul, ol { margin: 0 0 1.1em; }
 li + li { margin-top: 0.35em; }
 li::marker { color: var(--red); }
 strong { color: var(--ink); }
-h1 + p { margin-top: 1em; }
-h1 + p em { color: var(--text-muted); font-size: 0.82em; font-style: normal; }
+/* タイトル直下の「公開 / 最終更新 / 観測期間」は記録票の欄のように、上下の細い罫で囲む */
+h1 + p { margin-top: 1.1em; padding: 0.45em 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); line-height: 1.7; }
+h1 + p em { color: var(--text-muted); font-size: 0.8em; font-style: normal; font-variant-numeric: tabular-nums; }
 pre, code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.86em; }
-pre { background: var(--surface); padding: 1em 1.1em; overflow-x: auto; border: 2px solid var(--ink); border-radius: 12px; box-shadow: 3px 3px 0 var(--shadow); line-height: 1.65; }
+pre { background: var(--surface); padding: 1em 1.1em; overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; line-height: 1.65; }
 code { background: var(--surface-muted); padding: 0.1em 0.35em; border-radius: 5px; }
 pre code { background: none; padding: 0; }
 /* 表はスマホで列が潰れないよう、表ごと横スクロールさせる */
-table { display: block; max-width: 100%; overflow-x: auto; border-collapse: separate; border-spacing: 0; margin: 1.3em 0; font-size: 0.92em; line-height: 1.65; border: 2.5px solid var(--ink); border-radius: 12px; box-shadow: 4px 4px 0 var(--shadow); background: var(--surface); }
-th, td { border-bottom: 1.5px solid var(--ink); border-right: 1.5px dashed var(--text-muted); padding: 0.55em 0.85em; text-align: left; vertical-align: top; min-width: 5.5em; }
-th:last-child, td:last-child { border-right: none; }
+/* 表は帳票のように、上下の罫と行の細い罫だけで組む。縦罫と外枠は引かない */
+table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 1.4em 0 1.6em; font-size: 0.92em; line-height: 1.65; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+th, td { border-bottom: 1px solid var(--line); padding: 0.55em 0.85em; text-align: start; vertical-align: top; min-width: 5.5em; font-variant-numeric: tabular-nums; }
+/* 原稿の表で右寄せ（---:）にした数値列は右に揃える。text-align: start だけだと align 属性が負ける */
+th[align="right"], td[align="right"] { text-align: right; }
+th[align="center"], td[align="center"] { text-align: center; }
 /* 本文の overflow-wrap: anywhere がセルに効くと「8月31 / 日〜9月」のように日付が割れるので、
    セル内は通常の折り返しに戻し、見出し列（期間・指標名）に幅を確保する */
 th, td { overflow-wrap: normal; }
 th:first-child, td:first-child { min-width: 11em; }
 tr:last-child td { border-bottom: none; }
-th { background: var(--mustard); color: #33211a; white-space: nowrap; font-weight: 700; }
+th { color: var(--ink); white-space: nowrap; font-weight: 700; font-size: 0.92em; border-bottom: 1px solid var(--ink); }
+/* TL;DR は要約欄。塗りの札ではなく、左の朱線と小さな見出し語で示す */
 blockquote {
-  position: relative;
-  margin: 1.4em 0 1.8em;
-  padding: 1.2em 1.2em 1em;
-  background: var(--mustard-soft);
-  border: 2.5px solid var(--ink);
-  border-radius: 16px;
-  box-shadow: 5px 5px 0 var(--shadow);
+  margin: 1.4em 0 2em;
+  padding: 0.9em 1.2em 1em;
+  background: var(--surface);
+  border-left: 4px solid var(--red);
+  border-radius: 0 10px 10px 0;
   color: var(--text);
   font-size: 0.95em;
   line-height: 1.85;
 }
 blockquote p { margin: 0; }
 blockquote strong:first-child {
-  display: inline-block;
-  margin-right: 0.4em;
-  padding: 0 0.6em;
-  color: var(--on-color);
-  background: var(--red);
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  font-size: 0.85em;
-  transform: rotate(-3deg);
+  display: block;
+  margin-bottom: 0.25em;
+  color: var(--red);
+  font-size: 0.78em;
+  letter-spacing: 0.14em;
 }
-hr { border: none; height: 10px; margin: 2.6em 0; background: repeating-linear-gradient(-45deg, var(--red) 0 8px, var(--mustard) 8px 16px); border: 2px solid var(--ink); border-radius: 999px; }
+hr { border: none; border-top: 2px dashed var(--line); margin: 2.6em 0; }
 /* 記事の図は青い線画なので、少しセピアに寄せて古い印刷物の色にそろえる */
-img { max-width: 100%; height: auto; border: 2.5px solid var(--ink); border-radius: 16px; box-shadow: 5px 5px 0 var(--shadow); filter: sepia(0.3) saturate(1.2); }
-a { color: var(--link); text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
-a:hover { color: var(--red); }
+img { max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 12px; filter: sepia(0.3) saturate(1.2); }
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 0.25em; }
+a:hover { color: var(--red); text-decoration-thickness: 2px; }
 /* サイトの頭: 色の縞と、看板のような名前 */
 /* 3色の縞は本文の幅ではなく画面の端から端まで引く（body は position 指定なしなので、
    absolute の基準は初期包含ブロック＝画面幅になる） */
@@ -386,69 +400,66 @@ body::before {
   top: 0;
   left: 0;
   right: 0;
-  height: 20px;
-  background: linear-gradient(var(--red) 0 10px, var(--mustard) 10px 16px, var(--ink) 16px 18px, transparent 18px);
+  height: 10px;
+  background: linear-gradient(var(--red) 0 6px, var(--mustard) 6px 10px);
 }
 .site-head {
   margin: 0 0 0.6em;
-  padding: 2.1em 0 0.7em;
+  padding: 1.6em 0 0.7em;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.3em 0.8em;
+  gap: 0.7em 0.9em;
 }
 .brand {
   display: inline-block;
-  font-size: 1.05em;
+  font-size: 1.2em;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
   color: var(--on-color);
   background: var(--red);
-  border: 2.5px solid var(--ink);
-  border-radius: 10px;
-  padding: 0.1em 0.7em;
-  box-shadow: 3px 3px 0 var(--shadow);
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  padding: 0.1em 0.65em;
+  box-shadow: 2px 2px 0 var(--shadow);
   text-decoration: none;
-  transform: rotate(-2deg);
 }
 .brand:hover { color: var(--bg); background: var(--ink); }
 .site-purpose { color: var(--text-muted); font-size: 0.78em; line-height: 1.6; margin: 0; flex: 1 1 16em; }
+/* ナビはボタンではなく文字の列。いま読んでいるページだけ朱の下線を引く */
 .site-nav {
   display: flex;
-  gap: 0.6em;
-  margin: 0 calc(-1 * var(--gutter)) 1.5em;
-  padding: 0.4em var(--gutter) 0.9em;
+  gap: 0.3em 1.3em;
+  margin: 0 calc(-1 * var(--gutter)) 1.8em;
+  padding: 0.5em var(--gutter) 0.6em;
   overflow-x: auto;
   scrollbar-width: none;
   font-size: 0.84em;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 .site-nav::-webkit-scrollbar { display: none; }
 .site-nav a {
   flex: none;
   text-decoration: none;
-  color: var(--ink);
-  background: var(--surface);
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  padding: 0.25em 0.95em;
+  color: var(--text-muted);
+  padding: 0.15em 0;
+  border-bottom: 2px solid transparent;
   white-space: nowrap;
-  box-shadow: 2px 2px 0 var(--shadow);
   font-weight: 700;
 }
-.site-nav a:hover { background: var(--mustard); color: #33211a; }
+.site-nav a:hover { color: var(--ink); }
+.site-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--red); }
 .reader-next {
   background: var(--surface);
-  border: 2.5px solid var(--ink);
-  border-radius: 16px;
-  box-shadow: 5px 5px 0 var(--shadow);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
   margin-top: 3em;
   padding: 1.1em 1.3em;
-  background-image: linear-gradient(var(--red) 0 0);
-  background-size: 100% 8px;
-  background-repeat: no-repeat;
-  padding-top: 1.5em;
 }
-.reader-next strong { display: block; margin-bottom: 0.4em; font-size: 1.05em; }
+.reader-next strong { display: block; margin-bottom: 0.4em; font-size: 1.05em; color: var(--ink); }
 .reader-next p { margin: 0.45em 0; line-height: 1.6; }
-.reader-next p a::before { content: "★ "; color: var(--red); }
+.reader-next p a::before { content: "→ "; color: var(--red); }
 .view-footer { color: var(--text-muted); font-size: 0.8em; margin-top: 2em; text-align: center; }
 .view-footer a { color: inherit; }
 /* トップページ: 数字のタイル。4色を順に当てる */
@@ -457,14 +468,15 @@ body::before {
   padding: 0;
   margin: 1.4em 0 1.8em;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* 本文の列が 700px なので、4列だと「62%→ / 6%」のように数字が折れる。どの幅でも2列×2段にする */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.9em;
 }
 .stat-grid li + li { margin-top: 0; }
 .stat {
-  border: 2.5px solid var(--ink);
-  border-radius: 16px;
-  box-shadow: 4px 4px 0 var(--shadow);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 3px 3px 0 var(--shadow);
   padding: 0.9em 0.9em 1em;
   display: flex;
   flex-direction: column;
@@ -483,10 +495,9 @@ body::before {
   display: grid;
   grid-template-columns: 3.6em 1fr;
   column-gap: 0.9em;
-  padding: 0.85em 1em;
-  border-radius: 16px;
-  border: 2.5px solid var(--ink);
-  box-shadow: 4px 4px 0 var(--shadow);
+  padding: 0.8em 1em;
+  border-radius: 14px;
+  border: 1.5px solid var(--ink);
 }
 .flow li + li { margin-top: 0.8em; }
 .flow-step strong { grid-column: 2; line-height: 1.5; }
@@ -502,9 +513,8 @@ body::before {
   font-size: 0.8em;
   font-weight: 700;
   color: var(--on-color);
-  border: 2.5px solid var(--ink);
   border-radius: 50%;
-  transform: rotate(-8deg);
+  transform: rotate(-6deg);
 }
 .flow-step.is-human { background: var(--red-soft); }
 .flow-step.is-human .flow-who { background: var(--red); }
@@ -517,26 +527,31 @@ body::before {
   flex-direction: column;
   gap: 0.5em;
   padding: 1em 1.1em;
-  border: 2.5px solid var(--ink);
-  border-radius: 16px;
-  box-shadow: 5px 5px 0 var(--shadow);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 3px 3px 0 var(--shadow);
   background: var(--surface);
   color: var(--text);
   text-decoration: none;
   transition: transform 0.12s, box-shadow 0.12s;
 }
-.route-card:hover { color: var(--text); transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--shadow); }
-.route-card:active { transform: translate(4px, 4px); box-shadow: 1px 1px 0 var(--shadow); }
+.route-card:hover { color: var(--text); transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--shadow); }
+.route-card:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--shadow); }
 .route-q { font-weight: 700; line-height: 1.5; color: var(--ink); }
-.route-a { align-self: flex-start; font-size: 0.82em; line-height: 1.5; font-weight: 700; color: var(--on-color); background: var(--red); border: 2px solid var(--ink); border-radius: 10px; padding: 0.2em 0.8em; }
+.route-a { font-size: 0.84em; line-height: 1.5; font-weight: 700; color: var(--link); }
 .route-a::after { content: " →"; }
-.route-card:nth-child(even) .route-a { background: var(--mustard); color: #2a1a12; }
 /* 横スクロールのナビはスマホ用。広い画面では折り返して全部見せる */
 @media (min-width: 641px) {
-  .site-nav { flex-wrap: wrap; overflow: visible; margin: 0 0 1.5em; padding: 0.4em 0 0.9em; }
+  .site-nav { flex-wrap: wrap; overflow: visible; margin: 0 0 1.8em; padding: 0.5em 0 0.6em; }
 }
 @media (max-width: 640px) {
-  body { --gutter: 18px; font-size: 16px; line-height: 1.9; }
+  /* 横スクロールのナビは右端を薄くぼかし、続きがあることを見せる。最後の項目がぼかしに隠れないよう右に余白を足す */
+  .site-nav {
+    padding-right: 3em;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 3em), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 3em), transparent);
+  }
+  body { --gutter: 18px; font-size: 16px; line-height: 1.85; }
   h1 { font-size: 1.5em; }
   h2 { font-size: 1.2em; }
   .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75em; }
@@ -639,6 +654,22 @@ function buildHtmlPage(
   const webAnalyticsBeacon = webAnalyticsToken
     ? `<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${escapeHtml(webAnalyticsToken)}"}'></script>`
     : '';
+  // 共通の「次に読む」は、本文に自前の案内があるページでは出さない（同じ案内が2回続くため）。
+  // 対象: 「## 次に読む…」「## あわせて読む」の見出し、末尾の「---」に続くリンクの列、入口カード（トップ・404）
+  const hasOwnNext = /^##\s*(次に読む|あわせて読む)/m.test(markdown)
+    || /\n---\s*\n+(?:\s*-\s*\[[^\]]+\]\([^)]+\).*\n?)+\s*$/.test(markdown)
+    || markdown.includes('class="route-grid"');
+  const readerNext = hasOwnNext
+    ? ''
+    : `<hr>
+<aside class="reader-next" aria-label="次に読む記事">
+  <strong>次に読む</strong>
+  <p><a href="/ai-x-operation">AIにXの投稿をどこまで任せられるか：人に残った3つの仕事と費用</a></p>
+  <p><a href="/x-impressions-drop">自動で投稿しているのに伸びないとき、投稿を直す前に見る4項目</a></p>
+  <p><a href="/sns-weekly-review">5分で終わる週1回の振り返りシート</a></p>
+  <p><a href="/weekly">毎週の実測（最新週から）</a></p>
+  <p><a href="/about">観測範囲と公開方針</a></p>
+</aside>`;
   // 看板（サイト名）は全ページに出す。トップは H1 がサイトの説明を兼ねるので、説明文とナビは記事ページにだけ出す
   const sitePurpose = `<header class="site-head">
   <a class="brand" href="/">AI農業先生方式</a>${rawPath === '/index.md'
@@ -646,16 +677,25 @@ function buildHtmlPage(
     : `
   <p class="site-purpose">AIにSNSの投稿を任せたい事業者向けに、1つのXアカウントを6ヶ月自動投稿した実測を公開しています。</p>`}
 </header>`;
+  // いま読んでいるページに aria-current を付ける。週報（/weekly/2026-wNN）は「毎週の実測」の下にあるので、そこを示す
+  const navItems: Array<[string, string]> = [
+    ['/', 'トップ'],
+    ['/ai-x-operation', 'AIにどこまで任せられるか'],
+    ['/x-impressions-drop', '伸びないときの見方'],
+    ['/sns-weekly-review', '週1回の振り返りシート'],
+    ['/weekly', '毎週の実測'],
+    ['/about', 'このサイトについて'],
+  ];
+  const isCurrent = (href: string): boolean =>
+    href === '/' ? false : canonicalPath === href || canonicalPath.startsWith(`${href}/`);
+  // スマホではナビが横スクロールになり、後ろのほうのページだと印の付いた項目が画面外に出る。
+  // 読み込み時にナビの中だけを横にずらして、いまの項目を中央に寄せる（本文には触れない）
   const siteNav = rawPath === '/index.md'
     ? ''
     : `<nav class="site-nav" aria-label="サイト内ナビゲーション">
-  <a href="/">トップ</a>
-  <a href="/ai-x-operation">AIにどこまで任せられるか</a>
-  <a href="/x-impressions-drop">伸びないときの見方</a>
-  <a href="/sns-weekly-review">週1回の振り返りシート</a>
-  <a href="/weekly">毎週の実測</a>
-  <a href="/about">このサイトについて</a>
-</nav>`;
+${navItems.map(([href, label]) => `  <a href="${href}"${isCurrent(href) ? ' aria-current="page"' : ''}>${label}</a>`).join('\n')}
+</nav>
+<script>(function(){var n=document.querySelector('.site-nav'),c=n&&n.querySelector('[aria-current]');if(c&&n.scrollWidth>n.clientWidth){n.scrollLeft=c.offsetLeft-n.offsetLeft-(n.clientWidth-c.offsetWidth)/2;}})();</script>`;
   return `<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -681,22 +721,14 @@ function buildHtmlPage(
 <script type="application/ld+json">${jsonLd}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@700;900&display=swap">
 <style>${VIEW_CSS}</style>
 </head>
 <body>
 ${sitePurpose}
 ${siteNav}
 ${html}
-<hr>
-<aside class="reader-next" aria-label="次に読む記事">
-  <strong>次に読む</strong>
-  <p><a href="/ai-x-operation">AIにXの投稿をどこまで任せられるか：人に残った3つの仕事と費用</a></p>
-  <p><a href="/x-impressions-drop">自動で投稿しているのに伸びないとき、投稿を直す前に見る4項目</a></p>
-  <p><a href="/sns-weekly-review">5分で終わる週1回の振り返りシート</a></p>
-  <p><a href="/weekly">毎週の実測（最新週から）</a></p>
-  <p><a href="/about">観測範囲と公開方針</a></p>
-</aside>
+${readerNext}
 <p class="view-footer">
   CC-BY 4.0 / 著者: @ojiichan_hatake / <a href="${safeRaw}">Markdown版を読む</a>
 </p>
