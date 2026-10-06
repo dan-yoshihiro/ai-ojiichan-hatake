@@ -238,7 +238,7 @@ const VIEW_CSS = `
 :root {
   color-scheme: light;
   --bg: #f2f3eb;
-  --surface: #fbfcf7;
+  --surface: #fff;
   --surface-soft: #e8ede3;
   --ink: #17382b;
   --text: #3e5148;
@@ -328,6 +328,16 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .site-nav a { flex: none; padding: 5px 0; color: var(--muted); text-decoration: none; white-space: nowrap; font-weight: 500; transition: color 0.2s ease; }
 .site-nav a:hover { color: var(--ink); }
 .site-nav a[aria-current="page"] { color: var(--primary-dark); font-weight: 700; }
+.page-toc { margin-top: 2.8em; margin-bottom: 3.5em; padding: 1.3em 1.5em 1.5em; background: rgba(251, 252, 247, 0.94); }
+.page-toc summary { display: flex; align-items: center; justify-content: space-between; gap: 1em; color: var(--ink); cursor: pointer; font-weight: 700; list-style: none; }
+.page-toc summary::-webkit-details-marker { display: none; }
+.page-toc summary::after { content: "+"; color: var(--accent); font-family: "Manrope", sans-serif; font-size: 1.1em; font-weight: 600; }
+.page-toc[open] summary::after { content: "−"; }
+.page-toc ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.45em 2em; margin: 1.2em 0 0; padding: 0; list-style: none; }
+.page-toc li + li { margin-top: 0; }
+.page-toc a { display: grid; grid-template-columns: 2.2em 1fr; gap: 0.25em; align-items: baseline; padding: 0.3em 0; color: var(--text); text-decoration: none; line-height: 1.55; }
+.page-toc a:hover { color: var(--ink); }
+.page-toc-index { color: var(--accent); font-family: "Manrope", sans-serif; font-size: 0.72em; font-weight: 700; letter-spacing: 0.08em; }
 .reader-next { margin-top: 3em; padding: 1.4em 1.5em; background: var(--surface); border: 0; }
 .reader-next strong { display: block; margin-bottom: 0.4em; color: var(--ink); font-size: 1.05em; }
 .reader-next p { margin: 0.45em 0; line-height: 1.6; }
@@ -358,6 +368,8 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
   .site-head { padding-top: 18px; }
   .site-purpose { display: none; }
   .site-nav { width: calc(100% + 36px); margin-left: -18px; margin-right: -18px; margin-bottom: 36px; padding-left: 18px; padding-right: 3em; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 3em), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 3em), transparent); }
+  .page-toc { padding: 1.1em 1.2em 1.25em; }
+  .page-toc ol { grid-template-columns: 1fr; }
   table { display: block; width: 100%; overflow-x: auto; }
   .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75em; }
   .stat { min-height: 145px; padding: 1em; }
@@ -500,6 +512,27 @@ function buildHtmlPage(
 ${navItems.map(([href, label]) => `  <a href="${href}"${isCurrent(href) ? ' aria-current="page"' : ''}>${label}</a>`).join('\n')}
 </nav>
 <script>(function(){var n=document.querySelector('.site-nav'),c=n&&n.querySelector('[aria-current]');if(c&&n.scrollWidth>n.clientWidth){n.scrollLeft=c.offsetLeft-n.offsetLeft-(n.clientWidth-c.offsetWidth)/2;}})();</script>`;
+  // 記事の h2 から目次を自動生成する。導入文の直後に置き、本文と目次のリンク先を常に同期させる
+  const tocItems: Array<{ id: string; label: string }> = [];
+  const htmlWithHeadingIds = html.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (_match, attrs: string, headingHtml: string) => {
+    const id = `section-${String(tocItems.length + 1).padStart(2, '0')}`;
+    const label = headingHtml.replace(/<[^>]*>/g, '').trim();
+    tocItems.push({ id, label });
+    const cleanAttrs = attrs.replace(/\s+id=(?:"[^"]*"|'[^']*')/i, '');
+    return `<h2${cleanAttrs} id="${id}">${headingHtml}</h2>`;
+  });
+  const shouldShowToc = rawPath !== '/index.md' && rawPath !== '/404' && tocItems.length >= 2;
+  const pageToc = shouldShowToc
+    ? `<details class="page-toc" open>
+  <summary>このページの内容</summary>
+  <ol>
+${tocItems.map(({ id, label }, index) => `    <li><a href="#${id}"><span class="page-toc-index">${String(index + 1).padStart(2, '0')}</span><span>${label}</span></a></li>`).join('\n')}
+  </ol>
+</details>`
+    : '';
+  const contentHtml = shouldShowToc
+    ? htmlWithHeadingIds.replace(/<h2\b/i, `${pageToc}\n<h2`)
+    : html;
   return `<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -532,12 +565,12 @@ ${navItems.map(([href, label]) => `  <a href="${href}"${isCurrent(href) ? ' aria
 <div class="reading-progress" aria-hidden="true"><span></span></div>
 ${sitePurpose}
 ${siteNav}
-${html}
+${contentHtml}
 ${readerNext}
 <p class="view-footer">
   CC-BY 4.0 / 著者: @ojiichan_hatake / <a href="${safeRaw}">Markdown版を読む</a>
 </p>
-<script>(function(){var b=document.querySelector('.reading-progress span'),busy=false;function update(){var d=document.documentElement,m=d.scrollHeight-innerHeight,p=m>0?scrollY/m:0;b.style.transform='scaleX('+Math.max(0,Math.min(1,p))+')';busy=false;}function request(){if(!busy){busy=true;requestAnimationFrame(update);}}addEventListener('scroll',request,{passive:true});addEventListener('resize',request);update();})();</script>
+<script>(function(){var b=document.querySelector('.reading-progress span'),toc=document.querySelector('.page-toc'),busy=false,mobile=matchMedia('(max-width: 760px)');if(toc&&mobile.matches)toc.removeAttribute('open');function update(){var d=document.documentElement,m=d.scrollHeight-innerHeight,p=m>0?scrollY/m:0;b.style.transform='scaleX('+Math.max(0,Math.min(1,p))+')';busy=false;}function request(){if(!busy){busy=true;requestAnimationFrame(update);}}if(toc)toc.addEventListener('click',function(event){var target=event.target;if(mobile.matches&&target instanceof Element&&target.closest('a'))toc.removeAttribute('open');});addEventListener('scroll',request,{passive:true});addEventListener('resize',request);update();})();</script>
 ${webAnalyticsBeacon}
 </body>
 </html>`;
