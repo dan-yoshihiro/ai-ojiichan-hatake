@@ -242,7 +242,7 @@ const VIEW_CSS = `
   --surface-soft: #e8ede3;
   --ink: #17382b;
   --text: #3e5148;
-  --muted: #718078;
+  --muted: #5f7067;
   --line: #ccd5ca;
   --line-strong: #aab9ab;
   --primary: #35664d;
@@ -289,7 +289,7 @@ h1::before { display: block; margin-bottom: 1.1rem; color: var(--accent); font-f
 .home h1::before { content: "FIELD NOTE  /  006 MONTHS"; }
 .article h1::before { content: "OBSERVATION LOG"; }
 h2 { counter-increment: report-section; display: grid; grid-template-columns: 2.6rem 1fr; gap: 0.25em; align-items: baseline; scroll-margin-top: 5rem; font-size: clamp(1.4rem, 3vw, 1.85rem); line-height: 1.5; margin-top: 3.2em; margin-bottom: 1em; padding-bottom: 0.6em; border-bottom: 1px solid var(--line-strong); }
-h2::before { content: "0" counter(report-section); color: var(--accent); font-family: "Manrope", sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; }
+h2::before { content: counter(report-section, decimal-leading-zero); color: var(--accent); font-family: "Manrope", sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; }
 h3 { font-size: 1.15rem; line-height: 1.55; margin-top: 2.2em; margin-bottom: 0.6em; }
 p, ul, ol { margin-top: 0; margin-bottom: 1.2em; }
 li + li { margin-top: 0.35em; }
@@ -323,7 +323,7 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .brand::before { content: ""; width: 24px; height: 31px; flex: none; border-radius: 100% 0 100% 0; background: var(--primary); transform: rotate(-38deg); }
 .brand:hover { color: var(--primary-dark); }
 .site-purpose { color: var(--muted); font-size: 0.76rem; line-height: 1.55; margin: 0; flex: 1 1 300px; }
-.site-nav { position: sticky; top: 0; z-index: 10; width: min(100%, var(--content-width)); display: flex; gap: 4px 22px; margin: 0 auto 48px; padding: 12px 0; overflow-x: auto; scrollbar-width: none; font-size: 0.82rem; background: rgba(242, 243, 235, 0.94); border-bottom: 1px solid var(--line-strong); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.site-nav { width: min(100%, var(--content-width)); display: flex; gap: 4px 22px; margin: 0 auto 48px; padding: 12px 0; overflow-x: auto; scrollbar-width: none; font-size: 0.82rem; border-bottom: 1px solid var(--line-strong); }
 .site-nav::-webkit-scrollbar { display: none; }
 .site-nav a { flex: none; padding: 5px 0; color: var(--muted); text-decoration: none; white-space: nowrap; font-weight: 500; transition: color 0.2s ease; }
 .site-nav a:hover { color: var(--ink); }
@@ -331,6 +331,7 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .page-toc { margin-top: 2.8em; margin-bottom: 3.5em; padding: 1.3em 1.5em 1.5em; background: rgba(251, 252, 247, 0.94); }
 .page-toc summary { display: flex; align-items: center; justify-content: space-between; gap: 1em; color: var(--ink); cursor: pointer; font-weight: 700; list-style: none; }
 .page-toc summary::-webkit-details-marker { display: none; }
+.page-toc summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .page-toc summary::after { content: "+"; color: var(--accent); font-family: "Manrope", sans-serif; font-size: 1.1em; font-weight: 600; }
 .page-toc[open] summary::after { content: "−"; }
 .page-toc ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.45em 2em; margin: 1.2em 0 0; padding: 0; list-style: none; }
@@ -512,9 +513,21 @@ function buildHtmlPage(
 ${navItems.map(([href, label]) => `  <a href="${href}"${isCurrent(href) ? ' aria-current="page"' : ''}>${label}</a>`).join('\n')}
 </nav>
 <script>(function(){var n=document.querySelector('.site-nav'),c=n&&n.querySelector('[aria-current]');if(c&&n.scrollWidth>n.clientWidth){n.scrollLeft=c.offsetLeft-n.offsetLeft-(n.clientWidth-c.offsetWidth)/2;}})();</script>`;
+  // Markdownに手書きされた関連記事も、共通の「次に読む」ボックスへ変換する。
+  // 記事ごとに選んだリンクだけを表示し、通常の章番号や目次には含めない
+  const customReaderNextMatch = html.match(/<h2[^>]*>(?:次に読むページ|あわせて読む)<\/h2>\s*<ul>([\s\S]*?)<\/ul>/i);
+  const htmlWithCustomReaderNext = customReaderNextMatch
+    ? html.replace(
+      customReaderNextMatch[0],
+      `<aside class="reader-next" aria-label="次に読む記事">
+  <strong>次に読む</strong>
+${customReaderNextMatch[1].replace(/<li>\s*(<a\b[\s\S]*?<\/a>)[\s\S]*?<\/li>/gi, '  <p>$1</p>')}
+</aside>`,
+    )
+    : html;
   // 記事の h2 から目次を自動生成する。導入文の直後に置き、本文と目次のリンク先を常に同期させる
   const tocItems: Array<{ id: string; label: string }> = [];
-  const htmlWithHeadingIds = html.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (_match, attrs: string, headingHtml: string) => {
+  const htmlWithHeadingIds = htmlWithCustomReaderNext.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (_match, attrs: string, headingHtml: string) => {
     const id = `section-${String(tocItems.length + 1).padStart(2, '0')}`;
     const label = headingHtml.replace(/<[^>]*>/g, '').trim();
     tocItems.push({ id, label });
