@@ -268,7 +268,7 @@ body {
   letter-spacing: 0.02em;
   overflow-wrap: anywhere;
 }
-body > :where(:not(.site-head, .site-nav, script, .stat-grid, .route-grid, .flow)) {
+body > :where(:not(.site-head, .site-nav, .reading-progress, script, .stat-grid, .route-grid, .flow)) {
   width: min(100%, var(--content-width));
   margin-left: auto;
   margin-right: auto;
@@ -288,7 +288,7 @@ h1 { position: relative; font-size: clamp(1.85rem, 3.6vw, 2.65rem); line-height:
 h1::before { display: block; margin-bottom: 1.1rem; color: var(--accent); font-family: "Manrope", sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; }
 .home h1::before { content: "FIELD NOTE  /  006 MONTHS"; }
 .article h1::before { content: "OBSERVATION LOG"; }
-h2 { counter-increment: report-section; display: grid; grid-template-columns: 2.6rem 1fr; gap: 0.25em; align-items: baseline; font-size: clamp(1.4rem, 3vw, 1.85rem); line-height: 1.5; margin-top: 3.2em; margin-bottom: 1em; padding-bottom: 0.6em; border-bottom: 1px solid var(--line-strong); }
+h2 { counter-increment: report-section; display: grid; grid-template-columns: 2.6rem 1fr; gap: 0.25em; align-items: baseline; scroll-margin-top: 5rem; font-size: clamp(1.4rem, 3vw, 1.85rem); line-height: 1.5; margin-top: 3.2em; margin-bottom: 1em; padding-bottom: 0.6em; border-bottom: 1px solid var(--line-strong); }
 h2::before { content: "0" counter(report-section); color: var(--accent); font-family: "Manrope", sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; }
 h3 { font-size: 1.15rem; line-height: 1.55; margin-top: 2.2em; margin-bottom: 0.6em; }
 p, ul, ol { margin-top: 0; margin-bottom: 1.2em; }
@@ -315,12 +315,15 @@ hr { margin-top: 3em; margin-bottom: 3em; border: none; border-top: 1px solid va
 img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line-strong); }
 a { color: var(--primary-dark); text-decoration-thickness: 1px; text-underline-offset: 0.25em; }
 a:hover { color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.reading-progress { position: fixed; inset: 0 0 auto; z-index: 20; width: 100%; height: 3px; pointer-events: none; }
+.reading-progress span { display: block; width: 100%; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left center; will-change: transform; }
 .site-head { width: min(100%, var(--content-width)); margin: 0 auto; padding: 22px 0 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; text-decoration: none; }
 .brand::before { content: ""; width: 24px; height: 31px; flex: none; border-radius: 100% 0 100% 0; background: var(--primary); transform: rotate(-38deg); }
 .brand:hover { color: var(--primary-dark); }
 .site-purpose { color: var(--muted); font-size: 0.76rem; line-height: 1.55; margin: 0; flex: 1 1 300px; }
-.site-nav { width: min(100%, var(--content-width)); display: flex; gap: 4px 22px; margin: 0 auto 48px; padding: 12px 0; overflow-x: auto; scrollbar-width: none; font-size: 0.82rem; border-bottom: 1px solid var(--line-strong); }
+.site-nav { position: sticky; top: 0; z-index: 10; width: min(100%, var(--content-width)); display: flex; gap: 4px 22px; margin: 0 auto 48px; padding: 12px 0; overflow-x: auto; scrollbar-width: none; font-size: 0.82rem; background: rgba(242, 243, 235, 0.94); border-bottom: 1px solid var(--line-strong); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 .site-nav::-webkit-scrollbar { display: none; }
 .site-nav a { flex: none; padding: 5px 0; color: var(--muted); text-decoration: none; white-space: nowrap; font-weight: 500; transition: color 0.2s ease; }
 .site-nav a:hover { color: var(--ink); }
@@ -526,6 +529,7 @@ ${navItems.map(([href, label]) => `  <a href="${href}"${isCurrent(href) ? ' aria
 <style>${VIEW_CSS}</style>
 </head>
 <body class="${rawPath === '/index.md' ? 'home' : 'article'}">
+<div class="reading-progress" aria-hidden="true"><span></span></div>
 ${sitePurpose}
 ${siteNav}
 ${html}
@@ -533,6 +537,7 @@ ${readerNext}
 <p class="view-footer">
   CC-BY 4.0 / 著者: @ojiichan_hatake / <a href="${safeRaw}">Markdown版を読む</a>
 </p>
+<script>(function(){var b=document.querySelector('.reading-progress span'),busy=false;function update(){var d=document.documentElement,m=d.scrollHeight-innerHeight,p=m>0?scrollY/m:0;b.style.transform='scaleX('+Math.max(0,Math.min(1,p))+')';busy=false;}function request(){if(!busy){busy=true;requestAnimationFrame(update);}}addEventListener('scroll',request,{passive:true});addEventListener('resize',request);update();})();</script>
 ${webAnalyticsBeacon}
 </body>
 </html>`;
