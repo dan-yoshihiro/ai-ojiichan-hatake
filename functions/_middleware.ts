@@ -232,335 +232,140 @@ function preserveViewInLinks(html: string): string {
   });
 }
 
-// オールドポップ: クリーム地に、トマト赤・からし・焦げ茶の3色だけ。太い線とぼかさないずらし影。
-// 読みやすさのため、水玉は本文の外（画面の余白）にだけ敷き、本文の列は無地にする。
-// 本文は端末標準のゴシック（丸ゴシックは長文で字の輪郭がぼやける）、見出し・ナビ・カードは丸ゴシック、
-// 看板書体（Dela Gothic One）はサイト名と数字だけ。太い線とずらし影はトップの部品にだけ使い、記事は細い線で静かにする。
-// 色は :root のトークンだけで決め、ダークモードはトークンの差し替えで済ませる。人＝トマト赤、AI＝焦げ茶
+// 「畑の観察記録」を企業のリサーチレポートとして整えたエディトリアルデザイン。
+// AIサービスにありがちな青緑のグラデーションや丸いカードを避け、葉色・土色・記録番号で固有性を出す。
 const VIEW_CSS = `
 :root {
-  color-scheme: light dark;
-  /* 紙は黄みを抜いた生成り。黄みの強いクリーム（#fbf1dc）だと古びて見え、赤とからしの差し色も沈んだ */
-  --bg: #fbf8f1;
-  --margin-bg: #efe7d8;
-  --dot: rgba(74, 46, 30, 0.07);
-  --surface: #ffffff;
-  --surface-muted: #f4eee3;
-  --ink: #3b2418;
-  --text: #2a1a12;
-  --text-muted: #5c463a;
-  --shadow: #3b2418;
-  --red: #d9422a;
-  --red-soft: #fbe6de;
-  --mustard: #f2b43c;
-  --mustard-soft: #fcefd0;
-  --mark: #f2b43c;
-  --line: #e6dccb;
-  --link: #a8321b;
-  --on-color: #fffaf0;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #231b16;
-    --margin-bg: #1b1511;
-    --dot: rgba(255, 226, 180, 0.07);
-    --surface: #2d231d;
-    --surface-muted: #3a2d25;
-    --ink: #f0ddb8;
-    --text: #f6ecd8;
-    --text-muted: #d0bda2;
-    --shadow: #000000;
-    --red: #ef6a4f;
-    --red-soft: #45261d;
-    --mustard: #f2b43c;
-    --mustard-soft: #44361a;
-    /* 明るい文字に明るいからしの下線だと読めないので、ダークでは暗いからしにする */
-    --mark: #6e5218;
-    --line: #4a3a2f;
-    --link: #ffb39c;
-    --on-color: #231b16;
-  }
+  color-scheme: light;
+  --bg: #f2f3eb;
+  --surface: #fbfcf7;
+  --surface-soft: #e8ede3;
+  --ink: #17382b;
+  --text: #3e5148;
+  --muted: #718078;
+  --line: #ccd5ca;
+  --line-strong: #aab9ab;
+  --primary: #35664d;
+  --primary-dark: #204c37;
+  --primary-soft: #dce7d9;
+  --accent: #c96336;
+  --accent-soft: #f1dfd2;
+  --sky: #688fa0;
+  --content-width: 960px;
 }
 * { box-sizing: border-box; }
-html {
-  -webkit-text-size-adjust: 100%;
-  background-color: var(--margin-bg);
-  background-image: radial-gradient(var(--dot) 1.4px, transparent 1.6px);
-  background-size: 18px 18px;
-}
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; background: var(--bg); }
 body {
-  font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
-  font-weight: 400;
-  font-size: 17px;
-  /* 本文の1行を38字前後にする（700px − 左右の余白48px） */
-  max-width: 700px;
+  counter-reset: report-section;
+  font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
+  font-size: 16px;
   min-height: 100vh;
-  margin: 0 auto;
-  --gutter: 24px;
-  padding: 0 var(--gutter) 4rem;
-  line-height: 1.9;
-  letter-spacing: 0.04em;
+  margin: 0;
+  padding: 0 24px 64px;
   color: var(--text);
   background: var(--bg);
+  line-height: 1.85;
+  letter-spacing: 0.02em;
   overflow-wrap: anywhere;
 }
-.stat-value {
-  font-family: "Dela Gothic One", "Hiragino Sans", "Yu Gothic", sans-serif;
-  font-weight: 400;
+body > :where(:not(.site-head, .site-nav, script, .stat-grid, .route-grid, .flow)) {
+  width: min(100%, var(--content-width));
+  margin-left: auto;
+  margin-right: auto;
 }
-/* 看板は Dela Gothic One だと「農業」の画数で字が潰れるので、見出しと同じ丸ゴシックの極太にする */
-.brand {
-  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif;
-  font-weight: 900;
+body > .stat-grid, body > .route-grid, body > .flow {
+  width: min(100%, var(--content-width));
+  margin-left: auto;
+  margin-right: auto;
 }
-h1, h2, h3, h4, th, .site-nav a, .route-q, .route-a, .stat-label, .flow-step strong, .flow-who, .reader-next strong, blockquote strong:first-child {
-  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif;
+h3, h4, th, .brand, .site-nav a, .route-q, .stat-label, .flow-step strong, .flow-who, .reader-next strong {
+  font-family: "Noto Sans JP", "Hiragino Sans", sans-serif;
 }
-h1, h2, h3, h4 { font-weight: 700; line-height: 1.5; letter-spacing: 0.04em; color: var(--ink); }
-/* 見出し・ナビ・看板は約物を詰める（palt）。「、」「：」の後ろが空きすぎず、組みが締まる */
-h1, h2, h3, h4, .site-nav a, .route-q, .brand { font-feature-settings: "palt"; }
-strong { font-weight: 700; }
-/* 見出しの行を揃えるのは、文節で改行できるブラウザだけ。balance 単独だと「投稿していた / のに」のように語の途中で割れる */
-@supports (word-break: auto-phrase) {
-  h1, h2, h3, h4 { word-break: auto-phrase; text-wrap: balance; }
-}
-h1 { font-size: 1.7em; font-weight: 900; margin: 0.9em 0 0.5em; }
-h1 { background: linear-gradient(transparent 70%, var(--mark) 70%, var(--mark) 94%, transparent 94%); display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-h2 {
-  font-size: 1.28em;
-  margin: 2.8em 0 0.9em;
-  padding-bottom: 0.35em;
-  border-bottom: 1px solid var(--line);
-}
-h2::before {
-  content: "";
-  display: inline-block;
-  width: 0.42em;
-  height: 0.42em;
-  margin: 0 0.55em 0.16em 0;
-  background: var(--red);
-  border-radius: 50%;
-  vertical-align: baseline;
-}
-h3 { font-size: 1.08em; margin: 2em 0 0.5em; }
-p, ul, ol { margin: 0 0 1.1em; }
+h1, h2 { font-family: "Noto Serif JP", "Yu Mincho", serif; }
+h1, h2, h3, h4 { color: var(--ink); font-weight: 700; letter-spacing: -0.02em; }
+@supports (word-break: auto-phrase) { h1, h2, h3, h4 { word-break: auto-phrase; text-wrap: balance; } }
+h1 { position: relative; font-size: clamp(1.85rem, 3.6vw, 2.65rem); line-height: 1.48; margin-top: 1.1em; margin-bottom: 0.5em; }
+h1::before { display: block; margin-bottom: 1.1rem; color: var(--accent); font-family: "Manrope", sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; }
+.home h1::before { content: "FIELD NOTE  /  006 MONTHS"; }
+.article h1::before { content: "OBSERVATION LOG"; }
+h2 { counter-increment: report-section; display: grid; grid-template-columns: 2.6rem 1fr; gap: 0.25em; align-items: baseline; font-size: clamp(1.4rem, 3vw, 1.85rem); line-height: 1.5; margin-top: 3.2em; margin-bottom: 1em; padding-bottom: 0.6em; border-bottom: 1px solid var(--line-strong); }
+h2::before { content: "0" counter(report-section); color: var(--accent); font-family: "Manrope", sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; }
+h3 { font-size: 1.15rem; line-height: 1.55; margin-top: 2.2em; margin-bottom: 0.6em; }
+p, ul, ol { margin-top: 0; margin-bottom: 1.2em; }
 li + li { margin-top: 0.35em; }
-li::marker { color: var(--red); }
-strong { color: var(--ink); }
-/* タイトル直下の「公開 / 最終更新 / 観測期間」は記録票の欄のように、上下の細い罫で囲む */
-h1 + p { margin-top: 1.1em; padding: 0.45em 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); line-height: 1.7; }
-h1 + p em { color: var(--text-muted); font-size: 0.8em; font-style: normal; font-variant-numeric: tabular-nums; }
+li::marker { color: var(--primary); }
+strong { color: var(--ink); font-weight: 700; }
+h1 + p { margin-top: 0; margin-bottom: 2em; color: var(--muted); line-height: 1.7; }
+h1 + p em { font-size: 0.82em; font-style: normal; font-variant-numeric: tabular-nums; }
 pre, code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.86em; }
-pre { background: var(--surface); padding: 1em 1.1em; overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; line-height: 1.65; }
-code { background: var(--surface-muted); padding: 0.1em 0.35em; border-radius: 5px; }
-pre code { background: none; padding: 0; }
-/* 表はスマホで列が潰れないよう、表ごと横スクロールさせる */
-/* 表は帳票のように、上下の罫と行の細い罫だけで組む。縦罫と外枠は引かない */
-table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 1.4em 0 1.6em; font-size: 0.92em; line-height: 1.65; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
-th, td { border-bottom: 1px solid var(--line); padding: 0.55em 0.85em; text-align: start; vertical-align: top; min-width: 5.5em; font-variant-numeric: tabular-nums; }
-/* 原稿の表で右寄せ（---:）にした数値列は右に揃える。text-align: start だけだと align 属性が負ける */
+pre { padding: 1.2em 1.35em; overflow-x: auto; color: #edf2e9; background: var(--ink); border-radius: 2px; line-height: 1.7; }
+code { padding: 0.12em 0.38em; background: var(--surface-soft); border-radius: 2px; }
+pre code { padding: 0; background: none; }
+table { display: table; width: min(100%, var(--content-width)); max-width: 100%; border-collapse: collapse; margin: 1.5em auto 1.8em; font-size: 0.9em; line-height: 1.65; background: var(--surface); border-top: 2px solid var(--primary); border-bottom: 1px solid var(--line-strong); }
+th, td { min-width: 5.5em; padding: 0.75em 0.9em; border-bottom: 1px solid var(--line); text-align: start; vertical-align: top; font-variant-numeric: tabular-nums; overflow-wrap: normal; }
 th[align="right"], td[align="right"] { text-align: right; }
 th[align="center"], td[align="center"] { text-align: center; }
-/* 本文の overflow-wrap: anywhere がセルに効くと「8月31 / 日〜9月」のように日付が割れるので、
-   セル内は通常の折り返しに戻し、見出し列（期間・指標名）に幅を確保する */
-th, td { overflow-wrap: normal; }
 th:first-child, td:first-child { min-width: 11em; }
 tr:last-child td { border-bottom: none; }
-th { color: var(--ink); white-space: nowrap; font-weight: 700; font-size: 0.92em; border-bottom: 1px solid var(--ink); }
-/* TL;DR は要約欄。塗りの札ではなく、左の朱線と小さな見出し語で示す */
-blockquote {
-  margin: 1.4em 0 2em;
-  padding: 0.9em 1.2em 1em;
-  background: var(--surface);
-  border-left: 4px solid var(--red);
-  border-radius: 0 10px 10px 0;
-  color: var(--text);
-  font-size: 0.95em;
-  line-height: 1.85;
-}
+th { color: var(--ink); background: var(--surface-soft); white-space: normal; overflow-wrap: anywhere; font-weight: 700; font-size: 0.92em; }
+blockquote { position: relative; margin-top: 1.5em; margin-bottom: 2.3em; padding: 1.35em 1.5em; color: var(--text); background: var(--surface); border: 0; font-size: 0.95em; line-height: 1.85; }
 blockquote p { margin: 0; }
-blockquote strong:first-child {
-  display: block;
-  margin-bottom: 0.25em;
-  color: var(--red);
-  font-size: 0.78em;
-  letter-spacing: 0.14em;
-}
-hr { border: none; border-top: 2px dashed var(--line); margin: 2.6em 0; }
-/* 記事の図は青い線画なので、少しセピアに寄せて古い印刷物の色にそろえる */
-img { max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 12px; filter: sepia(0.3) saturate(1.2); }
-a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 0.25em; }
-a:hover { color: var(--red); text-decoration-thickness: 2px; }
-/* サイトの頭: 色の縞と、看板のような名前 */
-/* 3色の縞は本文の幅ではなく画面の端から端まで引く（body は position 指定なしなので、
-   absolute の基準は初期包含ブロック＝画面幅になる） */
-body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 10px;
-  background: linear-gradient(var(--red) 0 6px, var(--mustard) 6px 10px);
-}
-.site-head {
-  margin: 0 0 0.6em;
-  padding: 1.6em 0 0.7em;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.7em 0.9em;
-}
-.brand {
-  display: inline-block;
-  font-size: 1.2em;
-  letter-spacing: 0.05em;
-  line-height: 1.4;
-  color: var(--on-color);
-  background: var(--red);
-  border: 2px solid var(--ink);
-  border-radius: 8px;
-  padding: 0.1em 0.65em;
-  box-shadow: 2px 2px 0 var(--shadow);
-  text-decoration: none;
-}
-.brand:hover { color: var(--bg); background: var(--ink); }
-.site-purpose { color: var(--text-muted); font-size: 0.78em; line-height: 1.6; margin: 0; flex: 1 1 16em; }
-/* ナビはボタンではなく文字の列。いま読んでいるページだけ朱の下線を引く */
-.site-nav {
-  display: flex;
-  gap: 0.3em 1.3em;
-  margin: 0 calc(-1 * var(--gutter)) 1.8em;
-  padding: 0.5em var(--gutter) 0.6em;
-  overflow-x: auto;
-  scrollbar-width: none;
-  font-size: 0.84em;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
+blockquote strong:first-child { display: block; margin-bottom: 0.35em; color: var(--accent); font-family: "Manrope", sans-serif; font-size: 0.7em; letter-spacing: 0.14em; }
+hr { margin-top: 3em; margin-bottom: 3em; border: none; border-top: 1px solid var(--line); }
+img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line-strong); }
+a { color: var(--primary-dark); text-decoration-thickness: 1px; text-underline-offset: 0.25em; }
+a:hover { color: var(--accent); }
+.site-head { width: min(100%, var(--content-width)); margin: 0 auto; padding: 22px 0 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; text-decoration: none; }
+.brand::before { content: ""; width: 24px; height: 31px; flex: none; border-radius: 100% 0 100% 0; background: var(--primary); transform: rotate(-38deg); }
+.brand:hover { color: var(--primary-dark); }
+.site-purpose { color: var(--muted); font-size: 0.76rem; line-height: 1.55; margin: 0; flex: 1 1 300px; }
+.site-nav { width: min(100%, var(--content-width)); display: flex; gap: 4px 22px; margin: 0 auto 48px; padding: 12px 0; overflow-x: auto; scrollbar-width: none; font-size: 0.82rem; border-bottom: 1px solid var(--line-strong); }
 .site-nav::-webkit-scrollbar { display: none; }
-.site-nav a {
-  flex: none;
-  text-decoration: none;
-  color: var(--text-muted);
-  padding: 0.15em 0;
-  border-bottom: 2px solid transparent;
-  white-space: nowrap;
-  font-weight: 700;
-}
+.site-nav a { flex: none; padding: 5px 0; color: var(--muted); text-decoration: none; white-space: nowrap; font-weight: 500; transition: color 0.2s ease; }
 .site-nav a:hover { color: var(--ink); }
-.site-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--red); }
-.reader-next {
-  background: var(--surface);
-  border: 1.5px solid var(--line);
-  border-radius: 12px;
-  margin-top: 3em;
-  padding: 1.1em 1.3em;
-}
-.reader-next strong { display: block; margin-bottom: 0.4em; font-size: 1.05em; color: var(--ink); }
+.site-nav a[aria-current="page"] { color: var(--primary-dark); font-weight: 700; }
+.reader-next { margin-top: 3em; padding: 1.4em 1.5em; background: var(--surface); border: 0; }
+.reader-next strong { display: block; margin-bottom: 0.4em; color: var(--ink); font-size: 1.05em; }
 .reader-next p { margin: 0.45em 0; line-height: 1.6; }
-.reader-next p a::before { content: "→ "; color: var(--red); }
-.view-footer { color: var(--text-muted); font-size: 0.8em; margin-top: 2em; text-align: center; }
+.reader-next p a::before { content: "↳ "; color: var(--accent); }
+.view-footer { margin-top: 2.5em; color: var(--muted); font-size: 0.76em; text-align: center; }
 .view-footer a { color: inherit; }
-/* トップページ: 数字のタイル。4色を順に当てる */
-.stat-grid {
-  list-style: none;
-  padding: 0;
-  margin: 1.4em 0 1.8em;
-  display: grid;
-  /* 本文の列が 700px なので、4列だと「62%→ / 6%」のように数字が折れる。どの幅でも2列×2段にする */
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.9em;
-}
+.stat-grid { list-style: none; padding: 0; margin-top: 2em; margin-bottom: 3em; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
 .stat-grid li + li { margin-top: 0; }
-.stat {
-  border: 2px solid var(--ink);
-  border-radius: 14px;
-  box-shadow: 3px 3px 0 var(--shadow);
-  padding: 0.9em 0.9em 1em;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4em;
-  color: var(--text);
-}
-.stat:nth-child(odd) { background: var(--red-soft); }
-.stat:nth-child(even) { background: var(--mustard-soft); }
-.stat-value { font-size: 1.6em; line-height: 1.15; font-variant-numeric: tabular-nums; color: var(--ink); }
-.stat:nth-child(odd) .stat-value { color: var(--red); }
-.stat-value small { font-family: "Zen Maru Gothic", sans-serif; font-size: 0.5em; font-weight: 700; }
-.stat-label { font-size: 0.78em; line-height: 1.55; font-weight: 700; }
-/* トップページ: 担当ごとの流れ。人＝トマト赤、AI と自動＝青緑 */
-.flow { list-style: none; padding: 0; margin: 1.3em 0 1.6em; }
-.flow-step {
-  display: grid;
-  grid-template-columns: 3.6em 1fr;
-  column-gap: 0.9em;
-  padding: 0.8em 1em;
-  border-radius: 14px;
-  border: 1.5px solid var(--ink);
-}
-.flow li + li { margin-top: 0.8em; }
+.stat { position: relative; min-height: 158px; padding: 1.35em 1.15em 1.1em; display: flex; flex-direction: column; justify-content: space-between; gap: 0.7em; color: var(--text); background: rgba(251, 252, 247, 0.94); border: 0; }
+.stat-value { color: var(--ink); font-family: "Manrope", "Noto Sans JP", sans-serif; font-size: 1.75em; font-weight: 700; letter-spacing: -0.04em; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.stat-value small { font-size: 0.45em; font-weight: 600; letter-spacing: 0; }
+.stat-label { color: var(--muted); font-size: 0.74em; line-height: 1.6; font-weight: 500; }
+.flow { list-style: none; padding: 0; margin-top: 1.5em; margin-bottom: 2em; }
+.flow-step { position: relative; display: grid; grid-template-columns: 4em 1fr; column-gap: 1em; padding: 1em 1.1em; background: rgba(251, 252, 247, 0.92); border: 0; }
+.flow li + li { margin-top: 7px; }
 .flow-step strong { grid-column: 2; line-height: 1.5; }
-.flow-step > span:last-child { grid-column: 2; font-size: 0.84em; line-height: 1.6; color: var(--text-muted); }
-.flow-who {
-  grid-row: 1 / span 2;
-  align-self: center;
-  justify-self: center;
-  display: grid;
-  place-items: center;
-  width: 3.1em;
-  height: 3.1em;
-  font-size: 0.8em;
-  font-weight: 700;
-  color: var(--on-color);
-  border-radius: 50%;
-  transform: rotate(-6deg);
-}
-.flow-step.is-human { background: var(--red-soft); }
-.flow-step.is-human .flow-who { background: var(--red); }
-.flow-step.is-ai { background: var(--surface); }
-.flow-step.is-ai .flow-who { background: var(--ink); color: var(--bg); }
-/* トップページ: 入口のカード。押すと影の上に沈む */
-.route-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1em; margin: 1.3em 0 1.8em; }
-.route-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
-  padding: 1em 1.1em;
-  border: 2px solid var(--ink);
-  border-radius: 14px;
-  box-shadow: 3px 3px 0 var(--shadow);
-  background: var(--surface);
-  color: var(--text);
-  text-decoration: none;
-  transition: transform 0.12s, box-shadow 0.12s;
-}
-.route-card:hover { color: var(--text); transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--shadow); }
-.route-card:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--shadow); }
-.route-q { font-weight: 700; line-height: 1.5; color: var(--ink); }
-.route-a { font-size: 0.84em; line-height: 1.5; font-weight: 700; color: var(--link); }
-.route-a::after { content: " →"; }
-/* 横スクロールのナビはスマホ用。広い画面では折り返して全部見せる */
-@media (min-width: 641px) {
-  .site-nav { flex-wrap: wrap; overflow: visible; margin: 0 0 1.8em; padding: 0.5em 0 0.6em; }
-}
-@media (max-width: 640px) {
-  /* 横スクロールのナビは右端を薄くぼかし、続きがあることを見せる。最後の項目がぼかしに隠れないよう右に余白を足す */
-  .site-nav {
-    padding-right: 3em;
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 3em), transparent);
-    mask-image: linear-gradient(to right, #000 calc(100% - 3em), transparent);
-  }
-  body { --gutter: 18px; font-size: 16px; line-height: 1.85; }
-  h1 { font-size: 1.5em; }
-  h2 { font-size: 1.2em; }
+.flow-step > span:last-child { grid-column: 2; color: var(--muted); font-size: 0.82em; line-height: 1.65; }
+.flow-who { grid-row: 1 / span 2; align-self: center; display: inline-flex; align-items: center; justify-content: center; width: 4em; min-height: 2.2em; color: var(--primary-dark); background: var(--primary-soft); border: 0; font-size: 0.7em; font-weight: 700; letter-spacing: 0.08em; }
+.flow-step.is-human .flow-who { color: #884426; background: var(--accent-soft); }
+.route-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 1.5em; margin-bottom: 2em; }
+.route-card { display: flex; flex-direction: column; gap: 0.7em; min-height: 160px; padding: 1.35em 1.4em; color: var(--text); background: rgba(251, 252, 247, 0.72); border: 0; text-decoration: none; transition: background-color 0.18s ease; }
+.route-card:hover { color: var(--text); background: var(--surface-soft); transform: none; }
+.route-q { color: var(--ink); font-size: 1.02em; font-weight: 700; line-height: 1.65; }
+.route-a { margin-top: auto; color: var(--muted); font-family: "Manrope", "Noto Sans JP", sans-serif; font-size: 0.76em; line-height: 1.55; font-weight: 600; letter-spacing: 0.02em; }
+.route-a::after { content: "  ↗"; color: var(--accent); }
+@media (max-width: 760px) {
+  body { padding-left: 18px; padding-right: 18px; font-size: 15px; }
+  .site-head { padding-top: 18px; }
+  .site-purpose { display: none; }
+  .site-nav { width: calc(100% + 36px); margin-left: -18px; margin-right: -18px; margin-bottom: 36px; padding-left: 18px; padding-right: 3em; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 3em), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 3em), transparent); }
+  table { display: block; width: 100%; overflow-x: auto; }
   .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75em; }
-  .stat-value { font-size: 1.35em; }
+  .stat { min-height: 145px; padding: 1em; }
+  .stat-value { font-size: 1.5em; }
   .route-grid { grid-template-columns: 1fr; }
+  .route-card { min-height: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   .route-card { transition: none; }
-  .route-card:hover, .route-card:active { transform: none; }
+  .route-card:hover { transform: none; }
 }
 `.trim();
 
@@ -670,12 +475,10 @@ function buildHtmlPage(
   <p><a href="/weekly">毎週の実測（最新週から）</a></p>
   <p><a href="/about">観測範囲と公開方針</a></p>
 </aside>`;
-  // 看板（サイト名）は全ページに出す。トップは H1 がサイトの説明を兼ねるので、説明文とナビは記事ページにだけ出す
+  // コーポレートサイトらしい一貫した導線にするため、ヘッダーとナビはトップを含む全ページに出す。
   const sitePurpose = `<header class="site-head">
-  <a class="brand" href="/">AI農業先生方式</a>${rawPath === '/index.md'
-    ? ''
-    : `
-  <p class="site-purpose">AIにSNSの投稿を任せたい事業者向けに、1つのXアカウントを6ヶ月自動投稿した実測を公開しています。</p>`}
+  <a class="brand" href="/">AI農業先生方式</a>
+  <p class="site-purpose">AIにSNSの投稿を任せたい事業者向けに、1つのXアカウントを6ヶ月自動投稿した実測を公開しています。</p>
 </header>`;
   // いま読んでいるページに aria-current を付ける。週報（/weekly/2026-wNN）は「毎週の実測」の下にあるので、そこを示す
   const navItems: Array<[string, string]> = [
@@ -687,12 +490,10 @@ function buildHtmlPage(
     ['/about', 'このサイトについて'],
   ];
   const isCurrent = (href: string): boolean =>
-    href === '/' ? false : canonicalPath === href || canonicalPath.startsWith(`${href}/`);
+    href === '/' ? canonicalPath === '/' : canonicalPath === href || canonicalPath.startsWith(`${href}/`);
   // スマホではナビが横スクロールになり、後ろのほうのページだと印の付いた項目が画面外に出る。
   // 読み込み時にナビの中だけを横にずらして、いまの項目を中央に寄せる（本文には触れない）
-  const siteNav = rawPath === '/index.md'
-    ? ''
-    : `<nav class="site-nav" aria-label="サイト内ナビゲーション">
+  const siteNav = `<nav class="site-nav" aria-label="サイト内ナビゲーション">
 ${navItems.map(([href, label]) => `  <a href="${href}"${isCurrent(href) ? ' aria-current="page"' : ''}>${label}</a>`).join('\n')}
 </nav>
 <script>(function(){var n=document.querySelector('.site-nav'),c=n&&n.querySelector('[aria-current]');if(c&&n.scrollWidth>n.clientWidth){n.scrollLeft=c.offsetLeft-n.offsetLeft-(n.clientWidth-c.offsetWidth)/2;}})();</script>`;
@@ -721,10 +522,10 @@ ${navItems.map(([href, label]) => `  <a href="${href}"${isCurrent(href) ? ' aria
 <script type="application/ld+json">${jsonLd}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap">
 <style>${VIEW_CSS}</style>
 </head>
-<body>
+<body class="${rawPath === '/index.md' ? 'home' : 'article'}">
 ${sitePurpose}
 ${siteNav}
 ${html}
