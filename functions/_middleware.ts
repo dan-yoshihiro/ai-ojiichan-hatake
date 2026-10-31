@@ -455,6 +455,14 @@ function buildJsonLd(title: string, description: string, rawPath: string, canoni
   return JSON.stringify(ld);
 }
 
+// 技術記事の原稿パス → 末尾で案内するもう1本の技術記事
+const TECH_READER_NEXT: Record<string, string> = {
+  '/docs/bot-detection-on-cloudflare-pages.md':
+    '<a href="/cloudflare-web-analytics-beacon">Cloudflare Web Analytics にデータが表示されないとき：Functions の HTML にビーコンが無かった</a>',
+  '/docs/web-analytics-beacon-on-pages-functions.md':
+    '<a href="/cloudflare-bot-detection">Cloudflare Pages でボットと自分のアクセスを除外する方法：「人間」の35%は機械だった</a>',
+};
+
 function buildHtmlPage(
   html: string,
   title: string,
@@ -480,8 +488,18 @@ function buildHtmlPage(
   const hasOwnNext = /^##\s*(次に読む|あわせて読む)/m.test(markdown)
     || /\n---\s*\n+(?:\s*-\s*\[[^\]]+\]\([^)]+\).*\n?)+\s*$/.test(markdown)
     || markdown.includes('class="route-grid"');
+  // Cloudflare の技術記事2本は、SNS運用の記事とは読者が違う。共通の案内を出すと話題の離れた記事へ送ることになるので、
+  // もう1本の技術記事と、技術の記録を並べた「このサイトについて」だけを案内する
+  const techNext = TECH_READER_NEXT[rawPath];
   const readerNext = hasOwnNext
     ? ''
+    : techNext
+    ? `<hr>
+<aside class="reader-next" aria-label="次に読む記事">
+  <strong>次に読む</strong>
+  <p>${techNext}</p>
+  <p><a href="/about">このサイトについて（技術の記録の一覧）</a></p>
+</aside>`
     : `<hr>
 <aside class="reader-next" aria-label="次に読む記事">
   <strong>次に読む</strong>
