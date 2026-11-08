@@ -1,6 +1,6 @@
 # AIにSNSの投稿をどこまで任せられるか：Xを6ヶ月自動投稿した1アカウントの実測
 
-*最終更新: 2026-11-02 / 最新の観測週: 2026年10月26日〜11月1日（フォロワー189人）*
+*最終更新: 2026-11-08 / 最新の観測週: 2026年11月2日〜8日（フォロワー190人）*
 
 > **TL;DR:** 写真をLINEに送ると、AIが本文を書いてXに投稿する仕組みを作り、家庭菜園のアカウント1つで2026年4月4日から運用しています。自動にできたのは、本文を書いて出すことと、数字を集めることまででした。写真を撮って送り続けること、相手の投稿へ返信しに行くこと、週に1回数字を見て次の1手を決めることは、6ヶ月ずっと人の仕事でした。費用は、生成AIが無料枠の範囲、X API が月2ドルほどです。
 
@@ -10,7 +10,7 @@
   <li class="stat"><span class="stat-value">151<small> / 171日</small></span><span class="stat-label">投稿があった日。空いた日は、人が写真を送れなかった日</span></li>
   <li class="stat"><span class="stat-value">62%<small> → </small>6%</span><span class="stat-label">定型句「元気な」を含む投稿。言葉の決まりを表にして渡した前後</span></li>
   <li class="stat"><span class="stat-value">月2<small>ドルほど</small></span><span class="stat-label">X API の費用。生成AIは無料枠の範囲</span></li>
-  <li class="stat"><span class="stat-value">1<small> → </small>189<small>人</small></span><span class="stat-label">フォロワー。2026年4月4日から11月1日まで</span></li>
+  <li class="stat"><span class="stat-value">1<small> → </small>190<small>人</small></span><span class="stat-label">フォロワー。2026年4月4日から11月8日まで</span></li>
 </ul>
 
 ## AIがやったこと、人に残ったこと
@@ -22,7 +22,7 @@
   <li class="flow-step is-ai"><span class="flow-who">AI</span><strong>本文を書く</strong><span>作物ごとの栽培メモを参照し、口調と言葉の決まりを守って書く</span></li>
   <li class="flow-step is-ai"><span class="flow-who">自動</span><strong>投稿前に確かめて、Xに出す</strong><span>農薬の量やLINE向けの定型文が入っていれば止める</span></li>
   <li class="flow-step is-ai"><span class="flow-who">自動</span><strong>数字を集めて、週次レポートを作る</strong><span>投稿ごとの数字とフォロワー数を毎日記録する</span></li>
-  <li class="flow-step is-human"><span class="flow-who">人</span><strong>リプライの相手を選んで送る</strong><span>AIは草案を2案出すまで。表示が2,000回を超えた3本は、どれもこちらだった</span></li>
+  <li class="flow-step is-human"><span class="flow-who">人</span><strong>リプライの相手を選んで送る</strong><span>AIは草案を2案出すまで。表示が2,000回を超えた4本は、どれもこちらだった</span></li>
   <li class="flow-step is-human"><span class="flow-who">人</span><strong>週1回、レポートを見て来週の1手を決める</strong><span>どの数字を画面に出すかも、人が決め直す</span></li>
 </ol>
 
@@ -44,15 +44,15 @@
 
 ## 最新週の数字
 
-2026年10月26日〜11月1日は、リプライを64件送りました。リプライの表示回数の合計（総露出）は、前週の1,806から9,362に増えています。100インプレッションを超えたリプライが6本出て、最大の1本は6,083でした。観測を始めてから最も大きいリプライです。
+2026年11月2日〜8日は、リプライを57件送りました。リプライの表示回数の合計（総露出）は3,681で、そのうち2,641は1本のリプライです。7週ぶりに戻った、以前よく届いていた相手への返信でした。
 
-総露出のうち8,033は、表示の多い投稿を出していた同じ1人の相手へ送った4本です。その1人を除いた60件の総露出は1,329で、前週とほとんど変わりません。
+大きく表示されたリプライは、3週続けて出ています。最大の1本は554、6,083、2,641です。
 
-届いた量は、5倍。
+新規フォローは、9人、8人、3人。
 
-それでもフォロワーの増え方は、前週の8人から4人に減りました（185人→189人）。
+この週のフォロワーは1人増にとどまりました（189人→190人）。この週から、結果として見る数字を総露出から新規フォローに移しています。
 
-[この週の振り返りを読む →](/weekly/2026-w44)
+[この週の振り返りを読む →](/weekly/2026-w45)
 
 ## この記録を読むときの注意
 
