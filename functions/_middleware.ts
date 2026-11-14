@@ -402,6 +402,21 @@ function extractDescription(md: string): string {
   return 'AI エージェント向け最適化ドキュメント';
 }
 
+// 2026-11-14 追加: X・note にURLを貼ったときのカード画像。
+// それまで og:image が無く、twitter:card も summary だったため、画像の無い小さなカードしか出なかった。
+// 本文の最初の /static/ 画像を使い、無いページはサイト共通の画像にする。
+const DEFAULT_SHARE_IMAGE = {
+  path: '/static/hero-growth-journey.webp',
+  alt: '夕方のベランダで、鉢植えのミニトマトの横に、右肩上がりの線を描いたノートとスマートフォンが置かれている絵。',
+};
+
+function extractShareImage(markdown: string): { url: string; alt: string } {
+  const match = markdown.match(/!\[([^\]]*)\]\((\/static\/[^)\s]+\.(?:webp|png|jpe?g))\)/);
+  const path = match ? match[2] : DEFAULT_SHARE_IMAGE.path;
+  const alt = match ? match[1] : DEFAULT_SHARE_IMAGE.alt;
+  return { url: `https://${PRODUCTION_PAGES_HOSTNAME}${path}`, alt };
+}
+
 function extractPublishedDate(markdown: string): string {
   const match = markdown.match(/(?:公開|公開日)\s*:\s*(20\d{2}-\d{2}-\d{2})/);
   return match ? match[1] : '2026-05-06';
@@ -477,6 +492,9 @@ function buildHtmlPage(
   const safeDescription = escapeHtml(description);
   const canonicalUrl = `https://ai-ojiichan-system.pages.dev${canonicalPath}`;
   const jsonLd = buildJsonLd(title, description, rawPath, canonicalUrl, markdown);
+  const shareImage = extractShareImage(markdown);
+  const safeShareImageUrl = escapeHtml(shareImage.url);
+  const safeShareImageAlt = escapeHtml(shareImage.alt);
   // Web Analytics は JS Snippet 方式で登録しており、自動挿入はされない。
   // HTML はここで組み立てるので、環境変数の site token でビーコンを明示的に追加する。
   // token が未設定のローカル開発環境ではスクリプトを出力しない。
@@ -580,7 +598,11 @@ ${tocItems.map(({ id, label }, index) => `    <li><a href="#${id}"><span class="
 <meta property="og:url" content="${escapeHtml(canonicalUrl)}">
 <meta property="og:site_name" content="AI農業先生方式">
 <meta property="og:locale" content="ja_JP">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="${safeShareImageUrl}">
+<meta property="og:image:alt" content="${safeShareImageAlt}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${safeShareImageUrl}">
+<meta name="twitter:image:alt" content="${safeShareImageAlt}">
 <meta name="twitter:creator" content="@ojiichan_hatake">
 <meta name="twitter:title" content="${safeTitle}">
 <meta name="twitter:description" content="${safeDescription}">
