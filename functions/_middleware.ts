@@ -405,6 +405,7 @@ function extractDescription(md: string): string {
 // 2026-11-14 追加: X・note にURLを貼ったときのカード画像。
 // それまで og:image が無く、twitter:card も summary だったため、画像の無い小さなカードしか出なかった。
 // 本文の最初の /static/ 画像を使い、無いページはサイト共通の画像にする。
+// 経緯は ai_memo 参照: 2026-11-14-ojiichan-site-inflow
 const DEFAULT_SHARE_IMAGE = {
   path: '/static/hero-growth-journey.webp',
   alt: '夕方のベランダで、鉢植えのミニトマトの横に、右肩上がりの線を描いたノートとスマートフォンが置かれている絵。',
