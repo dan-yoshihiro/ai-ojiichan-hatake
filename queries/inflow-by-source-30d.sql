@@ -1,5 +1,6 @@
 /* 入口別の流入（30日）: どこに貼ったリンクから人が来たか
  * 経緯は ai_memo 参照: 2026-11-14-ojiichan-site-inflow
+ * Zenn・Qiita の入口の経緯は ai_memo 参照: 2026-11-14-ojiichan-zenn-qiita-gsc
  *
  * 2026-11-14 追加。X のアプリ内ブラウザや note のアプリからの遷移は referer が付かないことが多く、
  * human-referrer-7d.sql では direct に混ざって区別できない。60日分を数え直したとき、
