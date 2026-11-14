@@ -36,6 +36,7 @@ AIに農家のおじいちゃんを演じさせた家庭菜園のXアカウン�
 - [「人間」4,165件を数え直したら35%が機械だった](/cloudflare-bot-detection) — Pages Functions と D1 で人間とボットを見分けた実装
 - [Web Analytics にデータが表示されない](/cloudflare-web-analytics-beacon) — Functions が返す HTML にビーコンが無かった件
 - [アクセスの8割が404だったとき、先に確かめること](/cloudflare-traffic-recheck) — ボットの探索と、IP の変更で切れていた自分の除外
+- [Google に5ページしか登録されていなかった](/pages-dev-google-index) — サイトマップ「取得できませんでした」の記録と、外に作った入口
 
 ## 利用条件
 

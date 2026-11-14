@@ -9,10 +9,14 @@
  * 貼るリンクの付け方（utm_source の値はこの表と揃える）:
  *   note のプロフィール … ?utm_source=note_profile
  *   note の記事本文     … ?utm_source=note_article
+ *   Zenn の記事         … ?utm_source=zenn
+ *   Zenn のプロフィール … ?utm_source=zenn_profile
+ *   Qiita の記事        … ?utm_source=qiita
+ *   Qiita のプロフィール … ?utm_source=qiita_profile
  *
  * X（@ojiichan_hatake）には貼らない。フォロワーは家庭菜園が好きな人が中心で、
  * AI を嫌う人もいる。サイトはAI運用の記録なので、X から誘うとアカウントの読者を遠ざける。
- * サイトの入口は note（AIとX運用の記事を書いている）と検索に置く。
+ * サイトの入口は note（AIとX運用の記事を書いている）・Zenn・Qiita と検索に置く（Zenn と Qiita は 2026-11-14 追加）。
  *
  * utm_source が無い行は referer の host で補う（無ければ direct）。
  * 除外は human-referrer-7d.sql と同じ: AI bot・一般 bot・運営者・200 以外・admin と静的ファイル。

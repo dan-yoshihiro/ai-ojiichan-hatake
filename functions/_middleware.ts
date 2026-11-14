@@ -98,6 +98,7 @@ const READER_ROUTES: Record<string, string> = {
   '/cloudflare-bot-detection': '/docs/bot-detection-on-cloudflare-pages.md',
   '/cloudflare-web-analytics-beacon': '/docs/web-analytics-beacon-on-pages-functions.md',
   '/cloudflare-traffic-recheck': '/docs/cloudflare-traffic-recheck.md',
+  '/pages-dev-google-index': '/docs/pages-dev-google-index.md',
   '/about': '/about.md',
 };
 
@@ -474,11 +475,14 @@ function buildJsonLd(title: string, description: string, rawPath: string, canoni
 
 // 技術記事の原稿パス → 末尾で案内するもう1本の技術記事
 // 2026-11-14: 3本目（アクセスの8割が404だった件）を足した。ボット判定の記事からは、その続きにあたる3本目へ送る
+// 2026-11-14: 4本目（Google に5ページしか登録されていなかった件）を足した。3本目からは4本目へ、4本目からは3本目へ送る
 const TECH_READER_NEXT: Record<string, string> = {
   '/docs/bot-detection-on-cloudflare-pages.md':
     '<a href="/cloudflare-traffic-recheck">Cloudflare でアクセスの8割が404だったとき、サイトの不具合を疑う前に確かめること</a>',
   '/docs/cloudflare-traffic-recheck.md':
-    '<a href="/cloudflare-bot-detection">Cloudflare Pages でボットと自分のアクセスを除外する方法：「人間」の35%は機械だった</a>',
+    '<a href="/pages-dev-google-index">pages.dev のサイトが Google に5ページしか登録されていなかったら、何を確かめるか</a>',
+  '/docs/pages-dev-google-index.md':
+    '<a href="/cloudflare-traffic-recheck">Cloudflare でアクセスの8割が404だったとき、サイトの不具合を疑う前に確かめること</a>',
   '/docs/web-analytics-beacon-on-pages-functions.md':
     '<a href="/cloudflare-bot-detection">Cloudflare Pages でボットと自分のアクセスを除外する方法：「人間」の35%は機械だった</a>',
 };

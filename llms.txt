@@ -34,6 +34,7 @@ AIにSNSの投稿を任せたい小さな事業者向けに、写真をLINEに�
 - [/docs/bot-detection-on-cloudflare-pages.md](/docs/bot-detection-on-cloudflare-pages.md): Cloudflare Pages で人間とボットを見分けた記録。Functions + D1 の実装、判定の穴2つと数える相手の決め直し、「人間」4,165件のうち35%が機械で404件が運営者自身だった内訳
 - [/docs/web-analytics-beacon-on-pages-functions.md](/docs/web-analytics-beacon-on-pages-functions.md): Pages Functions が返す HTML に Web Analytics のビーコンが入っていなかった件。応答 HTML の確かめ方と追加手順
 - [/docs/cloudflare-traffic-recheck.md](/docs/cloudflare-traffic-recheck.md): Account analytics で4xx が83.68%になった件。中身は `/.env` などを探すボットへの 404 で、1つの IP が64%。pages.dev でも Observability の Logs でパス・送信元 IP・User-Agent を見られること、自分を除く設定が IP の変更で約1か月切れていたこと（日本の閲覧32件のうち19件が自分）、X からの参照元が0件だったこと、note を入口にして utm_source で数える形にしたこと
+- [/docs/pages-dev-google-index.md](/docs/pages-dev-google-index.md): pages.dev のサイトが Search Console で3か月に表示39回・クリック1回、サイトマップ17件のうち Google に登録されていたのは5ページだった件。サイトマップは「取得できませんでした」のまま、ファイルは正常に返り、Cloudflare の Logs には Google からサイトマップへのリクエストが無く、Google と見てよい訪問は30日で robots.txt への1回だった。Googlebot を名乗る機械の見分け方、登録リクエストが1日の上限に当たったこと、note・Zenn・Qiita に utm_source 付きの入口を作ったこと
 
 ## 根拠と制約
 

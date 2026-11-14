@@ -17,6 +17,7 @@
     "/cloudflare-bot-detection",
     "/cloudflare-web-analytics-beacon",
     "/cloudflare-traffic-recheck",
+    "/pages-dev-google-index",
     "/drafts/*",
     "/admin/*",
     "/llms.txt",
