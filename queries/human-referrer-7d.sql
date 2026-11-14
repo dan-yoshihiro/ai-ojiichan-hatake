@@ -61,6 +61,8 @@ WITH filtered AS (
       OR url_path LIKE '/ai-x-operation?%'
       OR url_path = '/sns-weekly-review'
       OR url_path LIKE '/sns-weekly-review?%'
+      OR url_path = '/cloudflare-traffic-recheck'
+      OR url_path LIKE '/cloudflare-traffic-recheck?%'
       OR url_path = '/weekly'
       OR url_path LIKE '/weekly?%'
       OR url_path LIKE '/weekly/%'

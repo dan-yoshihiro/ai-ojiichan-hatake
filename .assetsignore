@@ -14,5 +14,10 @@ package.json
 package-lock.json
 .gitignore
 .assetsignore
+# wrangler pages deploy . で手元から上げたときに秘密情報を配信しない（2026-11-14 追加）
+.env
+.env.*
+.dev.vars
+.dev.vars.*
 *.ts
 *.toml

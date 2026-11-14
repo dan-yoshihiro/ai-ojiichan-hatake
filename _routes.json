@@ -16,6 +16,7 @@
     "/x-impressions-drop",
     "/cloudflare-bot-detection",
     "/cloudflare-web-analytics-beacon",
+    "/cloudflare-traffic-recheck",
     "/drafts/*",
     "/admin/*",
     "/llms.txt",

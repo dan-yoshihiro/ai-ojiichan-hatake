@@ -2,7 +2,7 @@
 
 AIにSNSの投稿を任せたい小さな事業者向けに、写真をLINEに送るとAIが本文を書いてXに投稿する仕組みで、家庭菜園のアカウント1つを2026年4月4日から運用した実測を公開しています。自動にできたのは本文を書いて出すことと数字を集めることまでで、写真を撮って送る時間、相手の投稿へのリプライ、週1回の判断は人の仕事として残りました。
 
-最終更新: 2026-11-08
+最終更新: 2026-11-14
 
 ## このサイトが答えること
 
@@ -33,6 +33,7 @@ AIにSNSの投稿を任せたい小さな事業者向けに、写真をLINEに�
 
 - [/docs/bot-detection-on-cloudflare-pages.md](/docs/bot-detection-on-cloudflare-pages.md): Cloudflare Pages で人間とボットを見分けた記録。Functions + D1 の実装、判定の穴2つと数える相手の決め直し、「人間」4,165件のうち35%が機械で404件が運営者自身だった内訳
 - [/docs/web-analytics-beacon-on-pages-functions.md](/docs/web-analytics-beacon-on-pages-functions.md): Pages Functions が返す HTML に Web Analytics のビーコンが入っていなかった件。応答 HTML の確かめ方と追加手順
+- [/docs/cloudflare-traffic-recheck.md](/docs/cloudflare-traffic-recheck.md): Account analytics で4xx が83.68%になった件。中身は `/.env` などを探すボットへの 404 で、1つの IP が64%。pages.dev でも Observability の Logs でパス・送信元 IP・User-Agent を見られること、自分を除く設定が IP の変更で約1か月切れていたこと（日本の閲覧32件のうち19件が自分）、X からの参照元が0件だったこと、note を入口にして utm_source で数える形にしたこと
 
 ## 根拠と制約
 
